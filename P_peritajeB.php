@@ -294,7 +294,7 @@ include 'layouts/empty_header.php';
 
 <main class="w-100">
     <h4 class="text-center">SALA TÉCNICA EN AUTOMOTORES</h4>
-    <h6 class="text-center mb-3">CERIFICACIÓN TÉCNICA EN IDENTIFICACIÓN DE AUTOMOTORES</h6>
+    <h6 class="text-center mb-3">CERTIFICACIÓN TÉCNICA EN IDENTIFICACIÓN DE AUTOMOTORES</h6>
     <header class="d-flex gap-4 mb-4 align-items-center">
         <img src="img/pritec.png" style="width: 150px;object-fit: contain;" />
         <div class="me-5">
