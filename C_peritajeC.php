@@ -1,0 +1,323 @@
+<?php
+session_start();
+require_once 'Enums/SeguroEnum.php';
+require_once 'Enums/ImprontaEnum.php';
+require_once 'Enums/EstadoEnum.php';
+include 'layouts/header.php';
+
+$fields = [
+    'estado_cauchos_suspension' => 'Estado cauchos suspensión',
+    'estado_tanque_catalizador_gases' => 'Estado tanque catalizador gases',
+    'estado_tubo_exhosto' => 'Estado tubo de escape',
+    'estado_radiador' => 'Estado radiador',
+    'estado_externo_bateria' => 'Estado externo batería',
+    'estado_cables_instalacion_alta' => 'Estado cables instalación alta',
+    'estado_tanque_silenciador' => 'Estado tanque silenciador',
+    'estado_filtro_aire' => 'Estado filtro aire',
+    'estado_brazos_direccion_rotulas' => 'Estado brazos dirección rótulas',
+    'fugas_tanque_combustible' => 'Fugas tanque combustible',
+    'fugas_aceite_amortiguadores' => 'Fugas aceite amortiguadores',
+    'fugas_liquido_bomba_embrague' => 'Fugas líquido bomba embrague',
+    'fuga_aceite_direccion_hidraulica' => 'Fuga aceite dirección hidráulica',
+    'fuga_liquido_frenos' => 'Fuga líquido frenos',
+    'fuga_aceite_caja_transmision' => 'Fuga aceite caja transmisión',
+    'fuga_aceite_caja_velocidades' => 'Fuga aceite caja velocidades',
+    'tension_correas' => 'Tensión correas',
+    'estado_correas' => 'Estado correas',
+    'estado_mangueras_radiador' => 'Estado mangueras radiador',
+    'estado_tuberias_frenos' => 'Estado tuberías frenos',
+    'estado_guardapolvo_caja_direccion' => 'Estado guardapolvo caja dirección',
+    'estado_protectores_inferiores' => 'Estado protectores inferiores',
+    'estado_carter' => 'Estado cárter',
+    'fuga_aceite_motor' => 'Fuga aceite motor',
+    'estado_guardapolvos_ejes' => 'Estado guardapolvos ejes',
+    'estado_tijeras' => 'Estado tijeras',
+    'estado_radiador_aa' => 'Estado radiador A/A',
+    'estado_soporte_motor' => 'Estado soporte motor',
+    'estado_carcasa_caja_velocidades' => 'Estado carcasa caja velocidades',
+    'viscosidad_aceite_motor' => 'Viscosidad aceite motor',
+    'nivel_refrigerante_motor' => 'Nivel refrigerante motor',
+    'nivel_liquido_frenos' => 'Nivel líquido frenos',
+    'nivel_agua_limpiavidrios' => 'Nivel agua limpiavidrios',
+    'nivel_aceite_direccion_hidraulica' => 'Nivel aceite dirección hidráulica',
+    'nivel_liquido_embrague' => 'Nivel líquido embrague',
+    'nivel_aceite_motor' => 'Nivel aceite motor',
+    'funcionamiento_aa' => 'Funcionamiento A/A',
+    'soporte_caja_velocidades' => 'Soporte caja velocidades'
+];
+?>
+
+<div id="content">
+    <?php if (isset($_SESSION['error']) || isset($_SESSION['success'])): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                <?php if (isset($_SESSION['error'])): ?>
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: '<?php echo $_SESSION['error']; ?>',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar',
+                        customClass: {
+                            confirmButton: 'btn btn-danger'
+                        }
+                    });
+                    <?php unset($_SESSION['error']); ?>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['success'])): ?>
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: '<?php echo $_SESSION['success']; ?>',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar',
+                        customClass: {
+                            confirmButton: 'btn btn-success'
+                        }
+                    });
+                    <?php unset($_SESSION['success']); ?>
+                <?php endif; ?>
+            });
+        </script>
+    <?php endif; ?>
+    <div class="container py-5">
+        <h2 class="text-center mb-4">Nuevo Peritaje</h2>
+        <form id="peritajeForm" action="peritaje_completo/create.php" method="POST" enctype="multipart/form-data">
+
+            <!-- Servicio -->
+            <div class="card">
+                <div class="card-header">Servicio</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Fecha <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" name="fecha" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">No Servicio <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="no_servicio" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Servicio Para <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="servicio_para" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Convenio</label>
+                            <input type="text" class="form-control" name="convenio">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Datos del Solicitante -->
+            <div class="card">
+                <div class="card-header">Datos del Solicitante</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nombre y Apellidos <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="nombre_apellidos" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Identificación <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="identificacion" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" name="telefono">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Dirección</label>
+                            <input type="text" class="form-control" name="direccion">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Datos del Vehículo -->
+            <div class="card">
+                <div class="card-header">Datos del Vehículo</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Placa <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="placa" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Clase</label>
+                            <input type="text" class="form-control" name="clase">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Marca</label>
+                            <input type="text" class="form-control" name="marca">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Línea</label>
+                            <input type="text" class="form-control" name="linea">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Cilindraje</label>
+                            <input type="text" class="form-control" name="cilindraje">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Servicio</label>
+                            <input type="text" class="form-control" name="servicio">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Modelo</label>
+                            <input type="text" class="form-control" name="modelo">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Color</label>
+                            <input type="text" class="form-control" name="color">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">No de Chasis</label>
+                            <input type="text" class="form-control" name="no_chasis">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">No de Motor</label>
+                            <input type="text" class="form-control" name="no_motor">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">No de Serie</label>
+                            <input type="text" class="form-control" name="no_serie">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Tipo de Carrocería</label>
+                            <input type="text" class="form-control" name="tipo_carroceria">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Organismo de Tránsito</label>
+                            <input type="text" class="form-control" name="organismo_transito">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Llantas -->
+            <div class="card">
+                <div class="card-header">Llantas</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Porcentaje anterior izquierda</label>
+                            <input type="number" class="form-control" name="llanta_anterior_izquierda">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Porcentaje anterior derecha</label>
+                            <input type="number" class="form-control" name="llanta_anterior_derecha">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Porcentaje posterior izquierda</label>
+                            <input type="number" class="form-control" name="llanta_posterior_izquierda">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Porcentaje posterior derecha</label>
+                            <input type="number" class="form-control" name="llanta_posterior_derecha">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Amortiguadores</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Porcentaje anterior izquierdo</label>
+                            <input type="number" class="form-control" name="amortiguador_anterior_izquierdo">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Porcentaje anterior derecho</label>
+                            <input type="number" class="form-control" name="amortiguador_anterior_derecho">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Porcentaje posterior izquierdo</label>
+                            <input type="number" class="form-control" name="amortiguador_posterior_izquierdo">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Porcentaje posterior derecho</label>
+                            <input type="number" class="form-control" name="amortiguador_posterior_derecho">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estado/Documentos Selects -->
+            <div class="card">
+                <div class="card-header">Estados</div>
+                <div class="card-body">
+                    <div class="row">
+                        <?php foreach ($fields as $name => $label): ?>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label"><?php echo $label; ?> <span class="text-danger">*</span></label>
+                                <select class="form-select" name="<?php echo $name; ?>" required>
+                                    <option value="">Seleccione</option>
+                                    <?php foreach (EstadoEnum::getOptions() as $value => $optionLabel): ?>
+                                        <option value="<?php echo $value; ?>"><?php echo $optionLabel; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estado/Documentos Selects -->
+            <div class="card">
+                <div class="card-header">Fijación fotográfica</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Fotografía 1</label>
+                            <input type="file" class="form-control" name="fijacion_fotografica_1" accept="image/*">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Fotografía 2</label>
+                            <input type="file" class="form-control" name="fijacion_fotografica_2" accept="image/*">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Fotografía 3</label>
+                            <input type="file" class="form-control" name="fijacion_fotografica_3" accept="image/*">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Fotografía 4</label>
+                            <input type="file" class="form-control" name="fijacion_fotografica_4" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary px-5">Guardar Peritaje</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('peritajeForm').addEventListener('submit', function(e) {
+            const requiredFields = this.querySelectorAll('[required]');
+            let hasEmpty = false;
+
+            requiredFields.forEach(field => {
+                if (!field.value) {
+                    hasEmpty = true;
+                    field.classList.add('is-invalid');
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+
+            if (hasEmpty) {
+                e.preventDefault();
+                Swal.fire({
+                    title: '¡Atención!',
+                    text: 'Por favor complete todos los campos requeridos',
+                    icon: 'warning',
+                    confirmButtonText: 'Entendido'
+                });
+            }
+        });
+    </script>
+</div>
+
+<?php include 'layouts/footer.php'; ?>
