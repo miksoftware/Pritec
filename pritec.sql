@@ -167,5 +167,7 @@ CREATE TABLE IF NOT EXISTS `peritaje_completo` (
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `fecha_actualizacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `estado` int DEFAULT '1',
+  `observaciones` text COLLATE utf8mb4_unicode_ci,
+  `observaciones2` text COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -11,11 +11,11 @@ if (!isset($_SESSION['usuario'])) {
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if ($id === 0) {
     $_SESSION['error'] = "ID de peritaje no válido";
-    header('Location: L_peritajeB.php');
+    header('Location: L_peritajeC.php');
     exit;
 }
 
-require_once dirname(__FILE__) . '/peritaje_basico/Getid.php';
+require_once dirname(__FILE__) . '/peritaje_completo/Getid.php';
 require_once dirname(__FILE__) . '/Enums/SeguroEnum.php';
 require_once dirname(__FILE__) . '/Enums/ImprontaEnum.php';
 
@@ -24,9 +24,23 @@ $peritaje = obtenerPeritajePorId($id);
 
 if (!$peritaje) {
     $_SESSION['error'] = "Peritaje no encontrado";
-    header('Location: L_peritajeB.php');
+    header('Location: L_peritajeC.php');
     exit;
 }
+
+// Calcular promedio de porcentajes
+$porcentajes = [
+    $peritaje['llanta_anterior_izquierda'],
+    $peritaje['llanta_anterior_derecha'],
+    $peritaje['llanta_posterior_izquierda'],
+    $peritaje['llanta_posterior_derecha'],
+    $peritaje['amortiguador_anterior_izquierdo'],
+    $peritaje['amortiguador_anterior_derecho'],
+    $peritaje['amortiguador_posterior_izquierdo'],
+    $peritaje['amortiguador_posterior_derecho'],
+];
+
+$promedio = array_sum($porcentajes) / count($porcentajes);
 
 include 'layouts/empty_header.php';
 ?>
@@ -81,9 +95,18 @@ include 'layouts/empty_header.php';
         padding: .2rem 1.5rem;
     }
 
+    .sub-title-vertical {
+        text-align: center;
+        margin: 0 1rem;
+        width: fit-content;
+        padding: 1.5rem .2rem;
+        writing-mode: sideways-lr;
+    }
+
     .label {
         width: 50%;
         padding: .2rem .5rem;
+        align-self: center;
     }
 
     .input {
@@ -91,211 +114,21 @@ include 'layouts/empty_header.php';
         padding: .2rem .5rem;
         border: 1px var(--main-color) solid;
         border-radius: 8px;
-        text-wrap: nowrap;
     }
 
     .remarks {
         border: 1px solid var(--main-color);
         padding: .5rem 1rem;
         border-radius: 8px;
-        height: 80px;
+        height: 50px;
         font-size: .8rem
-    }
-
-    .parent {
-        display: grid;
-        grid-template-columns: .5fr 1fr .3fr 3fr;
-        grid-template-rows: repeat(12, 1fr);
-        gap: 8px;
-    }
-
-    .div1 {
-        grid-column: span 3 / span 3;
-    }
-
-    .div2 {
-        grid-column-start: 4;
-    }
-
-    .div3 {
-        grid-row: span 3 / span 3;
-        grid-row-start: 2;
-    }
-
-    .div4 {
-        grid-row-start: 2;
-    }
-
-    .div5 {
-        grid-row-start: 2;
-    }
-
-    .div6 {
-        grid-row: span 3 / span 3;
-        grid-row-start: 2;
-    }
-
-    .div7 {
-        grid-column-start: 2;
-        grid-row-start: 3;
-    }
-
-    .div8 {
-        grid-column-start: 3;
-        grid-row-start: 3;
-    }
-
-    .div9 {
-        grid-column-start: 2;
-        grid-row-start: 4;
-    }
-
-    .div10 {
-        grid-column-start: 3;
-        grid-row-start: 4;
-    }
-
-    .div11 {
-        grid-column: span 3 / span 3;
-        grid-row-start: 5;
-    }
-
-    .div12 {
-        grid-column-start: 4;
-        grid-row-start: 5;
-    }
-
-    .div17 {
-        grid-row: span 3 / span 3;
-        grid-row-start: 6;
-    }
-
-    .div18 {
-        grid-row-start: 6;
-    }
-
-    .div19 {
-        grid-row-start: 6;
-    }
-
-    .div20 {
-        grid-row: span 3 / span 3;
-        grid-row-start: 6;
-    }
-
-    .div21 {
-        grid-column-start: 2;
-        grid-row-start: 7;
-    }
-
-    .div22 {
-        grid-column-start: 3;
-        grid-row-start: 7;
-    }
-
-    .div23 {
-        grid-column-start: 2;
-        grid-row-start: 8;
-    }
-
-    .div24 {
-        grid-column-start: 3;
-        grid-row-start: 8;
-    }
-
-    .div25 {
-        grid-column: span 3 / span 3;
-        grid-row-start: 9;
-    }
-
-    .div26 {
-        grid-column-start: 4;
-        grid-row-start: 9;
-    }
-
-    .div27 {
-        grid-row: span 3 / span 3;
-        grid-row-start: 10;
-    }
-
-    .div28 {
-        grid-row-start: 10;
-    }
-
-    .div29 {
-        grid-row-start: 10;
-    }
-
-    .div30 {
-        grid-row: span 3 / span 3;
-        grid-row-start: 10;
-    }
-
-    .div31 {
-        grid-column-start: 2;
-        grid-row-start: 11;
-    }
-
-    .div32 {
-        grid-column-start: 3;
-        grid-row-start: 11;
-    }
-
-    .div33 {
-        grid-column-start: 2;
-        grid-row-start: 12;
-    }
-
-    .div34 {
-        grid-column-start: 3;
-        grid-row-start: 12;
-    }
-
-    .div1,
-    .div2,
-    .div3,
-    .div4,
-    .div5,
-    .div6,
-    .div7,
-    .div8,
-    .div9,
-    .div10,
-    .div11,
-    .div12,
-    .div13,
-    .div14,
-    .div15,
-    .div16,
-    .div17,
-    .div18,
-    .div19,
-    .div20,
-    .div21,
-    .div22,
-    .div23,
-    .div24,
-    .div25,
-    .div26,
-    .div27,
-    .div28,
-    .div29,
-    .div30,
-    .div31,
-    .div32,
-    .div33,
-    .div34 {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: .5rem 1rem;
     }
 </style>
 
-<main class="w-100">
+<main class="w-100 m-4">
     <h4 class="text-center">SALA TÉCNICA EN AUTOMOTORES</h4>
     <h6 class="text-center mb-3">CERIFICACIÓN TÉCNICA EN IDENTIFICACIÓN DE AUTOMOTORES</h6>
-    <header class="d-flex gap-4 mb-4 align-items-center">
+    <header class="d-flex gap-4 mb-4 align-items-center mx-auto">
         <img src="img/pritec.png" style="width: 150px;object-fit: contain;" />
         <div class="me-5">
             <p>Dirección: Carrera 16 No. 18-197 Barrio Tenerife</p>
@@ -310,10 +143,12 @@ include 'layouts/empty_header.php';
             <p>Convenio: <?php echo $peritaje['convenio'] ?></p>
         </div>
     </header>
-    <section class="d-flex gap-5">
-        <div class="w-50 ms-4">
-            <div class="yellow-background sub-title">DATOS DEL VEHÍCULO</div>
-            <div class="d-flex flex-column gap-2">
+    <section class="d-flex gap-2 my-4">
+        <div class="w-50 d-flex">
+            <div class="yellow-background sub-title-vertical">
+                DATOS DEL VEHÍCULO
+            </div>
+            <div class="d-flex flex-column gap-2 w-100">
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">Clase</div>
                     <div class="input">
@@ -387,7 +222,6 @@ include 'layouts/empty_header.php';
                     </div>
                 </div>
             </div>
-            <div class="yellow-background sub-title">ESTADO/DOCUMENTOS</div>
         </div>
         <div class="w-50 me-4">
             <div class="plate"><?php echo $peritaje['placa'] ?></div>
@@ -417,244 +251,513 @@ include 'layouts/empty_header.php';
                         <?php echo $peritaje['direccion'] ?>
                     </div>
                 </div>
-                <div class="yellow-background sub-title mt-2 mb-1">ESTADO/DOCUMENTOS</div>
-                <div class="d-flex justify-content-between">
-                    <div class="yellow-background label">Información</div>
-                    <div class="input" style="width: fit-content; padding: .2rem 1rem; background: var(--main-color)">
-                        Si
+            </div>
+        </div>
+    </section>
+    <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
+        <div class="d-flex gap-2">
+            <div class="yellow-background sub-title-vertical">INSPECCIÓN VISUAL EXTERNA</div>
+            <div class="d-flex flex-column w-100">
+                <p>Indique con un círculo en que parte del vehículo tiene alguna condición.</p>
+                <div class="yellow-background sub-title ms-4 mb-0">CARROCERÍA</div>
+                <div class="d-flex gap-2 w-100">
+                    <img src="img/carroceria.png" class="w-50" style="object-fit: contain;">
+                    <div class="d-flex flex-column gap-2 w-50 h-100">
+                        <div class="d-flex gap-2">
+                            <div class="yellow-background label text-center">Descripción pieza</div>
+                            <div class="input text-center">
+                                Concepto
+                            </div>
+                        </div>
+                        <?php
+                        for ($i = 0; $i < 10; $i++) {
+                            echo '<div class="d-flex gap-2">
+                                <div class="yellow-background label">&nbsp;</div>
+                                <div class="input">&nbsp;</div>
+                            </div>';
+                        }
+                        ?>
                     </div>
-                    <div class="input" style="width: fit-content; padding: .2rem 1rem; background: var(--main-color)">
-                        No
+                </div>
+            </div>
+        </div>
+    </section>
+    <p class="text-center my-4" style="color: #777;">LA MEJOR FORMA DE COMPRAR UN CARRO USADO</p>
+    <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
+        <div class="d-flex gap-2">
+            <div class="yellow-background sub-title-vertical">INSPECCIÓN VISUAL EXTERNA</div>
+            <div class="d-flex flex-column w-100">
+                <p>Indique con un círculo en que parte del vehículo tiene alguna condición.</p>
+                <div>
+                    <div class="yellow-background sub-title ms-4 mb-0">ESTRUCTURA</div>
+                    <div class="d-flex gap-2 w-100">
+                        <img src="img/carroceria.png" class="w-50" style="object-fit: contain;">
+                        <div class="d-flex flex-column gap-2 w-50 h-100">
+                            <div class="d-flex gap-2">
+                                <div class="yellow-background label text-center">Descripción pieza</div>
+                                <div class="input text-center">
+                                    Concepto
+                                </div>
+                            </div>
+                            <?php
+                            for ($i = 0; $i < 5; $i++) {
+                                echo '<div class="d-flex gap-2">
+                                <div class="yellow-background label">&nbsp;</div>
+                                <div class="input">&nbsp;</div>
+                            </div>';
+                            }
+                            ?>
+                        </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <div class="input">Tiene prenda/Gravamen</div>
-                    <?php
-                    if ($peritaje['tiene_prenda']) {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem;">X</div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem;"></div>';
-                    } else {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem"></div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem">X</div>';
-                    }
-                    ?>
+                <div>
+                    <div class="yellow-background sub-title ms-4 mb-0">CHASIS</div>
+                    <div class="d-flex gap-2 w-100">
+                        <img src="img/carroceria.png" class="w-50" style="object-fit: contain;">
+                        <div class="d-flex flex-column gap-2 w-50 h-100">
+                            <div class="d-flex gap-2">
+                                <div class="yellow-background label text-center">Descripción pieza</div>
+                                <div class="input text-center">
+                                    Concepto
+                                </div>
+                            </div>
+                            <?php
+                            for ($i = 0; $i < 5; $i++) {
+                                echo '<div class="d-flex gap-2">
+                                <div class="yellow-background label">&nbsp;</div>
+                                <div class="input">&nbsp;</div>
+                            </div>';
+                            }
+                            ?>
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <div class="input">Tiene limitación</div>
-                    <?php
-                    if ($peritaje['tiene_limitacion']) {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem;">X</div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem;"></div>';
-                    } else {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem"></div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem">X</div>';
-                    }
-                    ?>
+            </div>
+        </div>
+    </section>
+    <div class="remarks">
+        OBSERVACIONES: <br> <?php echo $peritaje['observaciones'] ?>
+    </div>
+    <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
+        <div class="d-flex gap-2">
+            <div class="yellow-background sub-title-vertical">LLANTAS Y AMORTIGUADORES</div>
+            <div class="d-flex flex-column w-100">
+                <div class="d-flex gap-2 w-100">
+                    <img src="img/carroceria.png" style="object-fit: contain;width: 30%;">
+                    <div class="d-flex flex-column gap-2 h-100" style="width: 70%;">
+                        <div class="d-flex gap-2">
+                            <div class="yellow-background label text-center">Ítem</div>
+                            <div class="yellow-background label text-center">Concepto</div>
+                            <div class="yellow-background label text-center">Porcentaje</div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <div class="input text-center">Llanta anterior izquierda</div>
+                            <div class="input text-center">B-R-M</div>
+                            <div class="input text-center">
+                                <?php $peritaje['llanta_anterior_izquierda'] ?>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <div class="input text-center">Llanta anterior derecha</div>
+                            <div class="input text-center">B-R-M</div>
+                            <div class="input text-center">
+                                <?php $peritaje['llanta_anterior_derecha'] ?>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <div class="input text-center">Llanta posterior izquierda</div>
+                            <div class="input text-center">B-R-M</div>
+                            <div class="input text-center">
+                                <?php $peritaje['llanta_posterior_izquierda'] ?>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <div class="input text-center">Llanta posterior derecha</div>
+                            <div class="input text-center">B-R-M</div>
+                            <div class="input text-center">
+                                <?php $peritaje['llanta_posterior_derecha'] ?>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <div class="input">Debe impuestos</div>
-                    <?php
-                    if ($peritaje['debe_impuestos']) {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem;">X</div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem;"></div>';
-                    } else {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem"></div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem">X</div>';
-                    }
-                    ?>
+                <div class="d-flex gap-2 w-100">
+                    <img src="img/carroceria.png" style="object-fit: contain;width: 30%;">
+                    <div class="d-flex flex-column gap-2 h-100" style="width: 70%;">
+                        <div class="d-flex gap-2">
+                            <div class="yellow-background label text-center">Ítem</div>
+                            <div class="yellow-background label text-center">Concepto</div>
+                            <div class="yellow-background label text-center">Porcentaje</div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <div class="input text-center" style="width: 70%">Amortiguador anterior izquierdo</div>
+                            <div class="input text-center">B-R-M</div>
+                            <div class="input text-center">
+                                <?php $peritaje['amortiguador_anterior_izquierdo'] ?>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <div class="input text-center" style="width: 70%">Amortiguador anterior derecho</div>
+                            <div class="input text-center">B-R-M</div>
+                            <div class="input text-center">
+                                <?php $peritaje['amortiguador_anterior_derecho'] ?>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <div class="input text-center" style="width: 70%">Amortiguador posterior izquierdo</div>
+                            <div class="input text-center">B-R-M</div>
+                            <div class="input text-center">
+                                <?php $peritaje['amortiguador_posterior_izquierdo'] ?>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <div class="input text-center" style="width: 70%">Amortiguador posterior derecho</div>
+                            <div class="input text-center">B-R-M</div>
+                            <div class="input text-center">
+                                <?php $peritaje['amortiguador_posterior_derecho'] ?>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <div class="input">Tiene comparendos al tránsito</div>
-                    <?php
-                    if ($peritaje['tiene_comparendos']) {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem;">X</div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem;"></div>';
-                    } else {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem"></div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem">X</div>';
-                    }
-                    ?>
+                <div class="d-flex gap-2 w-100">
+                    <div style="object-fit: contain;width: 30%;"></div>
+                    <div style="width: 70%;" class="d-flex justify-content-around">
+                        <span style="font-weight: bold;font-size: 1.2rem;-webkit-text-stroke: .4px var(--main-color);">RESULTADOS</span>
+                        <div style="width: 50%; padding: .2rem .5rem;border: 1px var(--main-color) solid;border-radius: 8px; background-color: #fef9cb">
+                            <?php echo $promedio ?>
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <div class="input">Vehículo rematado</div>
+            </div>
+        </div>
+    </section>
+    <p class="text-center my-4" style="color: #777;">LA MEJOR FORMA DE COMPRAR UN CARRO USADO</p>
+    <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
+        <div class="d-flex gap-2">
+            <div class="yellow-background sub-title-vertical">PRUEBA DE OBSERVACIÓN Y DIAGNÓSTICO SCANER</div>
+            <div class="d-flex flex-column w-100">
+                <p>El scanner automotriz es una herramienta que se utiliza para diagnosticar las fallas registradas
+                    en la computadora del vehículo. La computadora se encarga de regular las funciones del auto
+                    a través de distintos sensores que monitorean y registran todos los errores con un código:</p>
+            </div>
+        </div>
+    </section>
+    <div class="remarks">
+        OBSERVACIONES: <br> <?php echo $peritaje['observaciones2'] ?>
+    </div>
+
+    <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
+        <div class="d-flex gap-2 w-100">
+            <div class="d-flex flex-column gap-2 w-50 h-100">
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">ÍTEM</div>
+                    <div class="input text-center" style="width: 30%">
+                        RESPUESTA
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;" style="width: 70%;">Fuga aceite de motor</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['fuga_aceite_motor'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Fuga aceite caja velocidades</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['fuga_aceite_caja_velocidades'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Fuga aceite caja de trasmisión</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['fuga_aceite_caja_transmision'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Fuga líquido de frenos</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['fuga_liquido_frenos'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Fuga aceite dirección hidráulica</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['fuga_aceite_direccion_hidraulica'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Fugas líquido bomba embrague</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['fugas_liquido_bomba_embrague'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Fugas aceite por amortiguadores</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['fugas_aceite_amortiguadores'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Fugas tanque combustible</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['fugas_tanque_combustible'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado brazos dirección rotulas</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_brazos_direccion_rotulas'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado tanque silenciador</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_tanque_silenciador'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado tubo exhosto</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_tubo_exhosto'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado tanque catalizador de gases</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_tanque_catalizador_gases'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado cauchos suspensión</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_cauchos_suspension'] ?>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-column gap-2 w-50 h-100">
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">ÍTEM</div>
+                    <div class="input text-center" style="width: 30%">
+                        RESPUESTA
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;" style="width: 70%;">Estado tijeras</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_tijeras'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado guardapolvos ejes</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_guardapolvos_ejes'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado carter</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_carter'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado protectores inferiores</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_protectores_inferiores'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado guarda polvo caja dirección</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_guardapolvo_caja_direccion'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado tuberías frenos</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_tuberias_frenos'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado mangueras radiador</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_mangueras_radiador'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado correas</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_correas'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Tensión correas</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['tension_correas'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado filtro de aire</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_filtro_aire'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado cables instalación de alta</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_cables_instalacion_alta'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado externo batería</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_externo_bateria'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado radiador</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_tubo_exhosto'] ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <p class="text-center my-4" style="color: #777;">LA MEJOR FORMA DE COMPRAR UN CARRO USADO</p>
+    <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
+        <div class="d-flex gap-2 w-100">
+            <div class="d-flex flex-column gap-2 w-50 h-100">
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">ÍTEM</div>
+                    <div class="input text-center" style="width: 30%">
+                        RESPUESTA
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;" style="width: 70%;">Estado radiador A/A</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_radiador_aa'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado soporte motor</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_soporte_motor'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Estado carcasa caja de velocidades</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['estado_carcasa_caja_velocidades'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Viscosidad aceite de motor</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['viscosidad_aceite_motor'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Nivel refrigerante motor</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['nivel_refrigerante_motor'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Nivel líquido de frenos</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['nivel_liquido_frenos'] ?>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-column gap-2 w-50 h-100">
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">ÍTEM</div>
+                    <div class="input text-center" style="width: 30%">
+                        RESPUESTA
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;" style="width: 70%;">Nivel agua limpiavidrios</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['nivel_agua_limpiavidrios'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Nivel aceite dirección hidráulica</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['nivel_aceite_direccion_hidraulica'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Nivel líquido embrague</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['nivel_liquido_embrague'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Nivel aceite de motor</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['nivel_aceite_motor'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Funcionamiento A/A</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['funcionamiento_aa'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label" style="width: 70%;">Soporte caja de velocidades</div>
+                    <div class="input" style="width: 30%">
+                        <?php echo $peritaje['soporte_caja_velocidades'] ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
+        <div class="d-flex gap-2">
+            <div class="yellow-background sub-title-vertical">FIJACIÓN FOTOGRÁFICA</div>
+            <div class="d-flex flex-column w-100">
+                <p>Observación y clasificación de las características del automotor de acuerdo al punto 1</p>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); gap: 8px;">
                     <?php
-                    if ($peritaje['vehiculo_rematado']) {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem;">X</div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem;"></div>';
-                    } else {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem"></div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem">X</div>';
+                    for ($i = 0; $i < 4; $i++) {
+                        $name = 'fijacion_fotografica_' . $i + 1;
+                        $url = $peritaje[$name];
+                        if ($url) {
+                            echo '<div style="border: 1px solid var(--main-color);border-radius: 8px;padding: 5px">	
+                                    <img src="uploads/' . $url . '" style="object-fit: contain; width: 100%">
+                                </div>';
+                        }
                     }
                     ?>
                 </div>
             </div>
         </div>
     </section>
-    <section class="mx-4 d-flex flex-column gap-2">
-        <div class="d-flex gap-2 text-center">
-            <div class="input" style="width: 20%;">Información</div>
-            <?php foreach (SeguroEnum::getOptions() as $value => $label): ?>
-                <div class="input" style="width: 20%;"><?php echo $label; ?></div>
-            <?php endforeach; ?>
-            <div class="input" style="width: 20%;">Fecha de vencimiento</div>
-        </div>
-        <div class="d-flex gap-2 text-center">
-            <div class="input" style="width: 20%;">Revisión Tecnicomecánica</div>
-            <?php foreach (SeguroEnum::getOptions() as $value => $label): ?>
-                <div class="input" style="width: 20%;">
-                    <?php
-                    if (strtolower($value) == $peritaje['revision_tecnicomecanica']) {
-                        echo 'X';
-                    }
-                    ?>
-                </div>
-            <?php endforeach; ?>
-            <div class="input" style="width: 20%;">
-                <?php echo $peritaje['rtm_fecha_vencimiento'] ?>
-            </div>
-        </div>
-        <div class="d-flex gap-2 text-center">
-            <div class="input" style="width: 20%;">SOAT</div>
-            <?php foreach (SeguroEnum::getOptions() as $value => $label): ?>
-                <div class="input" style="width: 20%;">
-                    <?php
-                    if (strtolower($value) == $peritaje['soat']) {
-                        echo 'X';
-                    }
-                    ?>
-                </div>
-            <?php endforeach; ?>
-            <div class="input" style="width: 20%;">
-                <?php echo $peritaje['soat_fecha_vencimiento'] ?>
-            </div>
-        </div>
-        <div class="remarks">
-            OBSERVACIONES: <br> <?php echo $peritaje['observaciones'] ?>
-        </div>
-        <p class="text-center" style="font-size: .9rem;">
-            La información de identificación del rodante se obtiene del contenido de la licencia de
-            tránsito, una vez se realice la validación con el RUNT.
-        </p>
-        <div class="remarks" style="height: 120px;">
-            <img height="110" style="object-fit: contain;" src="uploads/<?php echo $peritaje['licencia_frente'] ?>" />
-            <img height="110" style="object-fit: contain;" src="uploads/<?php echo $peritaje['licencia_atras'] ?>" />
-        </div>
-    </section>
-    <section class="mx-2">
-        <div class="yellow-background sub-title ms-0">CONCEPTOS E IMPRONTAS</div>
-        <p>
-            Este concepto técnico está basado en la inspección de los sistemas de identificación,
-            de acuerdo a patrones efectuados por la casa fabricante correspondiente, el interesado
-            debe confirmar la documentación que ampara la matricula y posibles medidas cautelares,
-            los sistemas de identificación que posee en la actualidad se dictaminan:
-        </p>
 
-        <div class="parent my-4 mx-2">
-            <div class="div1 yellow-background">Información</div>
-            <div class="div2 yellow-background">Improntas</div>
-            <div class="div3 yellow-background">
-                <?php echo $peritaje['no_motor'] ?>
-            </div>
-            <div class="div4 yellow-background">Original</div>
-            <div class="div5 yellow-background">
-                <?php if ($peritaje['estado_motor'] == strtolower(ImprontaEnum::ORIGINAL)) {
-                    echo 'X';
-                } ?>
-            </div>
-            <div class="div6 input w-100"></div>
-            <div class="div7 yellow-background">Regrabado</div>
-            <div class="div8 yellow-background">
-                <?php if ($peritaje['estado_motor'] == strtolower(ImprontaEnum::REGRABADO)) {
-                    echo 'X';
-                } ?>
-            </div>
-            <div class="div9 yellow-background">Grabado no original</div>
-            <div class="div10 yellow-background">
-                <?php if ($peritaje['estado_motor'] == strtolower(ImprontaEnum::GRABADO_NO_ORIGINAL)) {
-                    echo 'X';
-                } ?>
-            </div>
-            <div class="div11 yellow-background">Información</div>
-            <div class="div12 yellow-background">Improntas</div>
-            <div class="div17 yellow-background">
-                <?php echo $peritaje['no_chasis'] ?>
-            </div>
-            <div class="div18 yellow-background">Original</div>
-            <div class="div19 yellow-background">
-                <?php if ($peritaje['estado_chasis'] == strtolower(ImprontaEnum::ORIGINAL)) {
-                    echo 'X';
-                } ?>
-            </div>
-            <div class="div20 input w-100"></div>
-            <div class="div21 yellow-background">Regrabado</div>
-            <div class="div22 yellow-background">
-                <?php if ($peritaje['estado_chasis'] == strtolower(ImprontaEnum::REGRABADO)) {
-                    echo 'X';
-                } ?>
-            </div>
-            <div class="div23 yellow-background">Grabado no original</div>
-            <div class="div24 yellow-background">
-                <?php if ($peritaje['estado_chasis'] == strtolower(ImprontaEnum::GRABADO_NO_ORIGINAL)) {
-                    echo 'X';
-                } ?>
-            </div>
-            <div class="div25 yellow-background">Información</div>
-            <div class="div26 yellow-background">Improntas</div>
-            <div class="div27 yellow-background">
-                <?php echo $peritaje['no_serie'] ?>
-            </div>
-            <div class="div28 yellow-background">Original</div>
-            <div class="div29 yellow-background">
-                <?php if ($peritaje['estado_serial'] == strtolower(ImprontaEnum::ORIGINAL)) {
-                    echo 'X';
-                } ?>
-            </div>
-            <div class="div30 input w-100"></div>
-            <div class="div31 yellow-background">Regrabado</div>
-            <div class="div32 yellow-background">
-                <?php if ($peritaje['estado_serial'] == strtolower(ImprontaEnum::REGRABADO)) {
-                    echo 'X';
-                } ?>
-            </div>
-            <div class="div33 yellow-background">Grabado no original</div>
-            <div class="div34 yellow-background">
-                <?php if ($peritaje['estado_serial'] == strtolower(ImprontaEnum::GRABADO_NO_ORIGINAL)) {
-                    echo 'X';
-                } ?>
-            </div>
+    <div class="d-flex my-4" style="gap: 40px">
+        <div>
+            <p class="mb-3">Firma perito encargado:</p>
+            <p>______________________________________</p>
+            <p>CC:</p>
         </div>
-        <div class="remarks" style="height: 120px;">
-            <?php echo $peritaje['observaciones_finales'] ?>
+        <div>
+            <p class="mb-3">Firma cliente:</p>
+            <p>______________________________________</p>
+            <p>CC:</p>
         </div>
+    </div>
 
-        <div class="d-flex my-4" style="gap: 40px">
-            <div>
-                <p>Firma perito encargado:</p>
-                <p>______________________________________</p>
-                <p>CC:</p>
-                <p>Técnico en identificación de automotores</p>
-            </div>
-            <div>
-                <p>Firma cliente:</p>
-                <p>______________________________________</p>
-                <p>CC:</p>
-            </div>
-        </div>
+    <small style="font-size: 10px; font-weight: bold; margin-top: 1rem">
+        AVISO LEGAL: Pritec Informa que la revisión realizada corresponde al estado del vehículo en la fecha y hora de la misma y con el recorrido del
+        kilometraje que revela el odómetro en el momento, se advierte que, debido a la vulnerabilidad a que se ven expuestos este tipo de bienes, en
+        cuanto a la afectación, modificación, avería, deterioro y desgaste de cualquiera de sus componentes, el informe que se pone de presente no
+        garantiza de ningún modo que el estado del vehiculo sea el mismo en fechas posteriores a la fecha de la revisión.
+    </small>
 
-        <small style="font-size: .8rem; line-height: 50% ;margin-top: 1rem">
-            AVISO LEGAL: El certificado de PRITEC no reemplaza el certificado de tradición que expiden los organismos de tránsito. Se precisa que la
-            información suministrada es la que se encuentra en el Registro Único Nacional de Tránsito al momento de la consulta y a su vez la información
-            contenida en el registro es producto de los reportes efectuados por los diferentes Organismos de Tránsito, Direcciones Territoriales, entre otros
-            actores, quienes son los responsables de reportar información al RUNT y de su actualización. Por lo que la PRITEC. no asume responsabilidad
-            alguna de la veracidad de la información
-        </small>
-    </section>
+    
+    <p class="text-center my-4" style="color: #777;">LA MEJOR FORMA DE COMPRAR UN CARRO USADO</p>
 </main>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        window.print()
-    })
-</script>
 
 <?php include 'layouts/empty_footer.php'; ?>

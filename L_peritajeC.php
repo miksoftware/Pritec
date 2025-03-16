@@ -87,7 +87,7 @@ function eliminarPeritaje(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: 'peritaje_basico/UpdateStatus.php',
+                url: 'peritaje_completo/UpdateStatus.php',
                 type: 'POST',
                 data: { id: id },
                 success: function(response) {

@@ -629,13 +629,13 @@ include 'layouts/empty_header.php';
 
         <div class="d-flex my-4" style="gap: 40px">
             <div>
-                <p>Firma perito encargado:</p>
+                <p class="mb-3">Firma perito encargado:</p>
                 <p>______________________________________</p>
                 <p>CC:</p>
                 <p>Técnico en identificación de automotores</p>
             </div>
             <div>
-                <p>Firma cliente:</p>
+                <p class="mb-3">Firma cliente:</p>
                 <p>______________________________________</p>
                 <p>CC:</p>
             </div>

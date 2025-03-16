@@ -18,7 +18,7 @@ try {
     $conn = $conexion->conectar();
 
     // Preparar y ejecutar consulta
-    $query = "UPDATE peritaje_basico SET estado = 0 WHERE id = ?";
+    $query = "UPDATE peritaje_completo SET estado = 0 WHERE id = ?";
     $stmt = $conn->prepare($query);
     
     if (!$stmt) {
