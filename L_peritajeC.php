@@ -71,7 +71,7 @@ $(document).ready(function() {
 });
 
 function editarPeritaje(id) {
-    window.location.href = `E_peritajeB.php?id=${id}`;
+    window.location.href = `E_peritajeC.php?id=${id}`;
 }
 
 function eliminarPeritaje(id) {
