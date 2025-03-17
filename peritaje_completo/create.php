@@ -55,10 +55,10 @@ try {
         viscosidad_aceite_motor, nivel_refrigerante_motor, nivel_liquido_frenos, nivel_agua_limpiavidrios, 
         nivel_aceite_direccion_hidraulica, nivel_liquido_embrague, nivel_aceite_motor, funcionamiento_aa, 
         soporte_caja_velocidades, fijacion_fotografica_1, fijacion_fotografica_2, fijacion_fotografica_3, 
-        fijacion_fotografica_4
+        fijacion_fotografica_4, observaciones, observaciones2
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
         ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
-        ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($query);
 
@@ -133,7 +133,9 @@ try {
         $uploaded_files['fijacion_fotografica_1'] ?? null,
         $uploaded_files['fijacion_fotografica_2'] ?? null,
         $uploaded_files['fijacion_fotografica_3'] ?? null,
-        $uploaded_files['fijacion_fotografica_4'] ?? null
+        $uploaded_files['fijacion_fotografica_4'] ?? null,
+        $_POST['observaciones'] ?? null,
+        $_POST['observaciones2'] ?? null
     ];
 
     if (!$stmt->execute($params)) {
@@ -149,7 +151,7 @@ try {
     if(isset($conn)) {
         error_log("Error MySQL: " . $conn->error);
     }
-    header('Location: ../C_peritajeB.php');
+    header('Location: ../C_peritajeC.php');
     exit;
 
 } finally {

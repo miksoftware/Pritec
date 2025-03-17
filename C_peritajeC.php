@@ -2,7 +2,6 @@
 session_start();
 require_once 'Enums/SeguroEnum.php';
 require_once 'Enums/ImprontaEnum.php';
-require_once 'Enums/EstadoEnum.php';
 include 'layouts/header.php';
 
 $fields = [
@@ -80,7 +79,7 @@ $fields = [
         </script>
     <?php endif; ?>
     <div class="container py-5">
-        <h2 class="text-center mb-4">Nuevo Peritaje</h2>
+        <h2 class="text-center mb-4">Nuevo Peritaje Completo</h2>
         <form id="peritajeForm" action="peritaje_completo/create.php" method="POST" enctype="multipart/form-data">
 
             <!-- Servicio -->
@@ -190,6 +189,10 @@ $fields = [
                             <label class="form-label">Organismo de Tránsito</label>
                             <input type="text" class="form-control" name="organismo_transito">
                         </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Observaciones</label>
+                            <textarea class="form-control" name="observaciones" rows="3"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -239,24 +242,24 @@ $fields = [
                             <label class="form-label">Porcentaje posterior derecho</label>
                             <input type="number" class="form-control" name="amortiguador_posterior_derecho">
                         </div>
+                        
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Observaciones</label>
+                            <textarea class="form-control" name="observaciones2" rows="3"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
-
+            
             <!-- Estado/Documentos Selects -->
             <div class="card">
                 <div class="card-header">Estados</div>
                 <div class="card-body">
                     <div class="row">
                         <?php foreach ($fields as $name => $label): ?>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-12 col-md-4 mb-3">
                                 <label class="form-label"><?php echo $label; ?> <span class="text-danger">*</span></label>
-                                <select class="form-select" name="<?php echo $name; ?>" required>
-                                    <option value="">Seleccione</option>
-                                    <?php foreach (EstadoEnum::getOptions() as $value => $optionLabel): ?>
-                                        <option value="<?php echo $value; ?>"><?php echo $optionLabel; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                                <input type="text" class="form-control" name="<?php echo $name; ?>" required />
                             </div>
                         <?php endforeach; ?>
                     </div>
