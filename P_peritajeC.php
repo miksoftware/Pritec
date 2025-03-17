@@ -59,9 +59,12 @@ include 'layouts/empty_header.php';
         --gray-color: #d8d8d8;
     }
 
-    /* main {
-        background: url('img/pritec.png') no-repeat bottom;
-    } */
+    @media print {
+        body {
+            background: url('img/background.png') repeat-y center center;
+            background-size: contain;
+        }
+    }
 
     p {
         margin: 0;
@@ -291,7 +294,7 @@ include 'layouts/empty_header.php';
                 <div>
                     <div class="yellow-background sub-title ms-4 mb-0">ESTRUCTURA</div>
                     <div class="d-flex gap-2 w-100">
-                        <img src="img/carroceria.png" class="w-50" style="object-fit: contain;">
+                        <img src="img/estructura.png" class="w-50" height="200" style="object-fit: contain;">
                         <div class="d-flex flex-column gap-2 w-50 h-100">
                             <div class="d-flex gap-2">
                                 <div class="yellow-background label text-center">Descripción pieza</div>
@@ -313,7 +316,7 @@ include 'layouts/empty_header.php';
                 <div>
                     <div class="yellow-background sub-title ms-4 mb-0">CHASIS</div>
                     <div class="d-flex gap-2 w-100">
-                        <img src="img/carroceria.png" class="w-50" style="object-fit: contain;">
+                        <img src="img/chasis.png" class="w-50" height="200" style="object-fit: contain;">
                         <div class="d-flex flex-column gap-2 w-50 h-100">
                             <div class="d-flex gap-2">
                                 <div class="yellow-background label text-center">Descripción pieza</div>
@@ -343,7 +346,7 @@ include 'layouts/empty_header.php';
             <div class="yellow-background sub-title-vertical">LLANTAS Y AMORTIGUADORES</div>
             <div class="d-flex flex-column w-100">
                 <div class="d-flex gap-2 w-100">
-                    <img src="img/carroceria.png" style="object-fit: contain;width: 30%;">
+                    <img src="img/llantas.png" style="object-fit: contain;width: 30%;">
                     <div class="d-flex flex-column gap-2 h-100" style="width: 70%;">
                         <div class="d-flex gap-2">
                             <div class="yellow-background label text-center">Ítem</div>
@@ -354,34 +357,34 @@ include 'layouts/empty_header.php';
                             <div class="input text-center">Llanta anterior izquierda</div>
                             <div class="input text-center">B-R-M</div>
                             <div class="input text-center">
-                                <?php $peritaje['llanta_anterior_izquierda'] ?>
+                                <?php echo $peritaje['llanta_anterior_izquierda'] ?>
                             </div>
                         </div>
                         <div class="d-flex gap-2">
                             <div class="input text-center">Llanta anterior derecha</div>
                             <div class="input text-center">B-R-M</div>
                             <div class="input text-center">
-                                <?php $peritaje['llanta_anterior_derecha'] ?>
+                                <?php echo $peritaje['llanta_anterior_derecha'] ?>
                             </div>
                         </div>
                         <div class="d-flex gap-2">
                             <div class="input text-center">Llanta posterior izquierda</div>
                             <div class="input text-center">B-R-M</div>
                             <div class="input text-center">
-                                <?php $peritaje['llanta_posterior_izquierda'] ?>
+                                <?php echo $peritaje['llanta_posterior_izquierda'] ?>
                             </div>
                         </div>
                         <div class="d-flex gap-2">
                             <div class="input text-center">Llanta posterior derecha</div>
                             <div class="input text-center">B-R-M</div>
                             <div class="input text-center">
-                                <?php $peritaje['llanta_posterior_derecha'] ?>
+                                <?php echo $peritaje['llanta_posterior_derecha'] ?>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex gap-2 w-100">
-                    <img src="img/carroceria.png" style="object-fit: contain;width: 30%;">
+                    <img src="img/amortiguadores.png" style="object-fit: contain;width: 30%; height: 180px">
                     <div class="d-flex flex-column gap-2 h-100" style="width: 70%;">
                         <div class="d-flex gap-2">
                             <div class="yellow-background label text-center">Ítem</div>
@@ -392,28 +395,28 @@ include 'layouts/empty_header.php';
                             <div class="input text-center" style="width: 70%">Amortiguador anterior izquierdo</div>
                             <div class="input text-center">B-R-M</div>
                             <div class="input text-center">
-                                <?php $peritaje['amortiguador_anterior_izquierdo'] ?>
+                                <?php echo $peritaje['amortiguador_anterior_izquierdo'] ?>
                             </div>
                         </div>
                         <div class="d-flex gap-2">
                             <div class="input text-center" style="width: 70%">Amortiguador anterior derecho</div>
                             <div class="input text-center">B-R-M</div>
                             <div class="input text-center">
-                                <?php $peritaje['amortiguador_anterior_derecho'] ?>
+                                <?php echo $peritaje['amortiguador_anterior_derecho'] ?>
                             </div>
                         </div>
                         <div class="d-flex gap-2">
                             <div class="input text-center" style="width: 70%">Amortiguador posterior izquierdo</div>
                             <div class="input text-center">B-R-M</div>
                             <div class="input text-center">
-                                <?php $peritaje['amortiguador_posterior_izquierdo'] ?>
+                                <?php echo $peritaje['amortiguador_posterior_izquierdo'] ?>
                             </div>
                         </div>
                         <div class="d-flex gap-2">
                             <div class="input text-center" style="width: 70%">Amortiguador posterior derecho</div>
                             <div class="input text-center">B-R-M</div>
                             <div class="input text-center">
-                                <?php $peritaje['amortiguador_posterior_derecho'] ?>
+                                <?php echo $peritaje['amortiguador_posterior_derecho'] ?>
                             </div>
                         </div>
                     </div>
@@ -756,7 +759,7 @@ include 'layouts/empty_header.php';
         garantiza de ningún modo que el estado del vehiculo sea el mismo en fechas posteriores a la fecha de la revisión.
     </small>
 
-    
+
     <p class="text-center my-4" style="color: #777;">LA MEJOR FORMA DE COMPRAR UN CARRO USADO</p>
 </main>
 
