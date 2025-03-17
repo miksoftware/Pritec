@@ -138,7 +138,21 @@ try {
         $_POST['observaciones2'] ?? null
     ];
 
-    if (!$stmt->execute($params)) {
+    // Crear cadena de tipos para bind_param
+    $types = str_repeat('s', count($params)); // Todos como strings para simplificar
+
+    // Convertir array de parámetros a referencias
+    $refs = [];
+    $refs[] = &$types; // Primer parámetro es la cadena de tipos
+    foreach($params as $key => $value) {
+        $refs[] = &$params[$key];
+    }
+
+    // Usar call_user_func_array para aplicar bind_param con todos los parámetros
+    call_user_func_array([$stmt, 'bind_param'], $refs);
+
+    // Ejecutar sin parámetros como espera mysqli
+    if (!$stmt->execute()) {
         throw new Exception("Error al ejecutar la consulta: " . $stmt->error);
     }
 
