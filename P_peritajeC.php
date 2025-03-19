@@ -763,4 +763,10 @@ include 'layouts/empty_header.php';
     <p class="text-center my-4" style="color: #777;">LA MEJOR FORMA DE COMPRAR UN CARRO USADO</p>
 </main>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        window.print()
+    })
+</script>
+
 <?php include 'layouts/empty_footer.php'; ?>

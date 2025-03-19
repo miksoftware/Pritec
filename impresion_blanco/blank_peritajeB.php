@@ -68,6 +68,13 @@ include '../layouts/empty_header.php';
         --gray-color: #d8d8d8;
     }
 
+    @media print {
+        body {
+            background: url('../img/background.png') repeat-y center center;
+            background-size: contain;
+        }
+    }
+
     p {
         margin: 0;
     }
@@ -312,7 +319,7 @@ include '../layouts/empty_header.php';
     }
 </style>
 
-<main class="w-100">
+<main class="w-100 m-4">
     <h4 class="text-center">SALA TÉCNICA EN AUTOMOTORES</h4>
     <h6 class="text-center mb-3">CERTIFICACIÓN TÉCNICA EN IDENTIFICACIÓN DE AUTOMOTORES</h6>
     <header class="d-flex gap-4 mb-4 align-items-center">
@@ -472,7 +479,7 @@ include '../layouts/empty_header.php';
             La información de identificación del rodante se obtiene del contenido de la licencia de
             tránsito, una vez se realice la validación con el RUNT.
         </p>
-        <div class="remarks" style="height: 120px;">
+        <div class="remarks" style="height: 200px;">
             <!-- Espacio para imágenes de licencia -->
         </div>
     </section>

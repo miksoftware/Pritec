@@ -292,7 +292,7 @@ include 'layouts/empty_header.php';
     }
 </style>
 
-<main class="w-100">
+<main class="w-100 m-4">
     <h4 class="text-center">SALA TÉCNICA EN AUTOMOTORES</h4>
     <h6 class="text-center mb-3">CERTIFICACIÓN TÉCNICA EN IDENTIFICACIÓN DE AUTOMOTORES</h6>
     <header class="d-flex gap-4 mb-4 align-items-center">
@@ -540,7 +540,7 @@ include 'layouts/empty_header.php';
             <img height="110" style="object-fit: contain;" src="uploads/<?php echo $peritaje['licencia_atras'] ?>" />
         </div>
     </section>
-    <section class="mx-2">
+    <section class="mx-2" style="margin-top: 10rem;">
         <div class="yellow-background sub-title ms-0">CONCEPTOS E IMPRONTAS</div>
         <p>
             Este concepto técnico está basado en la inspección de los sistemas de identificación,

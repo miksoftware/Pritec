@@ -35,10 +35,16 @@ class Login {
             }
             
         } catch (Exception $e) {
+            echo $e;
             return false;
         } finally {
-            $stmt->close();
-            $conn->close();
+            if($conn) {
+                $conn->close();
+            }
+
+            if($stmt) {
+                $stmt->close();
+            }
         }
     }
 
