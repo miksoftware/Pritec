@@ -224,6 +224,36 @@ include 'layouts/empty_header.php';
                         <?php echo $peritaje['organismo_transito'] ?>
                     </div>
                 </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label">Kilometraje</div>
+                    <div class="input">
+                        <?php echo $peritaje['kilometraje'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label">Código fasecolda</div>
+                    <div class="input">
+                        <?php echo $peritaje['codigo_fasecolda'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label">Valor fasecolda</div>
+                    <div class="input">
+                        <?php echo $peritaje['valor_fasecolda'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label">Valor sugerido</div>
+                    <div class="input">
+                        <?php echo $peritaje['valor_sugerido'] ?>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label">Valor accesorios</div>
+                    <div class="input">
+                        <?php echo $peritaje['valor_accesorios'] ?>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="w-50 me-4">

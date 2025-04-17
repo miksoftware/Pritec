@@ -190,6 +190,26 @@ include '../layouts/empty_header.php';
                     <div class="yellow-background label">Organismo de tránsito</div>
                     <div class="input">&nbsp;</div>
                 </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label">Kilometraje</div>
+                    <div class="input">&nbsp;</div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label">Código fasecolda</div>
+                    <div class="input">&nbsp;</div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label">Valor fasecolda</div>
+                    <div class="input">&nbsp;</div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label">Valor sugerido</div>
+                    <div class="input">&nbsp;</div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label">Valor accesorios</div>
+                    <div class="input">&nbsp;</div>
+                </div>
             </div>
         </div>
         <div class="w-50 me-4">

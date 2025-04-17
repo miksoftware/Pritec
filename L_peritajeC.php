@@ -15,6 +15,7 @@ include 'layouts/header.php';
             <table id="tablaPeriajes" class="table table-striped table-bordered">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Nombre y Apellidos</th>
                         <th>Identificación</th>
                         <th>Placa</th>
@@ -41,6 +42,7 @@ $(document).ready(function() {
             }
         },
         "columns": [
+            {"data": "id"},
             {"data": "nombre_apellidos"},
             {"data": "identificacion"},
             {"data": "placa"},

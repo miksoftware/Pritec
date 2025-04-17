@@ -228,6 +228,26 @@ $fields = [
                             <label class="form-label">Organismo de Tránsito</label>
                             <input type="text" class="form-control" name="organismo_transito" value="<?php echo $peritaje['organismo_transito']; ?>">
                         </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="kilometraje" class="form-label">Kilometraje</label>
+                            <input type="number" id="kilometraje" class="form-control" name="kilometraje" value="<?php echo $peritaje['kilometraje']; ?>">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="codigo_fasecolda" class="form-label">Código fasecolda</label>
+                            <input type="text" id="codigo_fasecolda" class="form-control" name="codigo_fasecolda" value="<?php echo $peritaje['codigo_fasecolda']; ?>">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="valor_fasecolda" class="form-label">Valor fasecolda</label>
+                            <input type="number" id="valor_fasecolda" class="form-control" name="valor_fasecolda" value="<?php echo $peritaje['valor_fasecolda']; ?>">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="valor_sugerido" class="form-label">Valor sugerido</label>
+                            <input type="number" id="valor_sugerido" class="form-control" name="valor_sugerido" value="<?php echo $peritaje['valor_sugerido']; ?>">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="valor_accesorios" class="form-label">Valor accesorios</label>
+                            <input type="number" id="valor_accesorios" class="form-control" name="valor_accesorios" value="<?php echo $peritaje['valor_accesorios']; ?>">
+                        </div>
                         <div class="col-12 mb-3">
                             <label class="form-label">Observaciones</label>
                             <textarea class="form-control" name="observaciones" rows="3"><?php echo $peritaje['observaciones']; ?></textarea>
