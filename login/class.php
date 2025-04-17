@@ -2,15 +2,15 @@
 require_once('./conexion/conexion.php');
 
 class Login {
-    private $conexion;
+    private Conexion $connection;
 
     public function __construct() {
-        $this->conexion = new Conexion();
+        $this->connection = new Conexion();
     }
 
     public function iniciarSesion($usuario, $password) {
         try {
-            $conn = $this->conexion->conectar();
+            $conn = $this->connection->conectar();
             
             // Encriptar la contraseña ingresada para comparar con la BD
             $passwordMd5 = md5($password);
@@ -37,11 +37,11 @@ class Login {
             echo $e;
             return false;
         } finally {
-            if($conn) {
+            if (isset($conn)) {
                 $conn->close();
             }
 
-            if($stmt) {
+            if(isset($stmt)) {
                 $stmt->close();
             }
         }
@@ -53,4 +53,3 @@ class Login {
         return true;
     }
 }
-?>
