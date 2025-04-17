@@ -321,6 +321,9 @@ include 'layouts/empty_header.php';
             </div>
         </div>
     </section>
+    <div class="remarks">
+        OBSERVACIONES:
+    </div>
     <p class="text-center my-4" style="color: #777;">LA MEJOR FORMA DE COMPRAR UN CARRO USADO</p>
     <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
         <div class="d-flex gap-2">
@@ -375,7 +378,7 @@ include 'layouts/empty_header.php';
         </div>
     </section>
     <div class="remarks">
-        OBSERVACIONES: <br> <?php echo $peritaje['observaciones'] ?>
+        OBSERVACIONES:
     </div>
     <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
         <div class="d-flex gap-2">
@@ -469,6 +472,9 @@ include 'layouts/empty_header.php';
             </div>
         </div>
     </section>
+    <div class="remarks">
+        OBSERVACIONES: <br> <?php echo $peritaje['observaciones_llantas'] ?>
+    </div>
     <p class="text-center my-4" style="color: #777;">LA MEJOR FORMA DE COMPRAR UN CARRO USADO</p>
     <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
         <div class="d-flex gap-2">

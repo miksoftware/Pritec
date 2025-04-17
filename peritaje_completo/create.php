@@ -56,10 +56,10 @@ try {
         nivel_aceite_direccion_hidraulica, nivel_liquido_embrague, nivel_aceite_motor, funcionamiento_aa, 
         soporte_caja_velocidades, fijacion_fotografica_1, fijacion_fotografica_2, fijacion_fotografica_3, 
         fijacion_fotografica_4, observaciones, observaciones2, email, kilometraje, codigo_fasecolda,
-        valor_fasecolda, valor_sugerido, valor_accesorios
+        valor_fasecolda, valor_sugerido, valor_accesorios, observaciones_llantas
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
         ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
-        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($query);
 
@@ -143,6 +143,7 @@ try {
         $_POST['valor_fasecolda'] ?? null,
         $_POST['valor_sugerido'] ?? null,
         $_POST['valor_accesorios'] ?? null,
+        $_POST['observaciones_llantas'] ?? null,
     ];
 
     // Crear cadena de tipos para bind_param

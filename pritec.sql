@@ -169,6 +169,7 @@ CREATE TABLE IF NOT EXISTS `peritaje_completo` (
   `estado` int DEFAULT '1',
   `observaciones` text COLLATE utf8mb4_unicode_ci,
   `observaciones2` text COLLATE utf8mb4_unicode_ci,
+  `observaciones_llantas` text COLLATE utf8mb4_unicode_ci,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `kilometraje` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `codigo_fasecolda` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,

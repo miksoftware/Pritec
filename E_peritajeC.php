@@ -277,6 +277,12 @@ $fields = [
                             <label class="form-label">Porcentaje posterior derecha</label>
                             <input type="number" class="form-control" name="llanta_posterior_derecha" value="<?php echo $peritaje['llanta_posterior_derecha']; ?>">
                         </div>
+                        <div class="col-12 mb-3">
+                            <label for="observaciones_llantas" class="form-label">Observaciones</label>
+                            <textarea id="observaciones_llantas" class="form-control" name="observaciones_llantas"
+                                      value="<?php echo $peritaje['observaciones_llantas']; ?>"
+                                      rows="3"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
