@@ -212,6 +212,10 @@ include '../layouts/empty_header.php';
                     <div class="yellow-background label">Dirección</div>
                     <div class="input">&nbsp;</div>
                 </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label">Correo</div>
+                    <div class="input">&nbsp;</div>
+                </div>
             </div>
         </div>
     </section>

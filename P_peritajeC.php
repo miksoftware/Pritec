@@ -254,6 +254,12 @@ include 'layouts/empty_header.php';
                         <?php echo $peritaje['direccion'] ?>
                     </div>
                 </div>
+                <div class="d-flex gap-2">
+                    <div class="yellow-background label">Correo</div>
+                    <div class="input">
+                        <?php echo $peritaje['email'] ?>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

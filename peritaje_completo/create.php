@@ -55,10 +55,10 @@ try {
         viscosidad_aceite_motor, nivel_refrigerante_motor, nivel_liquido_frenos, nivel_agua_limpiavidrios, 
         nivel_aceite_direccion_hidraulica, nivel_liquido_embrague, nivel_aceite_motor, funcionamiento_aa, 
         soporte_caja_velocidades, fijacion_fotografica_1, fijacion_fotografica_2, fijacion_fotografica_3, 
-        fijacion_fotografica_4, observaciones, observaciones2
+        fijacion_fotografica_4, observaciones, observaciones2, email
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
         ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
-        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($query);
 
@@ -135,7 +135,8 @@ try {
         $uploaded_files['fijacion_fotografica_3'] ?? null,
         $uploaded_files['fijacion_fotografica_4'] ?? null,
         $_POST['observaciones'] ?? null,
-        $_POST['observaciones2'] ?? null
+        $_POST['observaciones2'] ?? null,
+        $_POST['email'] ?? null
     ];
 
     // Crear cadena de tipos para bind_param

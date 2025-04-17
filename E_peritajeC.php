@@ -163,6 +163,10 @@ $fields = [
                             <label class="form-label">Dirección</label>
                             <input type="text" class="form-control" name="direccion" value="<?php echo $peritaje['direccion']; ?>">
                         </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Correo</label>
+                            <input type="email" id="email" class="form-control" name="email" value="<?php echo $peritaje['email']; ?>">
+                        </div>
                     </div>
                 </div>
             </div>
