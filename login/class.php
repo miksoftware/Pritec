@@ -28,7 +28,6 @@ class Login {
                 session_start();
                 $_SESSION['id_usuario'] = $datos['id'];
                 $_SESSION['usuario'] = $datos['usuario'];
-                $_SESSION['rol'] = $datos['rol'];
                 return true;
             } else {
                 return false;
