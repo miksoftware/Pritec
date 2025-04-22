@@ -20,7 +20,7 @@ try {
     // Validación y subida de imágenes
     $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
     $uploaded_files = [];
-    for ($i = 1; $i <= 4; $i++) {
+    for ($i = 1; $i <= 6; $i++) {
         $file_key = "fijacion_fotografica_$i";
         if (isset($_FILES[$file_key]) && $_FILES[$file_key]['error'] === UPLOAD_ERR_OK) {
             $file_ext = strtolower(pathinfo($_FILES[$file_key]['name'], PATHINFO_EXTENSION));
@@ -55,11 +55,11 @@ try {
         viscosidad_aceite_motor, nivel_refrigerante_motor, nivel_liquido_frenos, nivel_agua_limpiavidrios, 
         nivel_aceite_direccion_hidraulica, nivel_liquido_embrague, nivel_aceite_motor, funcionamiento_aa, 
         soporte_caja_velocidades, fijacion_fotografica_1, fijacion_fotografica_2, fijacion_fotografica_3, 
-        fijacion_fotografica_4, observaciones, observaciones2, email, kilometraje, codigo_fasecolda,
+        fijacion_fotografica_4, fijacion_fotografica_5,fijacion_fotografica_6,observaciones, observaciones2, email, kilometraje, codigo_fasecolda,
         valor_fasecolda, valor_sugerido, valor_accesorios, observaciones_llantas
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
         ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
-        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($query);
 
@@ -135,6 +135,8 @@ try {
         $uploaded_files['fijacion_fotografica_2'] ?? null,
         $uploaded_files['fijacion_fotografica_3'] ?? null,
         $uploaded_files['fijacion_fotografica_4'] ?? null,
+        $uploaded_files['fijacion_fotografica_5'] ?? null,
+        $uploaded_files['fijacion_fotografica_6'] ?? null,
         $_POST['observaciones'] ?? null,
         $_POST['observaciones2'] ?? null,
         $_POST['email'] ?? null,

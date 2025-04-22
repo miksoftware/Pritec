@@ -336,7 +336,7 @@ $fields = [
                 <div class="card-header">Fijación fotográfica</div>
                 <div class="card-body">
                     <div class="row">
-                        <?php for ($i = 1; $i <= 4; $i++): ?>
+                        <?php for ($i = 1; $i <= 6; $i++): ?>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Fotografía <?php echo $i; ?></label>
                                 <?php $field = "fijacion_fotografica_".$i; ?>

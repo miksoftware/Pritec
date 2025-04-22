@@ -164,6 +164,8 @@ CREATE TABLE IF NOT EXISTS `peritaje_completo` (
   `fijacion_fotografica_2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fijacion_fotografica_3` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fijacion_fotografica_4` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fijacion_fotografica_5` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fijacion_fotografica_6` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `fecha_actualizacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `estado` int DEFAULT '1',

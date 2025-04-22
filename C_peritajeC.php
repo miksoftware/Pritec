@@ -311,6 +311,14 @@ $fields = [
                             <label class="form-label">Fotografía 4</label>
                             <input type="file" class="form-control" name="fijacion_fotografica_4" accept="image/*">
                         </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Fotografía 5</label>
+                            <input type="file" class="form-control" name="fijacion_fotografica_5" accept="image/*">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Fotografía 6</label>
+                            <input type="file" class="form-control" name="fijacion_fotografica_6" accept="image/*">
+                        </div>
                     </div>
                 </div>
             </div>

@@ -766,7 +766,7 @@ include 'layouts/empty_header.php';
                 <p>Observación y clasificación de las características del automotor de acuerdo al punto 1</p>
                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); gap: 8px;">
                     <?php
-                    for ($i = 0; $i < 4; $i++) {
+                    for ($i = 0; $i < 6; $i++) {
                         $name = 'fijacion_fotografica_' . $i + 1;
                         $url = $peritaje[$name];
                         if ($url) {
