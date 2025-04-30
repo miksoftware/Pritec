@@ -4,6 +4,24 @@ require_once 'Enums/SeguroEnum.php';
 require_once 'Enums/ImprontaEnum.php';
 include 'layouts/header.php';
 
+// Definir los tipos de vehículos
+$tiposVehiculos = [
+    'COUPE - 3 PUERTAS',
+    'HATCHBACK - 5 PUERTAS',
+    'MICROBUS',
+    'CAMIONETA WAGON- 5 PUERTAS',
+    'CONVERTIBLE',
+    'CAMIONETA DOBLE CABINA',
+    'CAMIONETA CABINA SENCILLA PLATON',
+    'COOPER',
+    'MULTIPROPOSITO - PASAJEROS',
+    'MULTIPROPOSITOS- CARGA',
+    'SEDAN NOTCHBACK 4 PUERTAS',
+    'CAMPERO 3 PUERTAS',
+    'AUTOMOVIL – STATION WAGON',
+    'NO APLICA'
+];
+
 $fields = [
     'estado_cauchos_suspension' => 'Estado cauchos suspensión',
     'estado_tanque_catalizador_gases' => 'Estado tanque catalizador gases',
@@ -138,9 +156,19 @@ $fields = [
 
             <!-- Datos del Vehículo -->
             <div class="card">
-                <div class="card-header">Datos del Vehículo</div>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Datos del Vehículo</span>
+                    <button type="button" class="btn btn-info btn-sm" id="cambiarTipoVehiculo">
+                        <i class="fas fa-edit"></i> Cambiar Tipo de Vehículo
+                    </button>
+                </div>
                 <div class="card-body">
                     <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Tipo de Vehículo <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="tipo_vehiculo_display" readonly>
+                            <input type="hidden" class="form-control" name="tipo_vehiculo" id="tipo_vehiculo_input" required>
+                        </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Placa <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="placa" required>
@@ -217,6 +245,140 @@ $fields = [
                 </div>
             </div>
 
+            <div class="card">
+                <div class="card-header">Inspección Visual Externa (Carrocería)</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="tablaInspeccionVisual">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Descripción de Pieza</th>
+                                    <th>Concepto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="fila-inspeccion">
+                                    <td>
+                                        <input type="text" class="form-control" name="descripcion_pieza[]" placeholder="Ej: Parachoques delantero">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="concepto_pieza[]" placeholder="Ej: Buen estado, rayado, etc.">
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-danger btn-sm eliminar-fila">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-12 mb-3">
+                            <button type="button" class="btn btn-success btn-sm" id="agregarFilaInspeccion">
+                                <i class="fas fa-plus"></i> Agregar elemento
+                            </button>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="observaciones_inspeccion" class="form-label">Observaciones generales</label>
+                            <textarea id="observaciones_inspeccion" class="form-control" name="observaciones_inspeccion" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Inspección Visual Interna (Estructura) -->
+            <div class="card">
+                <div class="card-header">Inspección Visual Interna (Estructura)</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="tablaInspeccionEstructura">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Descripción de Pieza</th>
+                                    <th>Concepto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="fila-estructura">
+                                    <td>
+                                        <input type="text" class="form-control" name="descripcion_pieza_estructura[]" placeholder="Ej: Tablero central">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="concepto_pieza_estructura[]" placeholder="Ej: Buen estado, deteriorado, etc.">
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-danger btn-sm eliminar-fila-estructura">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-12 mb-3">
+                            <button type="button" class="btn btn-success btn-sm" id="agregarFilaEstructura">
+                                <i class="fas fa-plus"></i> Agregar elemento
+                            </button>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="observaciones_estructura" class="form-label">Observaciones generales</label>
+                            <textarea id="observaciones_estructura" class="form-control" name="observaciones_estructura" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Inspección Visual (Chasis) -->
+            <div class="card">
+                <div class="card-header">Inspección Visual (Chasis)</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="tablaInspeccionChasis">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Descripción de Pieza</th>
+                                    <th>Concepto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="fila-chasis">
+                                    <td>
+                                        <input type="text" class="form-control" name="descripcion_pieza_chasis[]" placeholder="Ej: Larguero derecho">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="concepto_pieza_chasis[]" placeholder="Ej: Original, intervenido, etc.">
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-danger btn-sm eliminar-fila-chasis">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-12 mb-3">
+                            <button type="button" class="btn btn-success btn-sm" id="agregarFilaChasis">
+                                <i class="fas fa-plus"></i> Agregar elemento
+                            </button>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="observaciones_chasis" class="form-label">Observaciones generales</label>
+                            <textarea id="observaciones_chasis" class="form-control" name="observaciones_chasis" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Llantas -->
             <div class="card">
                 <div class="card-header">Llantas</div>
@@ -266,7 +428,7 @@ $fields = [
                             <label class="form-label">Porcentaje posterior derecho</label>
                             <input type="number" class="form-control" name="amortiguador_posterior_derecho">
                         </div>
-                        
+
                         <div class="col-12 mb-3">
                             <label class="form-label">Observaciones</label>
                             <textarea class="form-control" name="observaciones2" rows="3"></textarea>
@@ -275,6 +437,30 @@ $fields = [
                 </div>
             </div>
             
+            <div class="card">
+                <div class="card-header">Batería</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Prueba de batería (%)</label>
+                            <input type="number" class="form-control" name="prueba_bateria" min="0" max="100">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Prueba de arranque (%)</label>
+                            <input type="number" class="form-control" name="prueba_arranque" min="0" max="100">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Carga de batería (%)</label>
+                            <input type="number" class="form-control" name="carga_bateria" min="0" max="100">
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="observaciones_bateria" class="form-label">Observaciones</label>
+                            <textarea id="observaciones_bateria" class="form-control" name="observaciones_bateria" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Estado/Documentos Selects -->
             <div class="card">
                 <div class="card-header">Estados</div>
@@ -290,7 +476,7 @@ $fields = [
                 </div>
             </div>
 
-            <!-- Estado/Documentos Selects -->
+            <!-- fotografias -->
             <div class="card">
                 <div class="card-header">Fijación fotográfica</div>
                 <div class="card-body">
@@ -353,6 +539,237 @@ $fields = [
             }
         });
     </script>
+
+    <script>
+        // Funcionalidad para Inspección Visual Externa
+        document.addEventListener('DOMContentLoaded', function() {
+            // Agregar fila de inspección
+            document.getElementById('agregarFilaInspeccion').addEventListener('click', function() {
+                const tbody = document.querySelector('#tablaInspeccionVisual tbody');
+                const nuevaFila = document.createElement('tr');
+                nuevaFila.className = 'fila-inspeccion';
+                nuevaFila.innerHTML = `
+                    <td>
+                        <input type="text" class="form-control" name="descripcion_pieza[]" placeholder="Ej: Parachoques delantero">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="concepto_pieza[]" placeholder="Ej: Buen estado, rayado, etc.">
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-danger btn-sm eliminar-fila">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(nuevaFila);
+
+                // Agregar evento al nuevo botón de eliminar
+                nuevaFila.querySelector('.eliminar-fila').addEventListener('click', function() {
+                    eliminarFila(this);
+                });
+            });
+
+            // Inicializar botones de eliminar existentes
+            document.querySelectorAll('.eliminar-fila').forEach(function(boton) {
+                boton.addEventListener('click', function() {
+                    eliminarFila(this);
+                });
+            });
+
+            // Función para eliminar fila
+            function eliminarFila(boton) {
+                const fila = boton.closest('tr');
+                // Verificar que no sea la única fila
+                const todasLasFilas = document.querySelectorAll('.fila-inspeccion');
+                if (todasLasFilas.length > 1) {
+                    fila.remove();
+                } else {
+                    Swal.fire({
+                        title: 'Información',
+                        text: 'Debe haber al menos una fila en la tabla',
+                        icon: 'info',
+                        confirmButtonText: 'Entendido'
+                    });
+                }
+            }
+        });
+    </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // === FUNCIONALIDAD PARA ESTRUCTURA ===
+        // Agregar fila de inspección de estructura
+        document.getElementById('agregarFilaEstructura').addEventListener('click', function() {
+            const tbody = document.querySelector('#tablaInspeccionEstructura tbody');
+            const nuevaFila = document.createElement('tr');
+            nuevaFila.className = 'fila-estructura';
+            nuevaFila.innerHTML = `
+                <td>
+                    <input type="text" class="form-control" name="descripcion_pieza_estructura[]" placeholder="Ej: Tablero central">
+                </td>
+                <td>
+                    <input type="text" class="form-control" name="concepto_pieza_estructura[]" placeholder="Ej: Buen estado, deteriorado, etc.">
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-danger btn-sm eliminar-fila-estructura">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(nuevaFila);
+            
+            // Agregar evento al nuevo botón de eliminar
+            nuevaFila.querySelector('.eliminar-fila-estructura').addEventListener('click', function() {
+                eliminarFilaEstructura(this);
+            });
+        });
+        
+        // Inicializar botones de eliminar existentes para estructura
+        document.querySelectorAll('.eliminar-fila-estructura').forEach(function(boton) {
+            boton.addEventListener('click', function() {
+                eliminarFilaEstructura(this);
+            });
+        });
+        
+        // Función para eliminar fila de estructura
+        function eliminarFilaEstructura(boton) {
+            const fila = boton.closest('tr');
+            const todasLasFilas = document.querySelectorAll('.fila-estructura');
+            if (todasLasFilas.length > 1) {
+                fila.remove();
+            } else {
+                Swal.fire({
+                    title: 'Información',
+                    text: 'Debe haber al menos una fila en la tabla',
+                    icon: 'info',
+                    confirmButtonText: 'Entendido'
+                });
+            }
+        }
+        
+        // === FUNCIONALIDAD PARA CHASIS ===
+        // Agregar fila de inspección de chasis
+        document.getElementById('agregarFilaChasis').addEventListener('click', function() {
+            const tbody = document.querySelector('#tablaInspeccionChasis tbody');
+            const nuevaFila = document.createElement('tr');
+            nuevaFila.className = 'fila-chasis';
+            nuevaFila.innerHTML = `
+                <td>
+                    <input type="text" class="form-control" name="descripcion_pieza_chasis[]" placeholder="Ej: Larguero derecho">
+                </td>
+                <td>
+                    <input type="text" class="form-control" name="concepto_pieza_chasis[]" placeholder="Ej: Original, intervenido, etc.">
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-danger btn-sm eliminar-fila-chasis">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(nuevaFila);
+            
+            // Agregar evento al nuevo botón de eliminar
+            nuevaFila.querySelector('.eliminar-fila-chasis').addEventListener('click', function() {
+                eliminarFilaChasis(this);
+            });
+        });
+        
+        // Inicializar botones de eliminar existentes para chasis
+        document.querySelectorAll('.eliminar-fila-chasis').forEach(function(boton) {
+            boton.addEventListener('click', function() {
+                eliminarFilaChasis(this);
+            });
+        });
+        
+        // Función para eliminar fila de chasis
+        function eliminarFilaChasis(boton) {
+            const fila = boton.closest('tr');
+            const todasLasFilas = document.querySelectorAll('.fila-chasis');
+            if (todasLasFilas.length > 1) {
+                fila.remove();
+            } else {
+                Swal.fire({
+                    title: 'Información',
+                    text: 'Debe haber al menos una fila en la tabla',
+                    icon: 'info',
+                    confirmButtonText: 'Entendido'
+                });
+            }
+        }
+    });
+</script>
 </div>
+
+<!-- Modal para seleccionar tipo de vehículo -->
+<div class="modal fade" id="tipoVehiculoModal" tabindex="-1" aria-labelledby="tipoVehiculoModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tipoVehiculoModalLabel">Seleccione el Tipo de Vehículo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeModalBtn"></button>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    <?php foreach ($tiposVehiculos as $tipo): ?>
+                        <button type="button" class="list-group-item list-group-item-action tipo-vehiculo-item">
+                            <?php echo $tipo; ?>
+                        </button>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Referencia al modal
+        const tipoVehiculoModal = new bootstrap.Modal(document.getElementById('tipoVehiculoModal'));
+        const displayEl = document.getElementById('tipo_vehiculo_display');
+        const inputEl = document.getElementById('tipo_vehiculo_input');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        // Mostrar el modal automáticamente al cargar la página si no hay tipo seleccionado
+        if (!inputEl.value) {
+            tipoVehiculoModal.show();
+            // Ocultar el botón de cerrar para forzar la selección inicial
+            closeModalBtn.style.display = 'none';
+        }
+
+        // Botón para cambiar tipo de vehículo
+        document.getElementById('cambiarTipoVehiculo').addEventListener('click', function() {
+            // Mostrar el botón de cerrar cuando se abre manualmente
+            closeModalBtn.style.display = 'block';
+            tipoVehiculoModal.show();
+        });
+
+        // Manejar la selección de un tipo de vehículo
+        document.querySelectorAll('.tipo-vehiculo-item').forEach(function(item) {
+            item.addEventListener('click', function() {
+                const tipoSeleccionado = this.textContent.trim();
+                displayEl.value = tipoSeleccionado;
+                inputEl.value = tipoSeleccionado;
+                tipoVehiculoModal.hide();
+            });
+        });
+
+        // Verificar si se seleccionó un tipo al intentar cerrar el modal
+        document.getElementById('tipoVehiculoModal').addEventListener('hide.bs.modal', function(event) {
+            // Si es la primera carga y no hay tipo seleccionado, prevenir el cierre
+            if (!inputEl.value && closeModalBtn.style.display === 'none') {
+                event.preventDefault();
+                Swal.fire({
+                    title: '¡Atención!',
+                    text: 'Debe seleccionar un tipo de vehículo para continuar',
+                    icon: 'warning',
+                    confirmButtonText: 'Entendido'
+                });
+            }
+        });
+    });
+</script>
 
 <?php include 'layouts/footer.php'; ?>
