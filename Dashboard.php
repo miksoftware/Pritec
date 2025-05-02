@@ -1,4 +1,59 @@
-<?php include 'layouts/header.php'; ?>
+<?php
+include 'layouts/header.php';
+require_once 'conexion/conexion.php';
+
+// Obtener datos reales
+$conexion = new Conexion();
+$conn = $conexion->conectar();
+
+// Peritajes Básicos
+$resBasico = $conn->query("SELECT COUNT(*) as total FROM peritaje_basico");
+$basicos = $resBasico ? $resBasico->fetch_assoc()['total'] : 0;
+
+// Peritajes Completos
+$resCompleto = $conn->query("SELECT COUNT(*) as total FROM peritaje_completo");
+$completos = $resCompleto ? $resCompleto->fetch_assoc()['total'] : 0;
+
+// Peritajes este mes (básicos + completos)
+$mesActual = date('m');
+$anioActual = date('Y');
+$resMes = $conn->query("SELECT 
+    (SELECT COUNT(*) FROM peritaje_basico WHERE MONTH(fecha) = $mesActual AND YEAR(fecha) = $anioActual) +
+    (SELECT COUNT(*) FROM peritaje_completo WHERE MONTH(fecha) = $mesActual AND YEAR(fecha) = $anioActual) as total
+");
+$esteMes = $resMes ? $resMes->fetch_assoc()['total'] : 0;
+
+// Obtener peritajes por mes del año actual (básicos + completos)
+$meses = [
+    1 => 'Enero',
+    2 => 'Febrero',
+    3 => 'Marzo',
+    4 => 'Abril',
+    5 => 'Mayo',
+    6 => 'Junio',
+    7 => 'Julio',
+    8 => 'Agosto',
+    9 => 'Septiembre',
+    10 => 'Octubre',
+    11 => 'Noviembre',
+    12 => 'Diciembre'
+];
+$peritajesPorMes = [];
+$totalAnual = 0;
+for ($m = 1; $m <= 12; $m++) {
+    $sql = "
+        (SELECT COUNT(*) FROM peritaje_basico WHERE MONTH(fecha) = $m AND YEAR(fecha) = $anioActual)
+        +
+        (SELECT COUNT(*) FROM peritaje_completo WHERE MONTH(fecha) = $m AND YEAR(fecha) = $anioActual) as total
+    ";
+    $res = $conn->query("SELECT $sql");
+    $total = $res ? intval($res->fetch_assoc()['total']) : 0;
+    $peritajesPorMes[$m] = $total;
+    $totalAnual += $total;
+}
+
+$conn->close();
+?>
 
 <div id="content" class="container-fluid py-4">
     <!-- Encabezado del Dashboard -->
@@ -17,14 +72,14 @@
     <!-- Tarjetas de resumen -->
     <div class="row">
         <!-- Peritajes Básicos -->
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Peritajes Básicos</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">52</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $basicos; ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-car fa-2x text-gray-300"></i>
@@ -35,14 +90,14 @@
         </div>
 
         <!-- Peritajes Completos -->
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4">
             <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Peritajes Completos</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">38</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $completos; ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -53,7 +108,7 @@
         </div>
 
         <!-- Peritajes Este Mes -->
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4">
             <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -62,36 +117,18 @@
                                 Peritajes (Este Mes)</div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">12</div>
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $esteMes; ?></div>
                                 </div>
                                 <div class="col">
                                     <div class="progress progress-sm mr-2">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%"
-                                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: <?php echo ($completos + $basicos) > 0 ? intval(($esteMes / max(1, $completos + $basicos)) * 100) : 0; ?>%"
+                                            aria-valuenow="<?php echo $esteMes; ?>" aria-valuemin="0" aria-valuemax="<?php echo $completos + $basicos; ?>"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Peritajes Pendientes -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Pendientes</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
@@ -105,40 +142,10 @@
         <div class="col-lg-8 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Resumen de Peritajes</h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Opciones:</div>
-                            <a class="dropdown-item" href="#">Ver Detalles</a>
-                            <a class="dropdown-item" href="#">Exportar Datos</a>
-                        </div>
-                    </div>
+                    <h6 class="m-0 font-weight-bold text-primary">Resumen de Peritajes por Mes</h6>
                 </div>
                 <div class="card-body">
-                    <div class="chart-area">
-                        <div class="d-flex justify-content-center align-items-center" style="height:300px">
-                            <div class="text-center">
-                                <i class="fas fa-chart-line fa-3x mb-3 text-gray-300"></i>
-                                <p class="mb-0">Estadísticas por mes</p>
-                                <div class="mt-3">
-                                    <div class="progress mb-2">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">Enero</div>
-                                    </div>
-                                    <div class="progress mb-2">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">Febrero</div>
-                                    </div>
-                                    <div class="progress mb-2">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Marzo</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <canvas id="peritajesMesChart" height="100"></canvas>
                 </div>
             </div>
         </div>
@@ -198,30 +205,41 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>ABC123</td>
-                                    <td>Básico</td>
-                                    <td>15/03/2025</td>
-                                    <td><span class="badge bg-success">Completado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>XYZ987</td>
-                                    <td>Completo</td>
-                                    <td>14/03/2025</td>
-                                    <td><span class="badge bg-success">Completado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>DEF456</td>
-                                    <td>Básico</td>
-                                    <td>13/03/2025</td>
-                                    <td><span class="badge bg-warning">Pendiente</span></td>
-                                </tr>
-                                <tr>
-                                    <td>GHI789</td>
-                                    <td>Completo</td>
-                                    <td>10/03/2025</td>
-                                    <td><span class="badge bg-success">Completado</span></td>
-                                </tr>
+                                <?php
+                                // Nueva conexión para esta sección si $conn ya fue cerrado
+                                $conexionUltimos = new Conexion();
+                                $connUltimos = $conexionUltimos->conectar();
+
+                                // Traer los últimos 4 peritajes de ambas tablas
+                                $sql = "
+                                    SELECT placa, 'Básico' as tipo, fecha, 
+                                        IFNULL(estado, 'Completado') as estado
+                                    FROM peritaje_basico
+                                    UNION ALL
+                                    SELECT placa, 'Completo' as tipo, fecha, 
+                                        IFNULL(estado, 'Completado') as estado
+                                    FROM peritaje_completo
+                                    ORDER BY fecha DESC
+                                    LIMIT 4
+                                ";
+                                $resUltimos = $connUltimos->query($sql);
+                                if ($resUltimos && $resUltimos->num_rows > 0) {
+                                    while ($row = $resUltimos->fetch_assoc()) {
+                                        $badge = ($row['estado'] === 'Pendiente') ? 'bg-warning' : 'bg-success';
+                                        $estado = ($row['estado'] === 'Pendiente') ? 'Pendiente' : 'Completado';
+                                        $fecha = date('d/m/Y', strtotime($row['fecha']));
+                                        echo "<tr>
+                                            <td>{$row['placa']}</td>
+                                            <td>{$row['tipo']}</td>
+                                            <td>{$fecha}</td>
+                                            <td><span class='badge $badge'>$estado</span></td>
+                                        </tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='4' class='text-center'>No hay peritajes recientes</td></tr>";
+                                }
+                                $connUltimos->close();
+                                ?>
                             </tbody>
                         </table>
                     </div>
@@ -235,6 +253,7 @@
         </div>
 
         <!-- Actividad reciente -->
+        <!-- Actividad reciente -->
         <div class="col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -242,58 +261,57 @@
                 </div>
                 <div class="card-body">
                     <div class="timeline">
-                        <div class="timeline-item mb-3 pb-3 border-bottom">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0">
-                                    <div class="icon-circle bg-primary">
-                                        <i class="fas fa-file-alt text-white"></i>
+                        <?php
+                        // Conexión para actividad reciente
+                        $conexionActividad = new Conexion();
+                        $connActividad = $conexionActividad->conectar();
+
+                        // Traer las últimas 6 actividades de ambas tablas
+                        $sqlActividad = "
+                            SELECT placa, 'Básico' as tipo, fecha, 'creado' as accion
+                            FROM peritaje_basico
+                            UNION ALL
+                            SELECT placa, 'Completo' as tipo, fecha, 'creado' as accion
+                            FROM peritaje_completo
+                            ORDER BY fecha DESC
+                            LIMIT 6
+                        ";
+                        $resActividad = $connActividad->query($sqlActividad);
+
+                        $iconos = [
+                            'creado' => ['bg-primary', 'fa-file-alt', 'Se creó un nuevo peritaje'],
+                            'completado' => ['bg-success', 'fa-check', 'Se completó el peritaje'],
+                            'observacion' => ['bg-warning', 'fa-exclamation', 'Se registró una observación'],
+                            'actualizado' => ['bg-info', 'fa-sync', 'Se actualizó el peritaje'],
+                        ];
+
+                        if ($resActividad && $resActividad->num_rows > 0) {
+                            while ($row = $resActividad->fetch_assoc()) {
+                                // Puedes personalizar la lógica de acción según tus necesidades
+                                $accion = $row['accion'];
+                                $icon = $iconos[$accion][1] ?? 'fa-file-alt';
+                                $bg = $iconos[$accion][0] ?? 'bg-primary';
+                                $texto = $iconos[$accion][2] ?? 'Actividad';
+                                $fecha = date('d M, Y', strtotime($row['fecha']));
+                                echo "<div class='timeline-item mb-3 pb-3 border-bottom'>
+                                    <div class='d-flex'>
+                                        <div class='flex-shrink-0'>
+                                            <div class='icon-circle $bg'>
+                                                <i class='fas $icon text-white'></i>
+                                            </div>
+                                        </div>
+                                        <div class='flex-grow-1 ms-3'>
+                                            <div class='small text-gray-500'>$fecha</div>
+                                            <span>$texto {$row['tipo']} para el vehículo {$row['placa']}</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <div class="small text-gray-500">16 Marzo, 2025</div>
-                                    <span>Se creó un nuevo peritaje básico para el vehículo ABC123</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item mb-3 pb-3 border-bottom">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0">
-                                    <div class="icon-circle bg-success">
-                                        <i class="fas fa-check text-white"></i>
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <div class="small text-gray-500">15 Marzo, 2025</div>
-                                    <span>Se completó el peritaje completo para el vehículo XYZ987</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item mb-3 pb-3 border-bottom">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0">
-                                    <div class="icon-circle bg-warning">
-                                        <i class="fas fa-exclamation text-white"></i>
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <div class="small text-gray-500">14 Marzo, 2025</div>
-                                    <span>Se registró una observación para el vehículo DEF456</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0">
-                                    <div class="icon-circle bg-info">
-                                        <i class="fas fa-sync text-white"></i>
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <div class="small text-gray-500">13 Marzo, 2025</div>
-                                    <span>Se actualizó el peritaje básico del vehículo GHI789</span>
-                                </div>
-                            </div>
-                        </div>
+                                </div>";
+                            }
+                        } else {
+                            echo "<div class='text-center text-muted'>Sin actividad reciente</div>";
+                        }
+                        $connActividad->close();
+                        ?>
                     </div>
                 </div>
             </div>
@@ -302,21 +320,97 @@
 </div>
 
 <style>
-.border-left-primary { border-left: 4px solid #4e73df; }
-.border-left-success { border-left: 4px solid #1cc88a; }
-.border-left-info { border-left: 4px solid #36b9cc; }
-.border-left-warning { border-left: 4px solid #f6c23e; }
-.icon-circle {
-    height: 40px;
-    width: 40px;
-    border-radius: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.timeline-item {
-    position: relative;
-}
+    .border-left-primary {
+        border-left: 4px solid #4e73df;
+    }
+
+    .border-left-success {
+        border-left: 4px solid #1cc88a;
+    }
+
+    .border-left-info {
+        border-left: 4px solid #36b9cc;
+    }
+
+    .border-left-warning {
+        border-left: 4px solid #f6c23e;
+    }
+
+    .icon-circle {
+        height: 40px;
+        width: 40px;
+        border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .timeline-item {
+        position: relative;
+    }
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('peritajesMesChart').getContext('2d');
+    const peritajesMesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: <?php echo json_encode(array_values($meses)); ?>,
+            datasets: [{
+                label: 'Peritajes',
+                data: <?php echo json_encode(array_values($peritajesPorMes)); ?>,
+                backgroundColor: [
+                    'rgba(78, 115, 223, 0.7)',
+                    'rgba(28, 200, 138, 0.7)',
+                    'rgba(54, 185, 204, 0.7)',
+                    'rgba(246, 194, 62, 0.7)',
+                    'rgba(231, 74, 59, 0.7)',
+                    'rgba(133, 135, 150, 0.7)',
+                    'rgba(78, 115, 223, 0.7)',
+                    'rgba(28, 200, 138, 0.7)',
+                    'rgba(54, 185, 204, 0.7)',
+                    'rgba(246, 194, 62, 0.7)',
+                    'rgba(231, 74, 59, 0.7)',
+                    'rgba(133, 135, 150, 0.7)'
+                ],
+                borderRadius: 8,
+                borderSkipped: false,
+                maxBarThickness: 30
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return ' ' + context.parsed.y + ' peritajes';
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+</script>
 
 <?php include 'layouts/footer.php'; ?>
