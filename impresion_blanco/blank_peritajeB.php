@@ -3,32 +3,55 @@ session_start();
 
 // Verificar sesión
 if (!isset($_SESSION['usuario'])) {
-    header('Location: login.php');
+    header('Location: ../login.php');
     exit;
 }
 
-// Validar y obtener ID
-$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-if ($id === 0) {
-    $_SESSION['error'] = "ID de peritaje no válido";
-    header('Location: L_peritajeB.php');
-    exit;
-}
+require_once dirname(__FILE__) . '/../Enums/SeguroEnum.php';
+require_once dirname(__FILE__) . '/../Enums/ImprontaEnum.php';
 
-require_once dirname(__FILE__) . '/peritaje_basico/Getid.php';
-require_once dirname(__FILE__) . '/Enums/SeguroEnum.php';
-require_once dirname(__FILE__) . '/Enums/ImprontaEnum.php';
+// Crear objeto peritaje vacío con todos los campos necesarios
+$peritaje = [
+    'fecha' => date('Y-m-d'),
+    'no_servicio' => '',
+    'servicio_para' => '',
+    'convenio' => '',
+    'placa' => '',
+    'clase' => '',
+    'marca' => '',
+    'linea' => '',
+    'cilindraje' => '',
+    'servicio' => '',
+    'modelo' => '',
+    'color' => '',
+    'no_chasis' => '',
+    'no_motor' => '',
+    'no_serie' => '',
+    'tipo_carroceria' => '',
+    'organismo_transito' => '',
+    'nombre_apellidos' => '',
+    'identificacion' => '',
+    'telefono' => '',
+    'direccion' => '',
+    'tiene_prenda' => false,
+    'tiene_limitacion' => false,
+    'debe_impuestos' => false,
+    'tiene_comparendos' => false,
+    'vehiculo_rematado' => false,
+    'revision_tecnicomecanica' => '',
+    'rtm_fecha_vencimiento' => '',
+    'soat' => '',
+    'soat_fecha_vencimiento' => '',
+    'observaciones' => '',
+    'licencia_frente' => '',
+    'licencia_atras' => '',
+    'estado_motor' => '',
+    'estado_chasis' => '',
+    'estado_serial' => '',
+    'observaciones_finales' => ''
+];
 
-// Obtener datos del peritaje
-$peritaje = obtenerPeritajePorId($id);
-
-if (!$peritaje) {
-    $_SESSION['error'] = "Peritaje no encontrado";
-    header('Location: L_peritajeB.php');
-    exit;
-}
-
-include 'layouts/empty_header.php';
+include '../layouts/empty_header.php';
 ?>
 
 <style>
@@ -45,9 +68,12 @@ include 'layouts/empty_header.php';
         --gray-color: #d8d8d8;
     }
 
-    /* main {
-        background: url('img/pritec.png') no-repeat bottom;
-    } */
+    @media print {
+        body {
+            background: url('../img/background.png') repeat-y center center;
+            background-size: contain;
+        }
+    }
 
     p {
         margin: 0;
@@ -92,6 +118,7 @@ include 'layouts/empty_header.php';
         border: 1px var(--main-color) solid;
         border-radius: 8px;
         text-wrap: nowrap;
+        min-height: 28px;
     }
 
     .remarks {
@@ -296,7 +323,7 @@ include 'layouts/empty_header.php';
     <h4 class="text-center">SALA TÉCNICA EN AUTOMOTORES</h4>
     <h6 class="text-center mb-3">CERTIFICACIÓN TÉCNICA EN IDENTIFICACIÓN DE AUTOMOTORES</h6>
     <header class="d-flex gap-4 mb-4 align-items-center">
-        <img src="img/pritec.png" style="width: 150px;object-fit: contain;" />
+        <img src="../img/pritec.png" style="width: 150px;object-fit: contain;" />
         <div class="me-5">
             <p>Dirección: Carrera 16 No. 18-197 Barrio Tenerife</p>
             <p>Teléfono: 3132049245-3158928492</p>
@@ -304,10 +331,10 @@ include 'layouts/empty_header.php';
             <p>Peritos e inspecciones técnicas vehiculares Neiva-Huila</p>
         </div>
         <div>
-            <p>Fecha: <?php echo $peritaje['fecha'] ?></p>
-            <p>No. Servicio: <?php echo $peritaje['no_servicio'] ?></p>
-            <p>Servicio para: <?php echo $peritaje['servicio_para'] ?></p>
-            <p>Convenio: <?php echo $peritaje['convenio'] ?></p>
+            <p>Fecha: __________________</p>
+            <p>No. Servicio: __________________</p>
+            <p>Servicio para: __________________</p>
+            <p>Convenio: __________________</p>
         </div>
     </header>
     <section class="d-flex gap-5">
@@ -316,106 +343,74 @@ include 'layouts/empty_header.php';
             <div class="d-flex flex-column gap-2">
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">Clase</div>
-                    <div class="input">
-                        <?php echo $peritaje['clase'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">Marca</div>
-                    <div class="input">
-                        <?php echo $peritaje['marca'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">Línea</div>
-                    <div class="input">
-                        <?php echo $peritaje['linea'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">Cilindraje</div>
-                    <div class="input">
-                        <?php echo $peritaje['cilindraje'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">Servicio</div>
-                    <div class="input">
-                        <?php echo $peritaje['servicio'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">Modelo</div>
-                    <div class="input">
-                        <?php echo $peritaje['modelo'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">Color</div>
-                    <div class="input">
-                        <?php echo $peritaje['color'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">No. de chasis</div>
-                    <div class="input">
-                        <?php echo $peritaje['no_chasis'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">No. de motor</div>
-                    <div class="input">
-                        <?php echo $peritaje['no_motor'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">No. de serie</div>
-                    <div class="input">
-                        <?php echo $peritaje['no_serie'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">Tipo de carrocería</div>
-                    <div class="input">
-                        <?php echo $peritaje['tipo_carroceria'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">Organismo de tránsito</div>
-                    <div class="input">
-                        <?php echo $peritaje['organismo_transito'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
             </div>
             <div class="yellow-background sub-title">ESTADO/DOCUMENTOS</div>
         </div>
         <div class="w-50 me-4">
-            <div class="plate"><?php echo $peritaje['placa'] ?></div>
+            <div class="plate">_______</div>
             <div class="yellow-background sub-title">DATOS DEL SOLICITANTE</div>
             <div class="d-flex flex-column gap-2">
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">Nombres y apellidos</div>
-                    <div class="input">
-                        <?php echo $peritaje['nombre_apellidos'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">Identificación</div>
-                    <div class="input">
-                        <?php echo $peritaje['identificacion'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">Teléfono</div>
-                    <div class="input">
-                        <?php echo $peritaje['telefono'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="yellow-background label">Dirección</div>
-                    <div class="input">
-                        <?php echo $peritaje['direccion'] ?>
-                    </div>
+                    <div class="input"></div>
                 </div>
                 <div class="yellow-background sub-title mt-2 mb-1">ESTADO/DOCUMENTOS</div>
                 <div class="d-flex justify-content-between">
@@ -429,63 +424,28 @@ include 'layouts/empty_header.php';
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="input">Tiene prenda/Gravamen</div>
-                    <?php
-                    if ($peritaje['tiene_prenda']) {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem;">X</div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem;"></div>';
-                    } else {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem"></div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem">X</div>';
-                    }
-                    ?>
+                    <div class="input" style="width: fit-content; padding: .2rem 1.2rem;"></div>
+                    <div class="input" style="width: fit-content; padding: .2rem 1.2rem;"></div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="input">Tiene limitación</div>
-                    <?php
-                    if ($peritaje['tiene_limitacion']) {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem;">X</div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem;"></div>';
-                    } else {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem"></div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem">X</div>';
-                    }
-                    ?>
+                    <div class="input" style="width: fit-content; padding: .2rem 1.2rem;"></div>
+                    <div class="input" style="width: fit-content; padding: .2rem 1.2rem;"></div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="input">Debe impuestos</div>
-                    <?php
-                    if ($peritaje['debe_impuestos']) {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem;">X</div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem;"></div>';
-                    } else {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem"></div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem">X</div>';
-                    }
-                    ?>
+                    <div class="input" style="width: fit-content; padding: .2rem 1.2rem;"></div>
+                    <div class="input" style="width: fit-content; padding: .2rem 1.2rem;"></div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="input">Tiene comparendos al tránsito</div>
-                    <?php
-                    if ($peritaje['tiene_comparendos']) {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem;">X</div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem;"></div>';
-                    } else {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem"></div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem">X</div>';
-                    }
-                    ?>
+                    <div class="input" style="width: fit-content; padding: .2rem 1.2rem;"></div>
+                    <div class="input" style="width: fit-content; padding: .2rem 1.2rem;"></div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="input">Vehículo rematado</div>
-                    <?php
-                    if ($peritaje['vehiculo_rematado']) {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem;">X</div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem;"></div>';
-                    } else {
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.5rem"></div>';
-                        echo '<div class="input" style="width: fit-content; padding: .2rem 1.2rem">X</div>';
-                    }
-                    ?>
+                    <div class="input" style="width: fit-content; padding: .2rem 1.2rem;"></div>
+                    <div class="input" style="width: fit-content; padding: .2rem 1.2rem;"></div>
                 </div>
             </div>
         </div>
@@ -501,46 +461,29 @@ include 'layouts/empty_header.php';
         <div class="d-flex gap-2 text-center">
             <div class="input" style="width: 20%;">Revisión Tecnicomecánica</div>
             <?php foreach (SeguroEnum::getOptions() as $value => $label): ?>
-                <div class="input" style="width: 20%;">
-                    <?php
-                    if (strtolower($value) == $peritaje['revision_tecnicomecanica']) {
-                        echo 'X';
-                    }
-                    ?>
-                </div>
+                <div class="input" style="width: 20%;"></div>
             <?php endforeach; ?>
-            <div class="input" style="width: 20%;">
-                <?php echo $peritaje['rtm_fecha_vencimiento'] ?>
-            </div>
+            <div class="input" style="width: 20%;"></div>
         </div>
         <div class="d-flex gap-2 text-center">
             <div class="input" style="width: 20%;">SOAT</div>
             <?php foreach (SeguroEnum::getOptions() as $value => $label): ?>
-                <div class="input" style="width: 20%;">
-                    <?php
-                    if (strtolower($value) == $peritaje['soat']) {
-                        echo 'X';
-                    }
-                    ?>
-                </div>
+                <div class="input" style="width: 20%;"></div>
             <?php endforeach; ?>
-            <div class="input" style="width: 20%;">
-                <?php echo $peritaje['soat_fecha_vencimiento'] ?>
-            </div>
+            <div class="input" style="width: 20%;"></div>
         </div>
         <div class="remarks">
-            OBSERVACIONES: <br> <?php echo $peritaje['observaciones'] ?>
+            OBSERVACIONES: <br>
         </div>
         <p class="text-center" style="font-size: .9rem;">
             La información de identificación del rodante se obtiene del contenido de la licencia de
             tránsito, una vez se realice la validación con el RUNT.
         </p>
-        <div class="remarks" style="height: 120px;">
-            <img height="110" style="object-fit: contain;" src="uploads/<?php echo $peritaje['licencia_frente'] ?>" />
-            <img height="110" style="object-fit: contain;" src="uploads/<?php echo $peritaje['licencia_atras'] ?>" />
+        <div class="remarks" style="height: 200px;">
+            <!-- Espacio para imágenes de licencia -->
         </div>
     </section>
-    <section class="mx-2" style="margin-top: 10rem;">
+    <section class="mx-2">
         <div class="yellow-background sub-title ms-0">CONCEPTOS E IMPRONTAS</div>
         <p>
             Este concepto técnico está basado en la inspección de los sistemas de identificación,
@@ -552,80 +495,36 @@ include 'layouts/empty_header.php';
         <div class="parent my-4 mx-2">
             <div class="div1 yellow-background">Información</div>
             <div class="div2 yellow-background">Improntas</div>
-            <div class="div3 yellow-background">
-                <?php echo $peritaje['no_motor'] ?>
-            </div>
+            <div class="div3 yellow-background"></div>
             <div class="div4 yellow-background">Original</div>
-            <div class="div5 yellow-background">
-                <?php if ($peritaje['estado_motor'] == strtolower(ImprontaEnum::ORIGINAL)) {
-                    echo 'X';
-                } ?>
-            </div>
+            <div class="div5 yellow-background"></div>
             <div class="div6 input w-100"></div>
             <div class="div7 yellow-background">Regrabado</div>
-            <div class="div8 yellow-background">
-                <?php if ($peritaje['estado_motor'] == strtolower(ImprontaEnum::REGRABADO)) {
-                    echo 'X';
-                } ?>
-            </div>
+            <div class="div8 yellow-background"></div>
             <div class="div9 yellow-background">Grabado no original</div>
-            <div class="div10 yellow-background">
-                <?php if ($peritaje['estado_motor'] == strtolower(ImprontaEnum::GRABADO_NO_ORIGINAL)) {
-                    echo 'X';
-                } ?>
-            </div>
+            <div class="div10 yellow-background"></div>
             <div class="div11 yellow-background">Información</div>
             <div class="div12 yellow-background">Improntas</div>
-            <div class="div17 yellow-background">
-                <?php echo $peritaje['no_chasis'] ?>
-            </div>
+            <div class="div17 yellow-background"></div>
             <div class="div18 yellow-background">Original</div>
-            <div class="div19 yellow-background">
-                <?php if ($peritaje['estado_chasis'] == strtolower(ImprontaEnum::ORIGINAL)) {
-                    echo 'X';
-                } ?>
-            </div>
+            <div class="div19 yellow-background"></div>
             <div class="div20 input w-100"></div>
             <div class="div21 yellow-background">Regrabado</div>
-            <div class="div22 yellow-background">
-                <?php if ($peritaje['estado_chasis'] == strtolower(ImprontaEnum::REGRABADO)) {
-                    echo 'X';
-                } ?>
-            </div>
+            <div class="div22 yellow-background"></div>
             <div class="div23 yellow-background">Grabado no original</div>
-            <div class="div24 yellow-background">
-                <?php if ($peritaje['estado_chasis'] == strtolower(ImprontaEnum::GRABADO_NO_ORIGINAL)) {
-                    echo 'X';
-                } ?>
-            </div>
+            <div class="div24 yellow-background"></div>
             <div class="div25 yellow-background">Información</div>
             <div class="div26 yellow-background">Improntas</div>
-            <div class="div27 yellow-background">
-                <?php echo $peritaje['no_serie'] ?>
-            </div>
+            <div class="div27 yellow-background"></div>
             <div class="div28 yellow-background">Original</div>
-            <div class="div29 yellow-background">
-                <?php if ($peritaje['estado_serial'] == strtolower(ImprontaEnum::ORIGINAL)) {
-                    echo 'X';
-                } ?>
-            </div>
+            <div class="div29 yellow-background"></div>
             <div class="div30 input w-100"></div>
             <div class="div31 yellow-background">Regrabado</div>
-            <div class="div32 yellow-background">
-                <?php if ($peritaje['estado_serial'] == strtolower(ImprontaEnum::REGRABADO)) {
-                    echo 'X';
-                } ?>
-            </div>
+            <div class="div32 yellow-background"></div>
             <div class="div33 yellow-background">Grabado no original</div>
-            <div class="div34 yellow-background">
-                <?php if ($peritaje['estado_serial'] == strtolower(ImprontaEnum::GRABADO_NO_ORIGINAL)) {
-                    echo 'X';
-                } ?>
-            </div>
+            <div class="div34 yellow-background"></div>
         </div>
-        <div class="remarks" style="height: 120px;">
-            <?php echo $peritaje['observaciones_finales'] ?>
-        </div>
+        <div class="remarks" style="height: 120px;"></div>
 
         <div class="d-flex my-4" style="gap: 40px">
             <div>
@@ -657,4 +556,4 @@ include 'layouts/empty_header.php';
     })
 </script>
 
-<?php include 'layouts/empty_footer.php'; ?>
+<?php include '../layouts/empty_footer.php'; ?>
