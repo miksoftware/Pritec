@@ -22,46 +22,16 @@ $tiposVehiculos = [
     'NO APLICA'
 ];
 
-$fields = [
-    'estado_cauchos_suspension' => 'Estado cauchos suspensión',
-    'estado_tanque_catalizador_gases' => 'Estado tanque catalizador gases',
-    'estado_tubo_exhosto' => 'Estado tubo de escape',
-    'estado_radiador' => 'Estado radiador',
-    'estado_externo_bateria' => 'Estado externo batería',
-    'estado_cables_instalacion_alta' => 'Estado cables instalación alta',
-    'estado_tanque_silenciador' => 'Estado tanque silenciador',
-    'estado_filtro_aire' => 'Estado filtro aire',
-    'estado_brazos_direccion_rotulas' => 'Estado brazos dirección rótulas',
-    'fugas_tanque_combustible' => 'Fugas tanque combustible',
-    'fugas_aceite_amortiguadores' => 'Fugas aceite amortiguadores',
-    'fugas_liquido_bomba_embrague' => 'Fugas líquido bomba embrague',
-    'fuga_aceite_direccion_hidraulica' => 'Fuga aceite dirección hidráulica',
-    'fuga_liquido_frenos' => 'Fuga líquido frenos',
-    'fuga_aceite_caja_transmision' => 'Fuga aceite caja transmisión',
-    'fuga_aceite_caja_velocidades' => 'Fuga aceite caja velocidades',
-    'tension_correas' => 'Tensión correas',
-    'estado_correas' => 'Estado correas',
-    'estado_mangueras_radiador' => 'Estado mangueras radiador',
-    'estado_tuberias_frenos' => 'Estado tuberías frenos',
-    'estado_guardapolvo_caja_direccion' => 'Estado guardapolvo caja dirección',
-    'estado_protectores_inferiores' => 'Estado protectores inferiores',
-    'estado_carter' => 'Estado cárter',
-    'fuga_aceite_motor' => 'Fuga aceite motor',
-    'estado_guardapolvos_ejes' => 'Estado guardapolvos ejes',
-    'estado_tijeras' => 'Estado tijeras',
-    'estado_radiador_aa' => 'Estado radiador A/A',
-    'estado_soporte_motor' => 'Estado soporte motor',
-    'estado_carcasa_caja_velocidades' => 'Estado carcasa caja velocidades',
-    'viscosidad_aceite_motor' => 'Viscosidad aceite motor',
-    'nivel_refrigerante_motor' => 'Nivel refrigerante motor',
-    'nivel_liquido_frenos' => 'Nivel líquido frenos',
-    'nivel_agua_limpiavidrios' => 'Nivel agua limpiavidrios',
-    'nivel_aceite_direccion_hidraulica' => 'Nivel aceite dirección hidráulica',
-    'nivel_liquido_embrague' => 'Nivel líquido embrague',
-    'nivel_aceite_motor' => 'Nivel aceite motor',
-    'funcionamiento_aa' => 'Funcionamiento A/A',
-    'soporte_caja_velocidades' => 'Soporte caja velocidades'
-];
+$selectEstados = '
+<select class="form-select" name="%s" required>
+    <option value="">Seleccione</option>
+    <option value="Bueno">Bueno</option>
+    <option value="Regular">Regular</option>
+    <option value="Malo">Malo</option>
+    <option value="Malo">No Aplica</option>
+</select>
+';
+
 ?>
 
 <div id="content">
@@ -245,6 +215,7 @@ $fields = [
                 </div>
             </div>
 
+            <!-- Inspección Visual (carroceria) -->
             <div class="card">
                 <div class="card-header">Inspección Visual Externa (Carrocería)</div>
                 <div class="card-body">
@@ -288,7 +259,7 @@ $fields = [
                     </div>
                 </div>
             </div>
-            
+
             <!-- Inspección Visual Interna (Estructura) -->
             <div class="card">
                 <div class="card-header">Inspección Visual Interna (Estructura)</div>
@@ -319,7 +290,7 @@ $fields = [
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <div class="row mt-3">
                         <div class="col-md-12 mb-3">
                             <button type="button" class="btn btn-success btn-sm" id="agregarFilaEstructura">
@@ -333,7 +304,7 @@ $fields = [
                     </div>
                 </div>
             </div>
-            
+
             <!-- Inspección Visual (Chasis) -->
             <div class="card">
                 <div class="card-header">Inspección Visual (Chasis)</div>
@@ -364,7 +335,7 @@ $fields = [
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <div class="row mt-3">
                         <div class="col-md-12 mb-3">
                             <button type="button" class="btn btn-success btn-sm" id="agregarFilaChasis">
@@ -408,6 +379,7 @@ $fields = [
                 </div>
             </div>
 
+            <!-- Amortiguadores -->
             <div class="card">
                 <div class="card-header">Amortiguadores</div>
                 <div class="card-body">
@@ -436,7 +408,8 @@ $fields = [
                     </div>
                 </div>
             </div>
-            
+
+            <!-- Bateria -->
             <div class="card">
                 <div class="card-header">Batería</div>
                 <div class="card-body">
@@ -461,21 +434,134 @@ $fields = [
                 </div>
             </div>
 
-            <!-- Estado/Documentos Selects -->
+            <!-- Motor y sistemas -->
+
             <div class="card">
-                <div class="card-header">Estados</div>
+                <div class="card-header">Motor y Sistemas</div>
                 <div class="card-body">
-                    <div class="row">
-                        <?php foreach ($fields as $name => $label): ?>
-                            <div class="col-12 col-md-4 mb-3">
-                                <label class="form-label"><?php echo $label; ?> <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="<?php echo $name; ?>" required />
-                            </div>
-                        <?php endforeach; ?>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="40%">Sistema</th>
+                                    <th width="30%">Estado</th>
+                                    <th width="30%">Respuesta</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $sistemas = [
+                                    ['Arranque', 'estado_arranque', 'respuesta_arranque'],
+                                    ['Radiador', 'estado_radiador', 'respuesta_radiador'],
+                                    ['Carter motor', 'estado_carter_motor', 'respuesta_carter_motor'],
+                                    ['Carter caja', 'estado_carter_caja', 'respuesta_carter_caja'],
+                                    ['Caja de velocidades', 'estado_caja_velocidades', 'respuesta_caja_velocidades'],
+                                    ['Soporte caja', 'estado_soporte_caja', 'respuesta_soporte_caja'],
+                                    ['Soporte Motor', 'estado_soporte_motor', 'respuesta_soporte_motor'],
+                                    ['Estado mangueras radiador', 'estado_mangueras_radiador', 'respuesta_mangueras_radiador'],
+                                    ['Estado correas', 'estado_correas', 'respuesta_correas'],
+                                    ['Tensión correas', 'tension_correas', 'respuesta_tension_correas'],
+                                    ['Estado filtro de aire', 'estado_filtro_aire', 'respuesta_filtro_aire'],
+                                    ['Estado externo baterías', 'estado_externo_bateria', 'respuesta_externo_bateria'],
+                                    // Suspensión y dirección
+                                    ['Pastilla freno', 'estado_pastilla_freno', 'respuesta_pastilla_freno'],
+                                    ['Discos freno', 'estado_discos_freno', 'respuesta_discos_freno'],
+                                    ['Punta eje', 'estado_punta_eje', 'respuesta_punta_eje'],
+                                    ['Axiales', 'estado_axiales', 'respuesta_axiales'],
+                                    ['Terminales', 'estado_terminales', 'respuesta_terminales'],
+                                    ['Rotulas', 'estado_rotulas', 'respuesta_rotulas'],
+                                    ['Tijeras', 'estado_tijeras', 'respuesta_tijeras'],
+                                    ['Caja dirección', 'estado_caja_direccion', 'respuesta_caja_direccion'],
+                                    ['Rodamientos', 'estado_rodamientos', 'respuesta_rodamientos'],
+                                    ['Cardan', 'estado_cardan', 'respuesta_cardan'],
+                                    ['Crucetas', 'estado_crucetas', 'respuesta_crucetas'],
+                                    // Interior del automotor
+                                    ['Calefacción', 'estado_calefaccion', 'respuesta_calefaccion'],
+                                    ['Aire acondicionado', 'estado_aire_acondicionado', 'respuesta_aire_acondicionado'],
+                                    ['Cinturones', 'estado_cinturones', 'respuesta_cinturones'],
+                                    ['Tapicería asientos', 'estado_tapiceria_asientos', 'respuesta_tapiceria_asientos'],
+                                    ['Tapicería techo', 'estado_tapiceria_techo', 'respuesta_tapiceria_techo'],
+                                    ['Millaret', 'estado_millaret', 'respuesta_millaret'],
+                                    ['Alfombra', 'estado_alfombra', 'respuesta_alfombra'],
+                                    ['Chapas', 'estado_chapas', 'respuesta_chapas'],
+                                ];
+                                $seccion = [
+                                    12 => 'Sistema de Frenos y Suspensión',
+                                    23 => 'Interior del Automotor'
+                                ];
+                                foreach ($sistemas as $i => $sis) {
+                                    if (isset($seccion[$i])) {
+                                        echo '<tr><td class="table-secondary fw-bold" colspan="3">' . $seccion[$i] . '</td></tr>';
+                                    }
+                                    echo '<tr>';
+                                    echo '<td>' . $sis[0] . '</td>';
+                                    echo '<td>' . sprintf($selectEstados, $sis[1]) . '</td>';
+                                    echo '<td><input type="text" class="form-control" name="' . $sis[2] . '" placeholder="Observación"></td>';
+                                    echo '</tr>';
+                                }
+                                ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
+            <!-- fugas -->
+
+            <div class="card">
+                <div class="card-header">Fugas y Niveles</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="50%">Sistema</th>
+                                    <th width="50%">Respuesta</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $fugas = [
+                                    ['Fuga aceite motor', 'respuesta_fuga_aceite_motor'],
+                                    ['Fuga aceite caja de velocidades', 'respuesta_fuga_aceite_caja_velocidades'],
+                                    ['Fuga aceite caja de transmisión', 'respuesta_fuga_aceite_caja_transmision'],
+                                    ['Fuga líquido de frenos', 'respuesta_fuga_liquido_frenos'],
+                                    ['Fuga aceite dirección hidraulica', 'respuesta_fuga_aceite_direccion_hidraulica'],
+                                    ['Fuga liquido bomba embrague', 'respuesta_fuga_liquido_bomba_embrague'],
+                                    ['Fuga tanque de combustible', 'respuesta_fuga_tanque_combustible'],
+                                    ['Estado tanque silenciador', 'respuesta_estado_tanque_silenciador'],
+                                    ['Estado tubo exhosto', 'respuesta_estado_tubo_exhosto'],
+                                    ['Estado tanque catalizador de gases', 'respuesta_estado_tanque_catalizador_gases'],
+                                    ['Estado guardapolvo caja dirección', 'respuesta_estado_guardapolvo_caja_direccion'],
+                                    ['Estado tuberia frenos', 'respuesta_estado_tuberia_frenos'],
+                                    ['Viscosidad aceite motor', 'respuesta_viscosidad_aceite_motor'],
+                                    ['Nivel refrigerante motor', 'respuesta_nivel_refrigerante_motor'],
+                                    ['Nivel liquido de frenos', 'respuesta_nivel_liquido_frenos'],
+                                    ['Nivel agua limpiavidrios', 'respuesta_nivel_agua_limpiavidrios'],
+                                    ['Nivel aceite dirección hidraulica', 'respuesta_nivel_aceite_direccion_hidraulica'],
+                                    ['Nivel liquido embrague', 'respuesta_nivel_liquido_embrague'],
+                                    ['Nivel aceite motor', 'respuesta_nivel_aceite_motor'],
+                                ];
+                                foreach ($fugas as $fuga) {
+                                    echo '<tr>';
+                                    echo '<td>' . $fuga[0] . '</td>';
+                                    echo '<td><input type="text" class="form-control" name="' . $fuga[1] . '" placeholder="Observación"></td>';
+                                    echo '</tr>';
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Prueba ruta</label>
+                        <textarea class="form-control" name="prueba_ruta" rows="2" placeholder="Describa la prueba de ruta"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Observaciones</label>
+                        <textarea class="form-control" name="observaciones_fugas" rows="3" placeholder="Observaciones generales de fugas y niveles"></textarea>
+                    </div>
+                </div>
+            </div>
             <!-- fotografias -->
             <div class="card">
                 <div class="card-header">Fijación fotográfica</div>
@@ -595,15 +681,15 @@ $fields = [
         });
     </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // === FUNCIONALIDAD PARA ESTRUCTURA ===
-        // Agregar fila de inspección de estructura
-        document.getElementById('agregarFilaEstructura').addEventListener('click', function() {
-            const tbody = document.querySelector('#tablaInspeccionEstructura tbody');
-            const nuevaFila = document.createElement('tr');
-            nuevaFila.className = 'fila-estructura';
-            nuevaFila.innerHTML = `
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // === FUNCIONALIDAD PARA ESTRUCTURA ===
+            // Agregar fila de inspección de estructura
+            document.getElementById('agregarFilaEstructura').addEventListener('click', function() {
+                const tbody = document.querySelector('#tablaInspeccionEstructura tbody');
+                const nuevaFila = document.createElement('tr');
+                nuevaFila.className = 'fila-estructura';
+                nuevaFila.innerHTML = `
                 <td>
                     <input type="text" class="form-control" name="descripcion_pieza_estructura[]" placeholder="Ej: Tablero central">
                 </td>
@@ -616,44 +702,44 @@ $fields = [
                     </button>
                 </td>
             `;
-            tbody.appendChild(nuevaFila);
-            
-            // Agregar evento al nuevo botón de eliminar
-            nuevaFila.querySelector('.eliminar-fila-estructura').addEventListener('click', function() {
-                eliminarFilaEstructura(this);
-            });
-        });
-        
-        // Inicializar botones de eliminar existentes para estructura
-        document.querySelectorAll('.eliminar-fila-estructura').forEach(function(boton) {
-            boton.addEventListener('click', function() {
-                eliminarFilaEstructura(this);
-            });
-        });
-        
-        // Función para eliminar fila de estructura
-        function eliminarFilaEstructura(boton) {
-            const fila = boton.closest('tr');
-            const todasLasFilas = document.querySelectorAll('.fila-estructura');
-            if (todasLasFilas.length > 1) {
-                fila.remove();
-            } else {
-                Swal.fire({
-                    title: 'Información',
-                    text: 'Debe haber al menos una fila en la tabla',
-                    icon: 'info',
-                    confirmButtonText: 'Entendido'
+                tbody.appendChild(nuevaFila);
+
+                // Agregar evento al nuevo botón de eliminar
+                nuevaFila.querySelector('.eliminar-fila-estructura').addEventListener('click', function() {
+                    eliminarFilaEstructura(this);
                 });
+            });
+
+            // Inicializar botones de eliminar existentes para estructura
+            document.querySelectorAll('.eliminar-fila-estructura').forEach(function(boton) {
+                boton.addEventListener('click', function() {
+                    eliminarFilaEstructura(this);
+                });
+            });
+
+            // Función para eliminar fila de estructura
+            function eliminarFilaEstructura(boton) {
+                const fila = boton.closest('tr');
+                const todasLasFilas = document.querySelectorAll('.fila-estructura');
+                if (todasLasFilas.length > 1) {
+                    fila.remove();
+                } else {
+                    Swal.fire({
+                        title: 'Información',
+                        text: 'Debe haber al menos una fila en la tabla',
+                        icon: 'info',
+                        confirmButtonText: 'Entendido'
+                    });
+                }
             }
-        }
-        
-        // === FUNCIONALIDAD PARA CHASIS ===
-        // Agregar fila de inspección de chasis
-        document.getElementById('agregarFilaChasis').addEventListener('click', function() {
-            const tbody = document.querySelector('#tablaInspeccionChasis tbody');
-            const nuevaFila = document.createElement('tr');
-            nuevaFila.className = 'fila-chasis';
-            nuevaFila.innerHTML = `
+
+            // === FUNCIONALIDAD PARA CHASIS ===
+            // Agregar fila de inspección de chasis
+            document.getElementById('agregarFilaChasis').addEventListener('click', function() {
+                const tbody = document.querySelector('#tablaInspeccionChasis tbody');
+                const nuevaFila = document.createElement('tr');
+                nuevaFila.className = 'fila-chasis';
+                nuevaFila.innerHTML = `
                 <td>
                     <input type="text" class="form-control" name="descripcion_pieza_chasis[]" placeholder="Ej: Larguero derecho">
                 </td>
@@ -666,38 +752,38 @@ $fields = [
                     </button>
                 </td>
             `;
-            tbody.appendChild(nuevaFila);
-            
-            // Agregar evento al nuevo botón de eliminar
-            nuevaFila.querySelector('.eliminar-fila-chasis').addEventListener('click', function() {
-                eliminarFilaChasis(this);
-            });
-        });
-        
-        // Inicializar botones de eliminar existentes para chasis
-        document.querySelectorAll('.eliminar-fila-chasis').forEach(function(boton) {
-            boton.addEventListener('click', function() {
-                eliminarFilaChasis(this);
-            });
-        });
-        
-        // Función para eliminar fila de chasis
-        function eliminarFilaChasis(boton) {
-            const fila = boton.closest('tr');
-            const todasLasFilas = document.querySelectorAll('.fila-chasis');
-            if (todasLasFilas.length > 1) {
-                fila.remove();
-            } else {
-                Swal.fire({
-                    title: 'Información',
-                    text: 'Debe haber al menos una fila en la tabla',
-                    icon: 'info',
-                    confirmButtonText: 'Entendido'
+                tbody.appendChild(nuevaFila);
+
+                // Agregar evento al nuevo botón de eliminar
+                nuevaFila.querySelector('.eliminar-fila-chasis').addEventListener('click', function() {
+                    eliminarFilaChasis(this);
                 });
+            });
+
+            // Inicializar botones de eliminar existentes para chasis
+            document.querySelectorAll('.eliminar-fila-chasis').forEach(function(boton) {
+                boton.addEventListener('click', function() {
+                    eliminarFilaChasis(this);
+                });
+            });
+
+            // Función para eliminar fila de chasis
+            function eliminarFilaChasis(boton) {
+                const fila = boton.closest('tr');
+                const todasLasFilas = document.querySelectorAll('.fila-chasis');
+                if (todasLasFilas.length > 1) {
+                    fila.remove();
+                } else {
+                    Swal.fire({
+                        title: 'Información',
+                        text: 'Debe haber al menos una fila en la tabla',
+                        icon: 'info',
+                        confirmButtonText: 'Entendido'
+                    });
+                }
             }
-        }
-    });
-</script>
+        });
+    </script>
 </div>
 
 <!-- Modal para seleccionar tipo de vehículo -->
