@@ -61,6 +61,8 @@ $stmt->close();
 
 $conn->close();
 
+$tipoChasis = $peritaje['tipo_chasis'];
+
 $tiposVehiculos = [
     'COUPE - 3 PUERTAS' => new TipoVehiculoUrl(
         'img/carroceria/coupe carroceria.png',
@@ -111,6 +113,31 @@ $tiposVehiculos = [
     ),
     'CAMPERO 3 PUERTAS',
     'AUTOMOVIL – STATION WAGON',
+    'MOTOCICLETA TURISMO' => new TipoVehiculoUrl(
+        'img/carroceria/Motocicleta Turismo.png',
+        'img/estructura/Motocicleta Turismo.png',
+        "img/chasis/$tipoChasis.png",
+    ),
+    'MOTOCICLETA DEPORTIVA' => new TipoVehiculoUrl(
+        'img/carroceria/motocicleta deportiva.png',
+        'img/estructura/motocicleta deportiva.png',
+        "img/chasis/$tipoChasis.png",
+    ),
+    'MOTOCICLETA SCOOTER' => new TipoVehiculoUrl(
+        'img/carroceria/Motocicleta scooter.png',
+        'img/estructura/Motocicleta scooter.png',
+        "img/chasis/$tipoChasis.png",
+    ),
+    'MOTOCICLETA: TIPO ENDURO' => new TipoVehiculoUrl(
+        'img/carroceria/Motocicleta tipo enduro.png',
+        'img/estructura/Motocicleta tipo enduro.png',
+        "img/chasis/$tipoChasis.png",
+    ),
+    'MOTOCICLETA CUSTOM' => new TipoVehiculoUrl(
+        'img/carroceria/MOTOCICLETA CUSTOM.png',
+        'img/estructura/MOTOCICLETA CUSTOM.png',
+        "img/chasis/$tipoChasis.png",
+    ),
     'NO APLICA'
 ];
 
@@ -379,52 +406,63 @@ include 'layouts/empty_header.php';
                 </div>
             </div>
         </section>
-        <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
-            <div class="d-flex gap-2">
-                <div class="yellow-background sub-title-vertical">INSPECCIÓN VISUAL EXTERNA</div>
-                <div class="d-flex flex-column w-100">
-                    <div class="yellow-background sub-title">VEHÍCULO: <?php echo $peritaje['tipo_vehiculo'] ?> </div>
-                    <p>Indique con un círculo en que parte del vehículo tiene alguna condición.</p>
-                    <div class="yellow-background sub-title ms-4 mb-0">CARROCERÍA</div>
-                    <div class="d-flex gap-2 w-100">
-                        <img src="<?php echo $tiposVehiculos[$peritaje['tipo_vehiculo']]->urlCarroceria ?>"
-                             class="w-50"
-                             style="object-fit: contain;">
-                        <div class="d-flex flex-column gap-2 w-50 h-100">
-                            <div class="d-flex gap-2">
-                                <div class="yellow-background label text-center" style="width: 70%">Descripción pieza</div>
-                                <div class="input text-center">
-                                    Concepto
-                                </div>
-                            </div>
-                            <?php if (!empty($carroceria)): ?>
-                                <?php foreach ($carroceria as $fila): ?>
-                                    <div class="d-flex gap-2">
-                                        <div class="yellow-background label" style="width: 70%">
-                                            <?php echo htmlspecialchars($fila['descripcion_pieza']); ?>
-                                        </div>
-                                        <div class="input"><?php echo htmlspecialchars($fila['concepto']); ?></div>
+        <?php if (!str_contains($peritaje['tipo_vehiculo'], "MOTOCICLETA")): ?>
+            <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
+                <div class="d-flex gap-2">
+                    <div class="yellow-background sub-title-vertical">INSPECCIÓN VISUAL EXTERNA</div>
+                    <div class="d-flex flex-column w-100">
+                        <div class="yellow-background sub-title">
+                            VEHÍCULO: <?php echo $peritaje['tipo_vehiculo'] ?> </div>
+                        <p>Indique con un círculo en que parte del vehículo tiene alguna condición.</p>
+                        <div class="yellow-background sub-title ms-4 mb-0">CARROCERÍA</div>
+                        <div class="d-flex gap-2 w-100">
+                            <img src="<?php echo $tiposVehiculos[$peritaje['tipo_vehiculo']]->urlCarroceria ?>"
+                                 class="w-50"
+                                 style="object-fit: contain;">
+                            <div class="d-flex flex-column gap-2 w-50 h-100">
+                                <div class="d-flex gap-2">
+                                    <div class="yellow-background label text-center" style="width: 70%">Descripción
+                                        pieza
                                     </div>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                                    <div class="input text-center">
+                                        Concepto
+                                    </div>
+                                </div>
+                                <?php if (!empty($carroceria)): ?>
+                                    <?php foreach ($carroceria as $fila): ?>
+                                        <div class="d-flex gap-2">
+                                            <div class="yellow-background label" style="width: 70%">
+                                                <?php echo htmlspecialchars($fila['descripcion_pieza']); ?>
+                                            </div>
+                                            <div class="input"><?php echo htmlspecialchars($fila['concepto']); ?></div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="remarks">
+                            OBSERVACIONES: <br/> <?php echo htmlspecialchars($peritaje['observaciones_inspeccion']) ?>
                         </div>
                     </div>
-                    <div class="remarks">
-                        OBSERVACIONES: <br/> <?php echo htmlspecialchars($peritaje['observaciones_inspeccion']) ?>
-                    </div>
                 </div>
-            </div>
-        </section>
-        <p class="text-center my-4" style="color: #777;">LA MEJOR FORMA DE COMPRAR UN CARRO USADO</p>
+            </section>
+            <p class="text-center my-4" style="color: #777;">LA MEJOR FORMA DE COMPRAR UN CARRO USADO</p>
+            }
+        <?php endif; ?>
         <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
             <div class="d-flex gap-2">
                 <div class="yellow-background sub-title-vertical">INSPECCIÓN VISUAL EXTERNA</div>
                 <div class="d-flex flex-column w-100">
+                    <?php if (str_contains($peritaje['tipo_vehiculo'], "MOTOCICLETA")): ?>
+                        <div class="yellow-background sub-title">
+                            VEHÍCULO: <?php echo $peritaje['tipo_vehiculo'] ?> </div>
+                    <?php endif; ?>
                     <p>Indique con un círculo en que parte del vehículo tiene alguna condición.</p>
                     <div>
                         <div class="yellow-background sub-title ms-4 mb-0">ESTRUCTURA</div>
                         <div class="d-flex gap-2 w-100">
-                            <img src="<?php echo $tiposVehiculos[$peritaje['tipo_vehiculo']]->urlEstructura ?>" class="w-50" height="200" style="object-fit: contain;">
+                            <img src="<?php echo $tiposVehiculos[$peritaje['tipo_vehiculo']]->urlEstructura ?>"
+                                 class="w-50" height="200" style="object-fit: contain;">
                             <div class="d-flex flex-column gap-2 w-50 h-100">
                                 <div class="d-flex gap-2">
                                     <div class="yellow-background label text-center" style="width: 70%">
@@ -450,10 +488,13 @@ include 'layouts/empty_header.php';
                     <div>
                         <div class="yellow-background sub-title ms-4 mb-0">CHASIS</div>
                         <div class="d-flex gap-2 w-100">
-                            <img src="<?php echo $tiposVehiculos[$peritaje['tipo_vehiculo']]->urlChasis ?>" class="w-50" height="200" style="object-fit: contain;">
+                            <img src="<?php echo $tiposVehiculos[$peritaje['tipo_vehiculo']]->urlChasis ?>" class="w-50"
+                                 height="200" style="object-fit: contain;">
                             <div class="d-flex flex-column gap-2 w-50 h-100">
                                 <div class="d-flex gap-2">
-                                    <div class="yellow-background label text-center" style="width: 70%">Descripción pieza</div>
+                                    <div class="yellow-background label text-center" style="width: 70%">Descripción
+                                        pieza
+                                    </div>
                                     <div class="input text-center">
                                         Concepto
                                     </div>
@@ -471,8 +512,8 @@ include 'layouts/empty_header.php';
                             </div>
                         </div>
                     </div>
-                    <div class="remarks">
-                        OBSERVACIONES:
+                    <div class="remarks" style="height: fit-content">
+                        OBSERVACIONES: <br/> <?php echo $peritaje['observaciones_estructura'] ?>
                     </div>
                 </div>
             </div>
@@ -482,7 +523,11 @@ include 'layouts/empty_header.php';
                 <div class="yellow-background sub-title-vertical">LLANTAS Y AMORTIGUADORES</div>
                 <div class="d-flex flex-column w-100">
                     <div class="d-flex gap-2 w-100">
-                        <img src="img/llantas.png" style="object-fit: contain;width: 30%;">
+                        <?php if (str_contains($peritaje['tipo_vehiculo'], "MOTOCICLETA")): ?>
+                            <img src="img/LLANTAS%20MOTO.png" style="object-fit: contain;width: 30%;">
+                        <?php else: ?>
+                            <img src="img/llantas.png" style="object-fit: contain;width: 30%;">
+                        <?php endif ?>
                         <div class="d-flex flex-column gap-2 h-100" style="width: 70%;">
                             <div class="d-flex gap-2">
                                 <div class="yellow-background label text-center">Ítem</div>
@@ -520,7 +565,11 @@ include 'layouts/empty_header.php';
                         </div>
                     </div>
                     <div class="d-flex gap-2 w-100">
-                        <img src="img/amortiguadores.png" style="object-fit: contain;width: 30%; height: 180px">
+                        <?php if (str_contains($peritaje['tipo_vehiculo'], "MOTOCICLETA")): ?>
+                            <img src="img/AMORTIGUADORES%20MOTO.png" style="object-fit: contain;width: 30%;">
+                        <?php else: ?>
+                            <img src="img/amortiguadores.png" style="object-fit: contain;width: 30%;">
+                        <?php endif ?>
                         <div class="d-flex flex-column gap-2 h-100" style="width: 70%;">
                             <div class="d-flex gap-2">
                                 <div class="yellow-background label text-center">Ítem</div>
@@ -528,28 +577,32 @@ include 'layouts/empty_header.php';
                                 <div class="yellow-background label text-center">Porcentaje</div>
                             </div>
                             <div class="d-flex gap-2">
-                                <div class="input text-center" style="width: 70%">Amortiguador anterior izquierdo</div>
+                                <div class="input text-center" style="width: 70%">Amortiguador anterior izquierdo
+                                </div>
                                 <div class="input text-center">B-R-M</div>
                                 <div class="input text-center">
                                     <?php echo $peritaje['amortiguador_anterior_izquierdo'] ?>
                                 </div>
                             </div>
                             <div class="d-flex gap-2">
-                                <div class="input text-center" style="width: 70%">Amortiguador anterior derecho</div>
+                                <div class="input text-center" style="width: 70%">Amortiguador anterior derecho
+                                </div>
                                 <div class="input text-center">B-R-M</div>
                                 <div class="input text-center">
                                     <?php echo $peritaje['amortiguador_anterior_derecho'] ?>
                                 </div>
                             </div>
                             <div class="d-flex gap-2">
-                                <div class="input text-center" style="width: 70%">Amortiguador posterior izquierdo</div>
+                                <div class="input text-center" style="width: 70%">Amortiguador posterior izquierdo
+                                </div>
                                 <div class="input text-center">B-R-M</div>
                                 <div class="input text-center">
                                     <?php echo $peritaje['amortiguador_posterior_izquierdo'] ?>
                                 </div>
                             </div>
                             <div class="d-flex gap-2">
-                                <div class="input text-center" style="width: 70%">Amortiguador posterior derecho</div>
+                                <div class="input text-center" style="width: 70%">Amortiguador posterior derecho
+                                </div>
                                 <div class="input text-center">B-R-M</div>
                                 <div class="input text-center">
                                     <?php echo $peritaje['amortiguador_posterior_derecho'] ?>

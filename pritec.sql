@@ -250,6 +250,7 @@ CREATE TABLE IF NOT EXISTS `peritaje_completo` (
   `respuesta_nivel_aceite_motor` text COLLATE utf8mb4_unicode_ci,
   `prueba_ruta` text COLLATE utf8mb4_unicode_ci,
   `observaciones_fugas` text COLLATE utf8mb4_unicode_ci,
+  `tipo_chasis` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
