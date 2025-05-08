@@ -411,7 +411,7 @@ include 'layouts/empty_header.php';
                 <div class="d-flex gap-2">
                     <div class="yellow-background sub-title-vertical">INSPECCIÓN VISUAL EXTERNA</div>
                     <div class="d-flex flex-column w-100">
-                        <div class="yellow-background sub-title">
+                        <div class="yellow-background sub-title w-100">
                             VEHÍCULO: <?php echo $peritaje['tipo_vehiculo'] ?> </div>
                         <p>Indique con un círculo en que parte del vehículo tiene alguna condición.</p>
                         <div class="yellow-background sub-title ms-4 mb-0">CARROCERÍA</div>
@@ -454,7 +454,7 @@ include 'layouts/empty_header.php';
                 <div class="yellow-background sub-title-vertical">INSPECCIÓN VISUAL EXTERNA</div>
                 <div class="d-flex flex-column w-100">
                     <?php if (str_contains($peritaje['tipo_vehiculo'], "MOTOCICLETA")): ?>
-                        <div class="yellow-background sub-title">
+                        <div class="yellow-background sub-title w-100">
                             VEHÍCULO: <?php echo $peritaje['tipo_vehiculo'] ?> </div>
                     <?php endif; ?>
                     <p>Indique con un círculo en que parte del vehículo tiene alguna condición.</p>
@@ -523,11 +523,14 @@ include 'layouts/empty_header.php';
                 <div class="yellow-background sub-title-vertical">LLANTAS Y AMORTIGUADORES</div>
                 <div class="d-flex flex-column w-100">
                     <div class="d-flex gap-2 w-100">
-                        <?php if (str_contains($peritaje['tipo_vehiculo'], "MOTOCICLETA")): ?>
-                            <img src="img/LLANTAS%20MOTO.png" style="object-fit: contain;width: 30%;">
-                        <?php else: ?>
-                            <img src="img/llantas.png" style="object-fit: contain;width: 30%;">
-                        <?php endif ?>
+                        <div class="d-flex flex-column gap-3" style="width: 30%">
+                            <div class="yellow-background label text-center w-100">LLANTAS</div>
+                            <?php if (str_contains($peritaje['tipo_vehiculo'], "MOTOCICLETA")): ?>
+                                <img src="img/LLANTAS%20MOTO.png" style="object-fit: contain">
+                            <?php else: ?>
+                                <img src="img/llantas.png" style="object-fit: contain;width: 30%;">
+                            <?php endif ?>
+                        </div>
                         <div class="d-flex flex-column gap-2 h-100" style="width: 70%;">
                             <div class="d-flex gap-2">
                                 <div class="yellow-background label text-center">Ítem</div>
@@ -565,11 +568,14 @@ include 'layouts/empty_header.php';
                         </div>
                     </div>
                     <div class="d-flex gap-2 w-100">
+                        <div class="d-flex flex-column gap-3" style="width: 30%">
+                            <div class="yellow-background label text-center w-100">AMORTIGUADORES</div>
                         <?php if (str_contains($peritaje['tipo_vehiculo'], "MOTOCICLETA")): ?>
-                            <img src="img/AMORTIGUADORES%20MOTO.png" style="object-fit: contain;width: 30%;">
+                            <img src="img/AMORTIGUADORES%20MOTO.png" style="object-fit: contain">
                         <?php else: ?>
                             <img src="img/amortiguadores.png" style="object-fit: contain;width: 30%;">
                         <?php endif ?>
+                        </div>
                         <div class="d-flex flex-column gap-2 h-100" style="width: 70%;">
                             <div class="d-flex gap-2">
                                 <div class="yellow-background label text-center">Ítem</div>
@@ -610,47 +616,39 @@ include 'layouts/empty_header.php';
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex gap-2 w-100">
-                        <div style="object-fit: contain;width: 30%;"></div>
-                        <div style="width: 70%;" class="d-flex justify-content-around">
-                            <span style="font-weight: bold;font-size: 1.2rem;-webkit-text-stroke: .4px var(--main-color);">RESULTADOS</span>
-                            <div style="width: 50%; padding: .2rem .5rem;border: 1px var(--main-color) solid;border-radius: 8px; background-color: #fef9cb">
-                                <?php echo $promedio ?>
-                            </div>
-                        </div>
+                    <div class="remarks" style="height: fit-content">
+                        OBSERVACIONES: <br> <?php echo $peritaje['observaciones_llantas'] ?>
                     </div>
                 </div>
             </div>
         </section>
-        <div class="remarks">
-            OBSERVACIONES: <br> <?php echo $peritaje['observaciones_llantas'] ?>
-        </div>
-        <p class="text-center my-4" style="color: #777;">LA MEJOR FORMA DE COMPRAR UN CARRO USADO</p>
         <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
-            <div class="d-flex gap-2">
-                <div class="yellow-background sub-title-vertical">PRUEBA DE OBSERVACIÓN Y DIAGNÓSTICO SCANNER</div>
+            <div class="d-flex flex-column gap-2">
+                <div class="yellow-background sub-title w-100">PRUEBA DE OBSERVACIÓN Y DIAGNÓSTICO SCANNER</div>
                 <div class="d-flex flex-column w-100">
                     <p>El scanner automotriz es una herramienta que se utiliza para diagnosticar las fallas registradas
                         en la computadora del vehículo. La computadora se encarga de regular las funciones del auto
                         a través de distintos sensores que monitorean y registran todos los errores con un código:</p>
+                    <?php echo $peritaje['prueba_escaner'] ?>
                 </div>
             </div>
         </section>
-        <div class="remarks">
-            OBSERVACIONES: <br> <?php echo $peritaje['observaciones2'] ?>
-        </div>
+        <p class="text-center my-4" style="color: #777;">LA MEJOR FORMA DE COMPRAR UN CARRO USADO</p>
 
         <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
             <div class="d-flex gap-2 w-100">
                 <div class="d-flex flex-column gap-2 w-50 h-100">
                     <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 70%;">ÍTEM</div>
-                        <div class="input text-center" style="width: 30%">
+                        <div class="yellow-background label" style="width: 50%;">SISTEMA</div>
+                        <div class="input text-center" style="width: 25%">
+                            ESTADO
+                        </div>
+                        <div class="input text-center" style="width: 25%">
                             RESPUESTA
                         </div>
                     </div>
                     <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 70%;" style="width: 70%;">Fuga aceite de
+                        <div class="yellow-background label" style="width: 70%;">Fuga aceite de
                             motor
                         </div>
                         <div class="input" style="width: 30%">

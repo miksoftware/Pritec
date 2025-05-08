@@ -91,7 +91,8 @@ try {
         'respuesta_nivel_aceite_motor',
         'prueba_ruta',
         'observaciones_fugas',
-        'tipo_chasis'
+        'tipo_chasis',
+        'prueba_escaner'
     ];
 
     $valores = [];

@@ -437,6 +437,18 @@ $selectEstados = '
                 </div>
             </div>
 
+            <div class="card">
+                <div class="card-header">PRUEBA DE OBSERVACIÓN Y DIAGNÓSTICO SCANNER</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Código</label>
+                            <input type="text" class="form-control" name="prueba_escaner">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Bateria -->
             <div class="card">
                 <div class="card-header">Batería</div>

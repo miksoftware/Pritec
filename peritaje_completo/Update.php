@@ -88,7 +88,9 @@ try {
         'respuesta_nivel_liquido_embrague',
         'respuesta_nivel_aceite_motor',
         'prueba_ruta',
-        'observaciones_fugas'
+        'observaciones_fugas',
+        'tipo_chasis',
+        'prueba_escaner'
     ];
 
     // Construir SET dinámico para el UPDATE

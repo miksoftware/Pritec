@@ -141,6 +141,7 @@ CREATE TABLE IF NOT EXISTS `peritaje_completo` (
   `amortiguador_anterior_derecho` int DEFAULT NULL,
   `amortiguador_posterior_izquierdo` int DEFAULT NULL,
   `amortiguador_posterior_derecho` int DEFAULT NULL,
+  `prueba_escaner` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `prueba_bateria` int DEFAULT NULL,
   `prueba_arranque` int DEFAULT NULL,
   `carga_bateria` int DEFAULT NULL,

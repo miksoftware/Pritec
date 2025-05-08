@@ -1,6 +1,6 @@
 <?php
 class Conexion {
-    private $host = 'localhost';
+    private $host = '127.0.0.1';
     private $usuario = 'root';
     private $password = '';
     private $database = 'pritec';

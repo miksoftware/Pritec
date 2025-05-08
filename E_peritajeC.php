@@ -74,6 +74,21 @@ $tiposVehiculos = [
     'SEDAN NOTCHBACK 4 PUERTAS',
     'CAMPERO 3 PUERTAS',
     'AUTOMOVIL – STATION WAGON',
+    'MOTOCICLETA TURISMO',
+    'MOTOCICLETA DEPORTIVA',
+    'MOTOCICLETA SCOOTER',
+    'MOTOCICLETA: TIPO ENDURO',
+    'MOTOCICLETA CUSTOM',
+    'NO APLICA'
+];
+
+$tiposChasis = [
+    'CUNA INTERRUMPIDA',
+    'MONO CUNA',
+    'MONO CUNA DESDOBLADO',
+    'DOBLE CUNA',
+    'DOBLE VIDA O PERIMETAL',
+    'MULTI-TUBULAR',
     'NO APLICA'
 ];
 
@@ -262,7 +277,7 @@ $tiposVehiculos = [
             </div>
 
             <!-- Inspección Visual (carroceria) -->
-            <div class="card">
+            <div class="card" id="cardCarroceria">
                 <div class="card-header">Inspección Visual Externa (Carrocería)</div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -391,6 +406,19 @@ $tiposVehiculos = [
             <div class="card">
                 <div class="card-header">Inspección Visual (Chasis)</div>
                 <div class="card-body">
+                    <div class="row d-none" id="rowTipoChasis">
+                        <div class="col-12 col-md-4 mb-3">
+                            <label for="tipo_chasis" class="form-label">Tipo de chasis</label>
+                            <select id="tipo_chasis" class="form-select" name="tipo_chasis">
+                                <option value="">-- Seleccione --</option>
+                                <?php foreach ($tiposChasis as $tipoChasis): ?>
+                                    <option value="<?php echo $tipoChasis ?>">
+                                        <?php echo $tipoChasis ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-bordered" id="tablaInspeccionChasis">
                             <thead class="table-light">
@@ -506,6 +534,18 @@ $tiposVehiculos = [
                         <div class="col-12 mb-3">
                             <label class="form-label">Observaciones</label>
                             <textarea class="form-control" name="observaciones2" rows="3"><?php echo $peritaje['observaciones2']; ?></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">PRUEBA DE OBSERVACIÓN Y DIAGNÓSTICO SCANNER</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Código</label>
+                            <input type="text" class="form-control" name="prueba_escaner">
                         </div>
                     </div>
                 </div>
@@ -782,6 +822,17 @@ $tiposVehiculos = [
                 displayEl.value = tipoSeleccionado;
                 inputEl.value = tipoSeleccionado;
                 tipoVehiculoModal.hide();
+
+                const rowChasisInput = document.getElementById('rowTipoChasis')
+                const cardCarroceria = document.getElementById('cardCarroceria')
+
+                if (tipoSeleccionado.includes('MOTOCICLETA')){
+                    rowChasisInput.classList.remove('d-none')
+                    cardCarroceria.classList.add('d-none')
+                } else {
+                    rowChasisInput.classList.add('d-none')
+                    cardCarroceria.classList.remove('d-none')
+                }
             });
         });
 
