@@ -153,7 +153,20 @@ $porcentajes = [
     $peritaje['amortiguador_posterior_derecho'],
 ];
 
-$promedio = array_sum($porcentajes) / count($porcentajes);
+function getStateByPercent(int $percent) : string
+{
+    if ($percent >= 0 && $percent <= 24){
+        return 'Peligroso';
+    } elseif ($percent >= 25 && $percent <= 49){
+        return 'Precaución';
+    } elseif ($percent >= 50 && $percent <= 74){
+        return 'Seguro';
+    } elseif ($percent >= 75 && $percent <= 100){
+        return 'Nuevo/a';
+    }
+
+    return '';
+}
 
 include 'layouts/empty_header.php';
 ?>
@@ -539,28 +552,36 @@ include 'layouts/empty_header.php';
                             </div>
                             <div class="d-flex gap-2">
                                 <div class="input text-center">Llanta anterior izquierda</div>
-                                <div class="input text-center">B-R-M</div>
+                                <div class="input text-center">
+                                    <?php echo getStateByPercent($peritaje['llanta_anterior_izquierda']) ?>
+                                </div>
                                 <div class="input text-center">
                                     <?php echo $peritaje['llanta_anterior_izquierda'] ?>
                                 </div>
                             </div>
                             <div class="d-flex gap-2">
                                 <div class="input text-center">Llanta anterior derecha</div>
-                                <div class="input text-center">B-R-M</div>
+                                <div class="input text-center">
+                                    <?php echo getStateByPercent($peritaje['llanta_anterior_derecha']) ?>
+                                </div>
                                 <div class="input text-center">
                                     <?php echo $peritaje['llanta_anterior_derecha'] ?>
                                 </div>
                             </div>
                             <div class="d-flex gap-2">
                                 <div class="input text-center">Llanta posterior izquierda</div>
-                                <div class="input text-center">B-R-M</div>
+                                <div class="input text-center">
+                                    <?php echo getStateByPercent($peritaje['llanta_posterior_izquierda']) ?>
+                                </div>
                                 <div class="input text-center">
                                     <?php echo $peritaje['llanta_posterior_izquierda'] ?>
                                 </div>
                             </div>
                             <div class="d-flex gap-2">
                                 <div class="input text-center">Llanta posterior derecha</div>
-                                <div class="input text-center">B-R-M</div>
+                                <div class="input text-center">
+                                    <?php echo getStateByPercent($peritaje['llanta_posterior_izquierda']) ?>
+                                </div>
                                 <div class="input text-center">
                                     <?php echo $peritaje['llanta_posterior_derecha'] ?>
                                 </div>
@@ -570,11 +591,11 @@ include 'layouts/empty_header.php';
                     <div class="d-flex gap-2 w-100">
                         <div class="d-flex flex-column gap-3" style="width: 30%">
                             <div class="yellow-background label text-center w-100">AMORTIGUADORES</div>
-                        <?php if (str_contains($peritaje['tipo_vehiculo'], "MOTOCICLETA")): ?>
-                            <img src="img/AMORTIGUADORES%20MOTO.png" style="object-fit: contain">
-                        <?php else: ?>
-                            <img src="img/amortiguadores.png" style="object-fit: contain;width: 30%;">
-                        <?php endif ?>
+                            <?php if (str_contains($peritaje['tipo_vehiculo'], "MOTOCICLETA")): ?>
+                                <img src="img/AMORTIGUADORES%20MOTO.png" style="object-fit: contain">
+                            <?php else: ?>
+                                <img src="img/amortiguadores.png" style="object-fit: contain;width: 30%;">
+                            <?php endif ?>
                         </div>
                         <div class="d-flex flex-column gap-2 h-100" style="width: 70%;">
                             <div class="d-flex gap-2">
@@ -583,33 +604,41 @@ include 'layouts/empty_header.php';
                                 <div class="yellow-background label text-center">Porcentaje</div>
                             </div>
                             <div class="d-flex gap-2">
-                                <div class="input text-center" style="width: 70%">Amortiguador anterior izquierdo
+                                <div class="input text-center">Amortiguador anterior izquierdo
                                 </div>
-                                <div class="input text-center">B-R-M</div>
+                                <div class="input text-center">
+                                    <?php echo getStateByPercent($peritaje['amortiguador_anterior_izquierdo']) ?>
+                                </div>
                                 <div class="input text-center">
                                     <?php echo $peritaje['amortiguador_anterior_izquierdo'] ?>
                                 </div>
                             </div>
                             <div class="d-flex gap-2">
-                                <div class="input text-center" style="width: 70%">Amortiguador anterior derecho
+                                <div class="input text-center">Amortiguador anterior derecho
                                 </div>
-                                <div class="input text-center">B-R-M</div>
+                                <div class="input text-center">
+                                    <?php echo getStateByPercent($peritaje['amortiguador_anterior_derecho']) ?>
+                                </div>
                                 <div class="input text-center">
                                     <?php echo $peritaje['amortiguador_anterior_derecho'] ?>
                                 </div>
                             </div>
                             <div class="d-flex gap-2">
-                                <div class="input text-center" style="width: 70%">Amortiguador posterior izquierdo
+                                <div class="input text-center">Amortiguador posterior izquierdo
                                 </div>
-                                <div class="input text-center">B-R-M</div>
+                                <div class="input text-center">
+                                    <?php echo getStateByPercent($peritaje['amortiguador_posterior_izquierdo']) ?>
+                                </div>
                                 <div class="input text-center">
                                     <?php echo $peritaje['amortiguador_posterior_izquierdo'] ?>
                                 </div>
                             </div>
                             <div class="d-flex gap-2">
-                                <div class="input text-center" style="width: 70%">Amortiguador posterior derecho
+                                <div class="input text-center">Amortiguador posterior derecho
                                 </div>
-                                <div class="input text-center">B-R-M</div>
+                                <div class="input text-center">
+                                    <?php echo getStateByPercent($peritaje['amortiguador_posterior_izquierdo']) ?>
+                                </div>
                                 <div class="input text-center">
                                     <?php echo $peritaje['amortiguador_posterior_derecho'] ?>
                                 </div>
