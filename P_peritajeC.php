@@ -665,96 +665,148 @@ include 'layouts/empty_header.php';
         <p class="text-center my-4" style="color: #777;">LA MEJOR FORMA DE COMPRAR UN CARRO USADO</p>
 
         <section class="p-2 rounded my-4" style="border: 1px solid var(--main-color)">
+            <div class="yellow-background sub-title w-100">MOTOR</div>
             <div class="d-flex gap-2 w-100">
                 <div class="d-flex flex-column gap-2 w-50 h-100">
                     <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 50%;">SISTEMA</div>
+                        <div class="yellow-background label" style="width: 25%;">SISTEMA</div>
                         <div class="input text-center" style="width: 25%">
                             ESTADO
                         </div>
-                        <div class="input text-center" style="width: 25%">
+                        <div class="input text-center" style="width: 50%">
                             RESPUESTA
                         </div>
                     </div>
                     <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 70%;">Fuga aceite de
-                            motor
+                        <div class="yellow-background label" style="width: 25%;">
+                            Arranque
                         </div>
-                        <div class="input" style="width: 30%">
-                            <?php echo $peritaje['fuga_aceite_motor'] ?>
+                        <div class="input text-center" style="width: 25%">
+                            <?php echo $peritaje['estado_arranque'] ?>
                         </div>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 70%;">Fuga aceite caja velocidades</div>
-                        <div class="input" style="width: 30%">
-                            <?php echo $peritaje['fuga_aceite_caja_velocidades'] ?>
+                        <div class="input text-center" style="width: 50%">
+                            <?php echo $peritaje['respuesta_arranque'] ?>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 70%;">Fuga aceite caja de trasmisión</div>
-                        <div class="input" style="width: 30%">
-                            <?php echo $peritaje['fuga_aceite_caja_transmision'] ?>
+                        <div class="yellow-background label" style="width: 25%;">
+                            Radiador
+                        </div>
+                        <div class="input text-center" style="width: 25%">
+                            <?php echo $peritaje['estado_radiador'] ?>
+                        </div>
+                        <div class="input text-center" style="width: 50%">
+                            <?php echo $peritaje['respuesta_radiador'] ?>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 70%;">Fuga líquido de frenos</div>
-                        <div class="input" style="width: 30%">
-                            <?php echo $peritaje['fuga_liquido_frenos'] ?>
+                        <div class="yellow-background label" style="width: 25%;">
+                            Carter motor
+                        </div>
+                        <div class="input text-center" style="width: 25%">
+                            <?php echo $peritaje['estado_carter_motor'] ?>
+                        </div>
+                        <div class="input text-center" style="width: 50%">
+                            <?php echo $peritaje['respuesta_carter_motor'] ?>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 70%;">Fuga aceite dirección hidráulica</div>
-                        <div class="input" style="width: 30%">
-                            <?php echo $peritaje['fuga_aceite_direccion_hidraulica'] ?>
+                        <div class="yellow-background label" style="width: 25%;">
+                            Carter caja
+                        </div>
+                        <div class="input text-center" style="width: 25%">
+                            <?php echo $peritaje['estado_carter_caja'] ?>
+                        </div>
+                        <div class="input text-center" style="width: 50%">
+                            <?php echo $peritaje['respuesta_carter_caja'] ?>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 70%;">Fugas líquido bomba embrague</div>
-                        <div class="input" style="width: 30%">
-                            <?php echo $peritaje['fugas_liquido_bomba_embrague'] ?>
+                        <div class="yellow-background label" style="width: 25%;">
+                            Caja de velocidades
+                        </div>
+                        <div class="input text-center" style="width: 25%">
+                            <?php echo $peritaje['estado_caja_velocidades'] ?>
+                        </div>
+                        <div class="input text-center" style="width: 50%">
+                            <?php echo $peritaje['respuesta_caja_velocidades'] ?>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 70%;">Fugas aceite por amortiguadores</div>
-                        <div class="input" style="width: 30%">
-                            <?php echo $peritaje['fugas_aceite_amortiguadores'] ?>
+                        <div class="yellow-background label" style="width: 25%;">
+                            Soporte caja
+                        </div>
+                        <div class="input text-center" style="width: 25%">
+                            <?php echo $peritaje['estado_soporte_caja'] ?>
+                        </div>
+                        <div class="input text-center" style="width: 50%">
+                            <?php echo $peritaje['respuesta_soporte_caja'] ?>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 70%;">Fugas tanque combustible</div>
-                        <div class="input" style="width: 30%">
-                            <?php echo $peritaje['fugas_tanque_combustible'] ?>
+                        <div class="yellow-background label" style="width: 25%;">
+                            Soporte motor
+                        </div>
+                        <div class="input text-center" style="width: 25%">
+                            <?php echo $peritaje['estado_soporte_motor'] ?>
+                        </div>
+                        <div class="input text-center" style="width: 50%">
+                            <?php echo $peritaje['respuesta_soporte_motor'] ?>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 70%;">Estado brazos dirección rotulas</div>
-                        <div class="input" style="width: 30%">
-                            <?php echo $peritaje['estado_brazos_direccion_rotulas'] ?>
+                        <div class="yellow-background label" style="width: 25%;">
+                            Estado mangueras radiador
+                        </div>
+                        <div class="input text-center" style="width: 25%">
+                            <?php echo $peritaje['estado_mangueras_radiador'] ?>
+                        </div>
+                        <div class="input text-center" style="width: 50%">
+                            <?php echo $peritaje['respuesta_mangueras_radiador'] ?>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 70%;">Estado tanque silenciador</div>
-                        <div class="input" style="width: 30%">
-                            <?php echo $peritaje['estado_tanque_silenciador'] ?>
+                        <div class="yellow-background label" style="width: 25%;">
+                            Estado correas
+                        </div>
+                        <div class="input text-center" style="width: 25%">
+                            <?php echo $peritaje['estado_correas'] ?>
+                        </div>
+                        <div class="input text-center" style="width: 50%">
+                            <?php echo $peritaje['respuesta_correas'] ?>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 70%;">Estado tubo exhosto</div>
-                        <div class="input" style="width: 30%">
-                            <?php echo $peritaje['estado_tubo_exhosto'] ?>
+                        <div class="yellow-background label" style="width: 25%;">
+                            Tensión correas
+                        </div>
+                        <div class="input text-center" style="width: 25%">
+                            <?php echo $peritaje['tension_correas'] ?>
+                        </div>
+                        <div class="input text-center" style="width: 50%">
+                            <?php echo $peritaje['respuesta_tension_correas'] ?>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 70%;">Estado tanque catalizador de gases
+                        <div class="yellow-background label" style="width: 25%;">
+                            Estado filtro de aire
                         </div>
-                        <div class="input" style="width: 30%">
-                            <?php echo $peritaje['estado_tanque_catalizador_gases'] ?>
+                        <div class="input text-center" style="width: 25%">
+                            <?php echo $peritaje['estado_filtro_aire'] ?>
+                        </div>
+                        <div class="input text-center" style="width: 50%">
+                            <?php echo $peritaje['respuesta_filtro_aire'] ?>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
-                        <div class="yellow-background label" style="width: 70%;">Estado cauchos suspensión</div>
-                        <div class="input" style="width: 30%">
-                            <?php echo $peritaje['estado_cauchos_suspension'] ?>
+                        <div class="yellow-background label" style="width: 25%;">
+                            Estado externo baterías
+                        </div>
+                        <div class="input text-center" style="width: 25%">
+                            <?php echo $peritaje['estado_externo_bateria'] ?>
+                        </div>
+                        <div class="input text-center" style="width: 50%">
+                            <?php echo $peritaje['respuesta_externo_bateria'] ?>
                         </div>
                     </div>
                 </div>
