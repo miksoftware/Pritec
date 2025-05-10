@@ -543,6 +543,16 @@ $selectEstados = '
                             </tbody>
                         </table>
                     </div>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label>Observaciones de motor</label>
+                            <textarea name="observaciones_motor" rows="5"></textarea>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label>Observaciones del interior del automotor</label>
+                            <textarea name="observaciones_interior" rows="5"></textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
 

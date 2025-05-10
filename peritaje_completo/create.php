@@ -91,6 +91,8 @@ try {
         'respuesta_nivel_aceite_motor',
         'prueba_ruta',
         'observaciones_fugas',
+        'observaciones_motor',
+        'observaciones_interior',
         'tipo_chasis',
         'prueba_escaner'
     ];
