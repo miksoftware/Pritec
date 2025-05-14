@@ -285,6 +285,26 @@ include 'layouts/empty_header.php';
             body {
                 background: url('img/background.png') repeat-y center center;
                 background-size: contain;
+                margin: 10;
+                font-size: 10px; /* Ajusta el tamaño de fuente si es necesario */
+            }
+
+            @page {
+                size: legal; /* Define el tamaño oficio */
+                margin: .5cm; /* Ajusta los márgenes según sea necesario */
+            }
+
+            img {
+                max-width: 100%; /* Asegura que las imágenes no se desborden */
+                height: auto;
+            }
+
+            .w-50 {
+                width: 48%; /* Ajusta el ancho para evitar desbordes */
+            }
+
+            .yellow-background {
+                word-wrap: break-word; /* Permite que el texto se ajuste */
             }
         }
 
