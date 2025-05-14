@@ -3,6 +3,7 @@ session_start();
 require_once 'Enums/SeguroEnum.php';
 require_once 'Enums/ImprontaEnum.php';
 require_once 'conexion/conexion.php';
+require_once 'peritaje_completo/Getid.php';
 include 'layouts/header.php';
 
 // Validar que se reciba un ID
@@ -12,24 +13,19 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
     exit;
 }
 
+$id = $_GET['id'];
+$peritaje = obtenerPeritajePorId($id);
+
+if (!$peritaje || isset($peritaje['error'])) {
+    $_SESSION['error'] = isset($peritaje['error']) ? $peritaje['error'] : "Peritaje no encontrado";
+    header('Location: l_peritajeC.php');
+    exit;
+}
+
 // Obtener datos del peritaje
 try {
     $conexion = new Conexion();
     $conn = $conexion->conectar();
-
-    $id = $_GET['id'];
-    $stmt = $conn->prepare("SELECT * FROM peritaje_completo WHERE id = ?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows === 0) {
-        $_SESSION['error'] = "Peritaje no encontrado";
-        header('Location: l_peritajeC.php');
-        exit;
-    }
-
-    $peritaje = $result->fetch_assoc();
 
     // Cargar inspección visual externa
     $stmt = $conn->prepare("SELECT * FROM inspeccion_visual_carroceria WHERE peritaje_id = ?");
@@ -51,7 +47,6 @@ try {
     $stmt->execute();
     $chasis = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
-
 
     $conn->close();
 } catch (Exception $e) {
@@ -91,6 +86,16 @@ $tiposChasis = [
     'MULTI-TUBULAR',
     'NO APLICA'
 ];
+
+$selectEstados = '
+<select class="form-select" name="%s" required>
+    <option value="">Seleccione</option>
+    <option value="Bueno" %s>Bueno</option>
+    <option value="Regular" %s>Regular</option>
+    <option value="Malo" %s>Malo</option>
+    <option value="No Aplica" %s>No Aplica</option>
+</select>
+';
 
 ?>
 
@@ -132,61 +137,61 @@ $tiposChasis = [
             <input type="hidden" name="id" value="<?php echo $peritaje['id']; ?>">
 
             <!-- Servicio -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Servicio</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3 mb-3">
                             <label class="form-label">Fecha <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" name="fecha" value="<?php echo $peritaje['fecha']; ?>" required>
+                            <input type="date" class="form-control" name="fecha" value="<?php echo htmlspecialchars($peritaje['fecha'] ?? ''); ?>" required>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="form-label">No Servicio <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="no_servicio" value="<?php echo $peritaje['no_servicio']; ?>" required>
+                            <input type="text" class="form-control" name="no_servicio" value="<?php echo htmlspecialchars($peritaje['no_servicio'] ?? ''); ?>" required>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="form-label">Servicio Para <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="servicio_para" value="<?php echo $peritaje['servicio_para']; ?>" required>
+                            <input type="text" class="form-control" name="servicio_para" value="<?php echo htmlspecialchars($peritaje['servicio_para'] ?? ''); ?>" required>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="form-label">Convenio</label>
-                            <input type="text" class="form-control" name="convenio" value="<?php echo $peritaje['convenio']; ?>">
+                            <input type="text" class="form-control" name="convenio" value="<?php echo htmlspecialchars($peritaje['convenio'] ?? ''); ?>">
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Datos del Solicitante -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Datos del Solicitante</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Nombre y Apellidos <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="nombre_apellidos" value="<?php echo $peritaje['nombre_apellidos']; ?>" required>
+                            <input type="text" class="form-control" name="nombre_apellidos" value="<?php echo htmlspecialchars($peritaje['nombre_apellidos'] ?? ''); ?>" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Identificación <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="identificacion" value="<?php echo $peritaje['identificacion']; ?>" required>
+                            <input type="text" class="form-control" name="identificacion" value="<?php echo htmlspecialchars($peritaje['identificacion'] ?? ''); ?>" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Teléfono</label>
-                            <input type="text" class="form-control" name="telefono" value="<?php echo $peritaje['telefono']; ?>">
+                            <input type="text" class="form-control" name="telefono" value="<?php echo htmlspecialchars($peritaje['telefono'] ?? ''); ?>">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Dirección</label>
-                            <input type="text" class="form-control" name="direccion" value="<?php echo $peritaje['direccion']; ?>">
+                            <input type="text" class="form-control" name="direccion" value="<?php echo htmlspecialchars($peritaje['direccion'] ?? ''); ?>">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">Correo</label>
-                            <input type="email" id="email" class="form-control" name="email" value="<?php echo $peritaje['email']; ?>">
+                            <input type="email" id="email" class="form-control" name="email" value="<?php echo htmlspecialchars($peritaje['email'] ?? ''); ?>">
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Datos del Vehículo -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Datos del Vehículo</span>
                     <button type="button" class="btn btn-info btn-sm" id="cambiarTipoVehiculo">
@@ -277,7 +282,7 @@ $tiposChasis = [
             </div>
 
             <!-- Inspección Visual (carroceria) -->
-            <div class="card" id="cardCarroceria">
+            <div class="card mb-3" id="cardCarroceria" <?php echo (strpos($peritaje['tipo_vehiculo'] ?? '', 'MOTOCICLETA') !== false) ? 'style="display:none;"' : ''; ?>>
                 <div class="card-header">Inspección Visual Externa (Carrocería)</div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -340,7 +345,7 @@ $tiposChasis = [
             </div>
 
             <!-- Inspección Visual Interna (Estructura) -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Inspección Visual Interna (Estructura)</div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -403,16 +408,16 @@ $tiposChasis = [
             </div>
 
             <!-- Inspección Visual (Chasis) -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Inspección Visual (Chasis)</div>
                 <div class="card-body">
-                    <div class="row d-none" id="rowTipoChasis">
+                    <div class="row <?php echo (strpos($peritaje['tipo_vehiculo'] ?? '', 'MOTOCICLETA') === false) ? 'd-none' : ''; ?>" id="rowTipoChasis">
                         <div class="col-12 col-md-4 mb-3">
                             <label for="tipo_chasis" class="form-label">Tipo de chasis</label>
                             <select id="tipo_chasis" class="form-select" name="tipo_chasis">
                                 <option value="">-- Seleccione --</option>
                                 <?php foreach ($tiposChasis as $tipoChasis): ?>
-                                    <option value="<?php echo $tipoChasis ?>">
+                                    <option value="<?php echo $tipoChasis ?>" <?php echo ($peritaje['tipo_chasis'] === $tipoChasis) ? 'selected' : ''; ?>>
                                         <?php echo $tipoChasis ?>
                                     </option>
                                 <?php endforeach; ?>
@@ -479,80 +484,77 @@ $tiposChasis = [
             </div>
 
             <!-- Llantas -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Llantas</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Porcentaje anterior izquierda</label>
-                            <input type="number" class="form-control" name="llanta_anterior_izquierda" value="<?php echo $peritaje['llanta_anterior_izquierda']; ?>">
+                            <input type="number" class="form-control" name="llanta_anterior_izquierda" value="<?php echo htmlspecialchars($peritaje['llanta_anterior_izquierda'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Porcentaje anterior derecha</label>
-                            <input type="number" class="form-control" name="llanta_anterior_derecha" value="<?php echo $peritaje['llanta_anterior_derecha']; ?>">
+                            <input type="number" class="form-control" name="llanta_anterior_derecha" value="<?php echo htmlspecialchars($peritaje['llanta_anterior_derecha'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Porcentaje posterior izquierda</label>
-                            <input type="number" class="form-control" name="llanta_posterior_izquierda" value="<?php echo $peritaje['llanta_posterior_izquierda']; ?>">
+                            <input type="number" class="form-control" name="llanta_posterior_izquierda" value="<?php echo htmlspecialchars($peritaje['llanta_posterior_izquierda'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Porcentaje posterior derecha</label>
-                            <input type="number" class="form-control" name="llanta_posterior_derecha" value="<?php echo $peritaje['llanta_posterior_derecha']; ?>">
+                            <input type="number" class="form-control" name="llanta_posterior_derecha" value="<?php echo htmlspecialchars($peritaje['llanta_posterior_derecha'] ?? ''); ?>">
                         </div>
                         <div class="col-12 mb-3">
                             <label for="observaciones_llantas" class="form-label">Observaciones</label>
-                            <textarea id="observaciones_llantas" class="form-control" name="observaciones_llantas"
-                                value="<?php echo $peritaje['observaciones_llantas']; ?>"
-                                rows="3"></textarea>
+                            <textarea id="observaciones_llantas" class="form-control" name="observaciones_llantas" rows="3"><?php echo htmlspecialchars($peritaje['observaciones_llantas'] ?? ''); ?></textarea>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- amortiguadores -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Amortiguadores</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Porcentaje anterior izquierdo</label>
-                            <input type="number" class="form-control" name="amortiguador_anterior_izquierdo" value="<?php echo $peritaje['amortiguador_anterior_izquierdo']; ?>">
+                            <input type="number" class="form-control" name="amortiguador_anterior_izquierdo" value="<?php echo htmlspecialchars($peritaje['amortiguador_anterior_izquierdo'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Porcentaje anterior derecho</label>
-                            <input type="number" class="form-control" name="amortiguador_anterior_derecho" value="<?php echo $peritaje['amortiguador_anterior_derecho']; ?>">
+                            <input type="number" class="form-control" name="amortiguador_anterior_derecho" value="<?php echo htmlspecialchars($peritaje['amortiguador_anterior_derecho'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Porcentaje posterior izquierdo</label>
-                            <input type="number" class="form-control" name="amortiguador_posterior_izquierdo" value="<?php echo $peritaje['amortiguador_posterior_izquierdo']; ?>">
+                            <input type="number" class="form-control" name="amortiguador_posterior_izquierdo" value="<?php echo htmlspecialchars($peritaje['amortiguador_posterior_izquierdo'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Porcentaje posterior derecho</label>
-                            <input type="number" class="form-control" name="amortiguador_posterior_derecho" value="<?php echo $peritaje['amortiguador_posterior_derecho']; ?>">
+                            <input type="number" class="form-control" name="amortiguador_posterior_derecho" value="<?php echo htmlspecialchars($peritaje['amortiguador_posterior_derecho'] ?? ''); ?>">
                         </div>
-
                         <div class="col-12 mb-3">
                             <label class="form-label">Observaciones</label>
-                            <textarea class="form-control" name="observaciones2" rows="3"><?php echo $peritaje['observaciones2']; ?></textarea>
+                            <textarea class="form-control" name="observaciones2" rows="3"><?php echo htmlspecialchars($peritaje['observaciones2'] ?? ''); ?></textarea>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">PRUEBA DE OBSERVACIÓN Y DIAGNÓSTICO SCANNER</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Código</label>
-                            <input type="text" class="form-control" name="prueba_escaner">
+                            <input type="text" class="form-control" name="prueba_escaner" value="<?php echo htmlspecialchars($peritaje['prueba_escaner'] ?? ''); ?>">
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Bateria -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Batería</div>
                 <div class="card-body">
                     <div class="row">
@@ -577,7 +579,7 @@ $tiposChasis = [
             </div>
 
             <!-- Motor y sistemas -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Motor y Sistemas</div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -591,15 +593,6 @@ $tiposChasis = [
                             </thead>
                             <tbody>
                                 <?php
-                                $selectEstados = '
-                    <select class="form-select" name="%s" required>
-                        <option value="">Seleccione</option>
-                        <option value="Bueno" %s>Bueno</option>
-                        <option value="Regular" %s>Regular</option>
-                        <option value="Malo" %s>Malo</option>
-                        <option value="No Aplica" %s>No Aplica</option>
-                    </select>
-                    ';
                                 $sistemas = [
                                     ['Arranque', 'estado_arranque', 'respuesta_arranque'],
                                     ['Radiador', 'estado_radiador', 'respuesta_radiador'],
@@ -646,14 +639,18 @@ $tiposChasis = [
                                     $estado = $peritaje[$sis[1]] ?? '';
                                     echo '<tr>';
                                     echo '<td>' . $sis[0] . '</td>';
-                                    echo '<td>' . sprintf(
-                                        $selectEstados,
-                                        $sis[1],
-                                        $estado == 'Bueno' ? 'selected' : '',
-                                        $estado == 'Regular' ? 'selected' : '',
-                                        $estado == 'Malo' ? 'selected' : '',
-                                        $estado == 'No Aplica' ? 'selected' : ''
-                                    ) . '</td>';
+                                    echo '<td>';
+                                    // Generamos el select directamente en lugar de usar sprintf
+                                    ?>
+                                    <select class="form-select" name="<?php echo $sis[1]; ?>" required>
+                                        <option value="">Seleccione</option>
+                                        <option value="Bueno" <?php echo ($estado === 'Bueno') ? 'selected' : ''; ?>>Bueno</option>
+                                        <option value="Regular" <?php echo ($estado === 'Regular') ? 'selected' : ''; ?>>Regular</option>
+                                        <option value="Malo" <?php echo ($estado === 'Malo') ? 'selected' : ''; ?>>Malo</option>
+                                        <option value="No Aplica" <?php echo ($estado === 'No Aplica') ? 'selected' : ''; ?>>No Aplica</option>
+                                    </select>
+                                    <?php
+                                    echo '</td>';
                                     echo '<td><input type="text" class="form-control" name="' . $sis[2] . '" value="' . htmlspecialchars($peritaje[$sis[2]] ?? '') . '" placeholder="Observación"></td>';
                                     echo '</tr>';
                                 }
@@ -661,11 +658,21 @@ $tiposChasis = [
                             </tbody>
                         </table>
                     </div>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label>Observaciones de motor</label>
+                            <textarea class="form-control" name="observaciones_motor" rows="5"><?php echo htmlspecialchars($peritaje['observaciones_motor'] ?? ''); ?></textarea>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label>Observaciones del interior del automotor</label>
+                            <textarea class="form-control" name="observaciones_interior" rows="5"><?php echo htmlspecialchars($peritaje['observaciones_interior'] ?? ''); ?></textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Fugas y Niveles -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Fugas y Niveles</div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -721,22 +728,31 @@ $tiposChasis = [
             </div>
 
             <!-- fotografias -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Fijación fotográfica</div>
                 <div class="card-body">
                     <div class="row">
                         <?php for ($i = 1; $i <= 6; $i++): ?>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Fotografía <?php echo $i; ?></label>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold">Fotografía <?php echo $i; ?></label>
                                 <?php $field = "fijacion_fotografica_" . $i; ?>
-                                <?php if (!empty($peritaje[$field])): ?>
-                                    <div class="mb-2">
-                                        <img src="uploads/<?php echo $peritaje[$field]; ?>" class="img-fluid img-thumbnail" style="max-height: 150px;">
-                                        <input type="hidden" name="current_<?php echo $field; ?>" value="<?php echo $peritaje[$field]; ?>">
+                                
+                                <?php if (!empty($peritaje[$field])): ?>    
+                                    <div class="card mb-2 p-2">
+                                        <div class="text-center">
+                                            <img src="uploads/<?php echo htmlspecialchars($peritaje[$field]); ?>" class="img-fluid img-thumbnail" style="max-height: 200px;">
+                                        </div>
+                                        <div class="mt-2 text-center">
+                                            <small class="text-muted">Imagen actual: <?php echo htmlspecialchars($peritaje[$field]); ?></small>
+                                        </div>
                                     </div>
                                 <?php endif; ?>
-                                <input type="file" class="form-control" name="<?php echo $field; ?>" accept="image/*">
-                                <small class="text-muted">Dejar en blanco para mantener la imagen actual</small>
+                                
+                                <div class="input-group mb-1">
+                                    <input type="file" class="form-control" name="<?php echo $field; ?>" accept="image/*">
+                                    <input type="hidden" name="current_<?php echo $field; ?>" value="<?php echo htmlspecialchars($peritaje[$field] ?? ''); ?>">
+                                </div>
+                                <small class="text-muted">* Dejar en blanco para mantener la imagen actual</small>
                             </div>
                         <?php endfor; ?>
                     </div>
@@ -775,7 +791,183 @@ $tiposChasis = [
             }
         });
     </script>
-</div>
+
+    <script>
+        // Funcionalidad para Inspección Visual Externa
+        document.addEventListener('DOMContentLoaded', function() {
+            // Agregar fila de inspección
+            document.getElementById('agregarFilaInspeccion').addEventListener('click', function() {
+                const tbody = document.querySelector('#tablaInspeccionVisual tbody');
+                const nuevaFila = document.createElement('tr');
+                nuevaFila.className = 'fila-inspeccion';
+                nuevaFila.innerHTML = `
+                    <td>
+                        <input type="text" class="form-control" name="descripcion_pieza[]" placeholder="Ej: Parachoques delantero">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="concepto_pieza[]" placeholder="Ej: Buen estado, rayado, etc.">
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-danger btn-sm eliminar-fila">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(nuevaFila);
+
+                // Agregar evento al nuevo botón de eliminar
+                nuevaFila.querySelector('.eliminar-fila').addEventListener('click', function() {
+                    eliminarFila(this);
+                });
+            });
+
+            // Inicializar botones de eliminar existentes
+            document.querySelectorAll('.eliminar-fila').forEach(function(boton) {
+                boton.addEventListener('click', function() {
+                    eliminarFila(this);
+                });
+            });
+
+            // Función para eliminar fila
+            function eliminarFila(boton) {
+                const fila = boton.closest('tr');
+                // Verificar que no sea la única fila
+                const todasLasFilas = document.querySelectorAll('.fila-inspeccion');
+                if (todasLasFilas.length > 1) {
+                    fila.remove();
+                } else {
+                    Swal.fire({
+                        title: 'Información',
+                        text: 'Debe haber al menos una fila en la tabla',
+                        icon: 'info',
+                        confirmButtonText: 'Entendido'
+                    });
+                }
+            }
+            
+            // === FUNCIONALIDAD PARA ESTRUCTURA ===
+            // Agregar fila de inspección de estructura
+            document.getElementById('agregarFilaEstructura').addEventListener('click', function() {
+                const tbody = document.querySelector('#tablaInspeccionEstructura tbody');
+                const nuevaFila = document.createElement('tr');
+                nuevaFila.className = 'fila-estructura';
+                nuevaFila.innerHTML = `
+                <td>
+                    <input type="text" class="form-control" name="descripcion_pieza_estructura[]" placeholder="Ej: Tablero central">
+                </td>
+                <td>
+                    <input type="text" class="form-control" name="concepto_pieza_estructura[]" placeholder="Ej: Buen estado, deteriorado, etc.">
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-danger btn-sm eliminar-fila-estructura">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+                tbody.appendChild(nuevaFila);
+
+                // Agregar evento al nuevo botón de eliminar
+                nuevaFila.querySelector('.eliminar-fila-estructura').addEventListener('click', function() {
+                    eliminarFilaEstructura(this);
+                });
+            });
+
+            // Inicializar botones de eliminar existentes para estructura
+            document.querySelectorAll('.eliminar-fila-estructura').forEach(function(boton) {
+                boton.addEventListener('click', function() {
+                    eliminarFilaEstructura(this);
+                });
+            });
+
+            // Función para eliminar fila de estructura
+            function eliminarFilaEstructura(boton) {
+                const fila = boton.closest('tr');
+                const todasLasFilas = document.querySelectorAll('.fila-estructura');
+                if (todasLasFilas.length > 1) {
+                    fila.remove();
+                } else {
+                    Swal.fire({
+                        title: 'Información',
+                        text: 'Debe haber al menos una fila en la tabla',
+                        icon: 'info',
+                        confirmButtonText: 'Entendido'
+                    });
+                }
+            }
+
+            // === FUNCIONALIDAD PARA CHASIS ===
+            // Agregar fila de inspección de chasis
+            document.getElementById('agregarFilaChasis').addEventListener('click', function() {
+                const tbody = document.querySelector('#tablaInspeccionChasis tbody');
+                const nuevaFila = document.createElement('tr');
+                nuevaFila.className = 'fila-chasis';
+                nuevaFila.innerHTML = `
+                <td>
+                    <input type="text" class="form-control" name="descripcion_pieza_chasis[]" placeholder="Ej: Larguero derecho">
+                </td>
+                <td>
+                    <input type="text" class="form-control" name="concepto_pieza_chasis[]" placeholder="Ej: Original, intervenido, etc.">
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-danger btn-sm eliminar-fila-chasis">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+                tbody.appendChild(nuevaFila);
+
+                // Agregar evento al nuevo botón de eliminar
+                nuevaFila.querySelector('.eliminar-fila-chasis').addEventListener('click', function() {
+                    eliminarFilaChasis(this);
+                });
+            });
+
+            // Inicializar botones de eliminar existentes para chasis
+            document.querySelectorAll('.eliminar-fila-chasis').forEach(function(boton) {
+                boton.addEventListener('click', function() {
+                    eliminarFilaChasis(this);
+                });
+            });
+
+            // Función para eliminar fila de chasis
+            function eliminarFilaChasis(boton) {
+                const fila = boton.closest('tr');
+                const todasLasFilas = document.querySelectorAll('.fila-chasis');
+                if (todasLasFilas.length > 1) {
+                    fila.remove();
+                } else {
+                    Swal.fire({
+                        title: 'Información',
+                        text: 'Debe haber al menos una fila en la tabla',
+                        icon: 'info',
+                        confirmButtonText: 'Entendido'
+                    });
+                }
+            }
+            
+            // Verificar y corregir los selects
+            const peritajeData = <?php echo json_encode($peritaje); ?>;
+            console.log('Datos del peritaje:', peritajeData);
+            
+            // Forzar selección de todos los selects en la tabla de Motor y Sistemas
+            const selects = document.querySelectorAll('select[name^="estado_"]');
+            selects.forEach(function(select) {
+                const fieldName = select.name;
+                const expectedValue = peritajeData[fieldName];
+                
+                console.log(`Verificando select ${fieldName} - valor esperado: ${expectedValue}`);
+                
+                if (expectedValue) {
+                    Array.from(select.options).forEach(option => {
+                        if (option.value === expectedValue) {
+                            option.selected = true;
+                            console.log(`- Seleccionado: ${option.value}`);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 
 <div class="modal fade" id="tipoVehiculoModal" tabindex="-1" aria-labelledby="tipoVehiculoModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -806,11 +998,22 @@ $tiposChasis = [
         const tipoVehiculoModal = new bootstrap.Modal(document.getElementById('tipoVehiculoModal'));
         const displayEl = document.getElementById('tipo_vehiculo_display');
         const inputEl = document.getElementById('tipo_vehiculo_input');
+        const rowChasisInput = document.getElementById('rowTipoChasis');
+        const cardCarroceria = document.getElementById('cardCarroceria');
         const closeModalBtn = document.getElementById('closeModalBtn');
+
+        // Establecer estado inicial basado en el tipo de vehículo ya guardado
+        const tipoVehiculoActual = inputEl.value;
+        if (tipoVehiculoActual && tipoVehiculoActual.includes('MOTOCICLETA')) {
+            rowChasisInput.classList.remove('d-none');
+            cardCarroceria.style.display = 'none';
+        } else {
+            rowChasisInput.classList.add('d-none');
+            cardCarroceria.style.display = 'block';
+        }
 
         // Botón para cambiar tipo de vehículo
         document.getElementById('cambiarTipoVehiculo').addEventListener('click', function() {
-            // Mostrar el botón de cerrar cuando se abre manualmente
             closeModalBtn.style.display = 'block';
             tipoVehiculoModal.show();
         });
@@ -823,33 +1026,17 @@ $tiposChasis = [
                 inputEl.value = tipoSeleccionado;
                 tipoVehiculoModal.hide();
 
-                const rowChasisInput = document.getElementById('rowTipoChasis')
-                const cardCarroceria = document.getElementById('cardCarroceria')
-
                 if (tipoSeleccionado.includes('MOTOCICLETA')){
-                    rowChasisInput.classList.remove('d-none')
-                    cardCarroceria.classList.add('d-none')
+                    rowChasisInput.classList.remove('d-none');
+                    cardCarroceria.style.display = 'none';
                 } else {
-                    rowChasisInput.classList.add('d-none')
-                    cardCarroceria.classList.remove('d-none')
+                    rowChasisInput.classList.add('d-none');
+                    cardCarroceria.style.display = 'block';
                 }
             });
         });
-
-        // Verificar si se seleccionó un tipo al intentar cerrar el modal
-        document.getElementById('tipoVehiculoModal').addEventListener('hide.bs.modal', function(event) {
-            // Si es la primera carga y no hay tipo seleccionado, prevenir el cierre
-            if (!inputEl.value && closeModalBtn.style.display === 'none') {
-                event.preventDefault();
-                Swal.fire({
-                    title: '¡Atención!',
-                    text: 'Debe seleccionar un tipo de vehículo para continuar',
-                    icon: 'warning',
-                    confirmButtonText: 'Entendido'
-                });
-            }
-        });
     });
 </script>
+</div>
 
 <?php include 'layouts/footer.php'; ?>

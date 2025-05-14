@@ -15,6 +15,51 @@ try {
         throw new Exception("ID de peritaje no válido");
     }
 
+    // Directorio de subida
+    $uploadDir = '../uploads/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+    // Manejo de imágenes
+    $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+    
+    // Licencia frente
+    $licencia_frente = $_POST['current_licencia_frente'] ?? null;
+    if (isset($_FILES['licencia_frente']) && $_FILES['licencia_frente']['error'] === UPLOAD_ERR_OK) {
+        // Procesar nueva imagen
+        $file_ext = strtolower(pathinfo($_FILES['licencia_frente']['name'], PATHINFO_EXTENSION));
+        if (in_array($file_ext, $allowed_extensions)) {
+            $file_name = uniqid() . '_' . basename($_FILES['licencia_frente']['name']);
+            $file_path = $uploadDir . $file_name;
+            if (move_uploaded_file($_FILES['licencia_frente']['tmp_name'], $file_path)) {
+                // Borrar imagen anterior si existe
+                if (!empty($licencia_frente) && file_exists($uploadDir . $licencia_frente)) {
+                    @unlink($uploadDir . $licencia_frente);
+                }
+                $licencia_frente = $file_name;
+            }
+        }
+    }
+
+    // Licencia atrás
+    $licencia_atras = $_POST['current_licencia_atras'] ?? null;
+    if (isset($_FILES['licencia_atras']) && $_FILES['licencia_atras']['error'] === UPLOAD_ERR_OK) {
+        // Procesar nueva imagen
+        $file_ext = strtolower(pathinfo($_FILES['licencia_atras']['name'], PATHINFO_EXTENSION));
+        if (in_array($file_ext, $allowed_extensions)) {
+            $file_name = uniqid() . '_' . basename($_FILES['licencia_atras']['name']);
+            $file_path = $uploadDir . $file_name;
+            if (move_uploaded_file($_FILES['licencia_atras']['tmp_name'], $file_path)) {
+                // Borrar imagen anterior si existe
+                if (!empty($licencia_atras) && file_exists($uploadDir . $licencia_atras)) {
+                    @unlink($uploadDir . $licencia_atras);
+                }
+                $licencia_atras = $file_name;
+            }
+        }
+    }
+
     // Procesar checkboxes
     $tiene_prenda = isset($_POST['prenda']) ? 1 : 0;
     $tiene_limitacion = isset($_POST['limitacion']) ? 1 : 0;
@@ -34,7 +79,8 @@ try {
         revision_tecnicomecanica = ?, rtm_fecha_vencimiento = ?,
         soat = ?, soat_fecha_vencimiento = ?, observaciones = ?,
         estado_motor = ?, estado_chasis = ?, estado_serial = ?,
-        observaciones_finales = ? WHERE id = ?";
+        observaciones_finales = ?, licencia_frente = ?, licencia_atras = ? 
+        WHERE id = ?";
 
     // Debug query
     error_log("Query: " . $query);
@@ -82,6 +128,8 @@ try {
         $_POST['estado_chasis'],
         $_POST['estado_serial'],
         $_POST['observaciones_finales'],
+        $licencia_frente,
+        $licencia_atras,
         $_POST['id']
     ];
 
@@ -91,7 +139,7 @@ try {
     // Crear tipos
     $types = str_repeat('s', 21) . // strings
             str_repeat('i', 5) .    // booleans
-            str_repeat('s', 10);    // resto de campos
+            str_repeat('s', 12);    // resto de campos incluyendo imágenes
 
     // Bind y ejecutar
     $stmt->bind_param($types, ...$params);

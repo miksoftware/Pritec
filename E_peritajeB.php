@@ -65,151 +65,151 @@ include 'layouts/header.php';
     <?php endif; ?>
     <div class="container py-5">
         <h2 class="text-center mb-4">Editar Peritaje</h2>
-        <form id="peritajeForm" action="peritaje_basico/create.php" method="POST" enctype="multipart/form-data">
+        <form id="peritajeForm" action="peritaje_basico/Update.php" method="POST" enctype="multipart/form-data">
 
             <!-- Servicio -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Servicio</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3 mb-3">
                             <label class="form-label">Fecha <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" name="fecha" required>
+                            <input type="date" class="form-control" name="fecha" required value="<?php echo htmlspecialchars($peritaje['fecha'] ?? ''); ?>">
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="form-label">No Servicio <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="no_servicio" required>
+                            <input type="text" class="form-control" name="no_servicio" required value="<?php echo htmlspecialchars($peritaje['no_servicio'] ?? ''); ?>">
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="form-label">Servicio Para <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="servicio_para" required>
+                            <input type="text" class="form-control" name="servicio_para" required value="<?php echo htmlspecialchars($peritaje['servicio_para'] ?? ''); ?>">
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="form-label">Convenio</label>
-                            <input type="text" class="form-control" name="convenio">
+                            <input type="text" class="form-control" name="convenio" value="<?php echo htmlspecialchars($peritaje['convenio'] ?? ''); ?>">
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Datos del Solicitante -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Datos del Solicitante</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Nombre y Apellidos <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="nombre_apellidos" required>
+                            <input type="text" class="form-control" name="nombre_apellidos" required value="<?php echo htmlspecialchars($peritaje['nombre_apellidos'] ?? ''); ?>">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Identificación <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="identificacion" required>
+                            <input type="text" class="form-control" name="identificacion" required value="<?php echo htmlspecialchars($peritaje['identificacion'] ?? ''); ?>">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Teléfono</label>
-                            <input type="text" class="form-control" name="telefono">
+                            <input type="text" class="form-control" name="telefono" value="<?php echo htmlspecialchars($peritaje['telefono'] ?? ''); ?>">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Dirección</label>
-                            <input type="text" class="form-control" name="direccion">
+                            <input type="text" class="form-control" name="direccion" value="<?php echo htmlspecialchars($peritaje['direccion'] ?? ''); ?>">
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Datos del Vehículo -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Datos del Vehículo</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Placa <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="placa" required>
+                            <input type="text" class="form-control" name="placa" required value="<?php echo htmlspecialchars($peritaje['placa'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Clase</label>
-                            <input type="text" class="form-control" name="clase">
+                            <input type="text" class="form-control" name="clase" value="<?php echo htmlspecialchars($peritaje['clase'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Marca</label>
-                            <input type="text" class="form-control" name="marca">
+                            <input type="text" class="form-control" name="marca" value="<?php echo htmlspecialchars($peritaje['marca'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Línea</label>
-                            <input type="text" class="form-control" name="linea">
+                            <input type="text" class="form-control" name="linea" value="<?php echo htmlspecialchars($peritaje['linea'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Cilindraje</label>
-                            <input type="text" class="form-control" name="cilindraje">
+                            <input type="text" class="form-control" name="cilindraje" value="<?php echo htmlspecialchars($peritaje['cilindraje'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Servicio</label>
-                            <input type="text" class="form-control" name="servicio">
+                            <input type="text" class="form-control" name="servicio" value="<?php echo htmlspecialchars($peritaje['servicio'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Modelo</label>
-                            <input type="text" class="form-control" name="modelo">
+                            <input type="text" class="form-control" name="modelo" value="<?php echo htmlspecialchars($peritaje['modelo'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Color</label>
-                            <input type="text" class="form-control" name="color">
+                            <input type="text" class="form-control" name="color" value="<?php echo htmlspecialchars($peritaje['color'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">No de Chasis</label>
-                            <input type="text" class="form-control" name="no_chasis">
+                            <input type="text" class="form-control" name="no_chasis" value="<?php echo htmlspecialchars($peritaje['no_chasis'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">No de Motor</label>
-                            <input type="text" class="form-control" name="no_motor">
+                            <input type="text" class="form-control" name="no_motor" value="<?php echo htmlspecialchars($peritaje['no_motor'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">No de Serie</label>
-                            <input type="text" class="form-control" name="no_serie">
+                            <input type="text" class="form-control" name="no_serie" value="<?php echo htmlspecialchars($peritaje['no_serie'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Tipo de Carrocería</label>
-                            <input type="text" class="form-control" name="tipo_carroceria">
+                            <input type="text" class="form-control" name="tipo_carroceria" value="<?php echo htmlspecialchars($peritaje['tipo_carroceria'] ?? ''); ?>">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Organismo de Tránsito</label>
-                            <input type="text" class="form-control" name="organismo_transito">
+                            <input type="text" class="form-control" name="organismo_transito" value="<?php echo htmlspecialchars($peritaje['organismo_transito'] ?? ''); ?>">
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Estado/Documentos Checkboxes -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Estado/Documentos</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="prenda">
+                                <input type="checkbox" class="form-check-input" name="prenda" <?php echo ($peritaje['tiene_prenda'] == 1) ? 'checked' : ''; ?>>
                                 <label class="form-check-label">Tiene prenda/gravamen</label>
                             </div>
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="limitacion">
+                                <input type="checkbox" class="form-check-input" name="limitacion" <?php echo ($peritaje['tiene_limitacion'] == 1) ? 'checked' : ''; ?>>
                                 <label class="form-check-label">Tiene limitación</label>
                             </div>
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="impuestos">
+                                <input type="checkbox" class="form-check-input" name="impuestos" <?php echo ($peritaje['debe_impuestos'] == 1) ? 'checked' : ''; ?>>
                                 <label class="form-check-label">Debe impuestos</label>
                             </div>
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="comparendos">
+                                <input type="checkbox" class="form-check-input" name="comparendos" <?php echo ($peritaje['tiene_comparendos'] == 1) ? 'checked' : ''; ?>>
                                 <label class="form-check-label">Tiene comparendos al tránsito</label>
                             </div>
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="rematado">
+                                <input type="checkbox" class="form-check-input" name="rematado" <?php echo ($peritaje['vehiculo_rematado'] == 1) ? 'checked' : ''; ?>>
                                 <label class="form-check-label">Vehículo rematado</label>
                             </div>
                         </div>
@@ -218,7 +218,7 @@ include 'layouts/header.php';
             </div>
 
             <!-- Estado/Documentos Selects -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Documentación</div>
                 <div class="card-body">
                     <div class="row">
@@ -227,12 +227,14 @@ include 'layouts/header.php';
                             <select class="form-select" name="rtm" onchange="toggleFechaVencimiento('rtm')" required>
                                 <option value="">Seleccione</option>
                                 <?php foreach (SeguroEnum::getOptions() as $value => $label): ?>
-                                    <option value="<?php echo $value; ?>"><?php echo $label; ?></option>
+                                    <option value="<?php echo $value; ?>" <?php echo ($peritaje['rtm'] === $value) ? 'selected' : ''; ?>>
+                                        <?php echo $label; ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
-                            <div id="rtm_fecha" class="mt-2" style="display:none">
+                            <div id="rtm_fecha" class="mt-2" style="display:<?php echo (in_array($peritaje['rtm'], ['VIGENTE', 'NO_VIGENTE'])) ? 'block' : 'none'; ?>">
                                 <label class="form-label">Fecha de Vencimiento <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" name="rtm_fecha_vencimiento">
+                                <input type="date" class="form-control" name="rtm_fecha_vencimiento" value="<?php echo htmlspecialchars($peritaje['rtm_fecha_vencimiento'] ?? ''); ?>">
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -240,32 +242,48 @@ include 'layouts/header.php';
                             <select class="form-select" name="soat" onchange="toggleFechaVencimiento('soat')" required>
                                 <option value="">Seleccione</option>
                                 <?php foreach (SeguroEnum::getOptions() as $value => $label): ?>
-                                    <option value="<?php echo $value; ?>"><?php echo $label; ?></option>
+                                    <option value="<?php echo $value; ?>" <?php echo ($peritaje['soat'] === $value) ? 'selected' : ''; ?>>
+                                        <?php echo $label; ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
-                            <div id="soat_fecha" class="mt-2" style="display:none">
+                            <div id="soat_fecha" class="mt-2" style="display:<?php echo (in_array($peritaje['soat'], ['VIGENTE', 'NO_VIGENTE'])) ? 'block' : 'none'; ?>">
                                 <label class="form-label">Fecha de Vencimiento <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" name="soat_fecha_vencimiento">
+                                <input type="date" class="form-control" name="soat_fecha_vencimiento" value="<?php echo htmlspecialchars($peritaje['soat_fecha_vencimiento'] ?? ''); ?>">
                             </div>
                         </div>
                         <div class="col-12 mb-3">
                             <label class="form-label">Observaciones</label>
-                            <textarea class="form-control" name="observaciones" rows="3"></textarea>
+                            <textarea class="form-control" name="observaciones" rows="3"><?php echo htmlspecialchars($peritaje['observaciones'] ?? ''); ?></textarea>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Licencia Frente</label>
                             <input type="file" class="form-control" name="licencia_frente" accept="image/*">
+                            <?php if (!empty($peritaje['licencia_frente'])): ?>
+                                <input type="hidden" name="current_licencia_frente" value="<?php echo htmlspecialchars($peritaje['licencia_frente']); ?>">
+                                <div class="mt-2">
+                                    <p class="mb-1">Imagen actual:</p>
+                                    <img src="uploads/<?php echo htmlspecialchars($peritaje['licencia_frente']); ?>" alt="Licencia frente" class="img-thumbnail mb-2" style="max-height: 100px">
+                                </div>
+                            <?php endif; ?>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Licencia Atrás</label>
                             <input type="file" class="form-control" name="licencia_atras" accept="image/*">
+                            <?php if (!empty($peritaje['licencia_atras'])): ?>
+                                <input type="hidden" name="current_licencia_atras" value="<?php echo htmlspecialchars($peritaje['licencia_atras']); ?>">
+                                <div class="mt-2">
+                                    <p class="mb-1">Imagen actual:</p>
+                                    <img src="uploads/<?php echo htmlspecialchars($peritaje['licencia_atras']); ?>" alt="Licencia atrás" class="img-thumbnail mb-2" style="max-height: 100px">
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Concepto e Improntas -->
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Concepto e Improntas</div>
                 <div class="card-body">
                     <div class="row">
@@ -274,7 +292,9 @@ include 'layouts/header.php';
                             <select class="form-select" name="estado_motor" required>
                                 <option value="">Seleccione</option>
                                 <?php foreach (ImprontaEnum::getOptions() as $value => $label): ?>
-                                    <option value="<?php echo $value; ?>"><?php echo $label; ?></option>
+                                    <option value="<?php echo $value; ?>" <?php echo ($peritaje['estado_motor'] === $value) ? 'selected' : ''; ?>>
+                                        <?php echo $label; ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -284,7 +304,9 @@ include 'layouts/header.php';
                             <select class="form-select" name="estado_chasis" required>
                                 <option value="">Seleccione</option>
                                 <?php foreach (ImprontaEnum::getOptions() as $value => $label): ?>
-                                    <option value="<?php echo $value; ?>"><?php echo $label; ?></option>
+                                    <option value="<?php echo $value; ?>" <?php echo ($peritaje['estado_chasis'] === $value) ? 'selected' : ''; ?>>
+                                        <?php echo $label; ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -294,149 +316,28 @@ include 'layouts/header.php';
                             <select class="form-select" name="estado_serial" required>
                                 <option value="">Seleccione</option>
                                 <?php foreach (ImprontaEnum::getOptions() as $value => $label): ?>
-                                    <option value="<?php echo $value; ?>"><?php echo $label; ?></option>
+                                    <option value="<?php echo $value; ?>" <?php echo ($peritaje['estado_serial'] === $value) ? 'selected' : ''; ?>>
+                                        <?php echo $label; ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="col-12 mb-3">
                             <label class="form-label">Observaciones Finales</label>
-                            <textarea class="form-control" name="observaciones_finales" rows="3"></textarea>
+                            <textarea class="form-control" name="observaciones_finales" rows="3"><?php echo htmlspecialchars($peritaje['observaciones_finales'] ?? ''); ?></textarea>
                         </div>
                     </div>
                 </div>
             </div>
+            <input type="hidden" name="id" value="<?php echo $peritaje['id']; ?>">
             <div class="text-center mt-4 d-flex justify-content-center gap-3">
                 <a href="l_peritajeB.php" class="btn btn-secondary px-5">Volver</a>
                 <button type="submit" class="btn btn-primary px-5">Actualizar Peritaje</button>
             </div>
         </form>
-
     </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const peritaje = <?php echo json_encode($peritaje); ?>;
-            console.log('Datos peritaje:', peritaje);
-
-            // Función para establecer valores en selects
-            function setSelectValue(selectName, value) {
-                const select = document.querySelector(`select[name="${selectName}"]`);
-                if (select && value) {
-                    // Verificar si el valor existe en las opciones
-                    const optionExists = Array.from(select.options).some(option => option.value === value);
-                    if (optionExists) {
-                        select.value = value;
-                        // Disparar evento change para selects específicos
-                        if (selectName === 'rtm' || selectName === 'soat') {
-                            const event = new Event('change');
-                            select.dispatchEvent(event);
-                        }
-                    } else {
-                        console.warn(`Valor '${value}' no encontrado en las opciones de ${selectName}`);
-                    }
-                }
-            }
-
-            // Función para establecer valores en inputs
-            function setInputValue(inputName, value) {
-                const input = document.querySelector(`[name="${inputName}"]`);
-                if (input && value !== null && value !== undefined) {
-                    if (input.type === 'checkbox') {
-                        input.checked = parseInt(value) === 1;
-                    } else if (input.type === 'date' && value) {
-                        // Asegurarse de que la fecha esté en formato YYYY-MM-DD
-                        const date = new Date(value);
-                        if (!isNaN(date.getTime())) {
-                            input.value = date.toISOString().split('T')[0];
-                        }
-                    } else {
-                        input.value = value;
-                    }
-                }
-            }
-
-            // Mapeo de campos checkbox
-            const checkboxMapping = {
-                'tiene_prenda': 'prenda',
-                'tiene_limitacion': 'limitacion',
-                'debe_impuestos': 'impuestos',
-                'tiene_comparendos': 'comparendos',
-                'vehiculo_rematado': 'rematado'
-            };
-
-            // Establecer valores de checkboxes
-            Object.entries(checkboxMapping).forEach(([dbField, formField]) => {
-                setInputValue(formField, peritaje[dbField]);
-            });
-
-            // Establecer valores de selects
-            const selectFields = [
-                'rtm',
-                'soat',
-                'estado_motor',
-                'estado_chasis',
-                'estado_serial'
-            ];
-
-            selectFields.forEach(field => {
-                setSelectValue(field, peritaje[field]);
-            });
-
-            // Establecer valores de fechas de vencimiento
-            if (peritaje.rtm === 'VIGENTE' || peritaje.rtm === 'NO_VIGENTE') {
-                setInputValue('rtm_fecha_vencimiento', peritaje.rtm_fecha_vencimiento);
-                document.getElementById('rtm_fecha').style.display = 'block';
-            }
-
-            if (peritaje.soat === 'VIGENTE' || peritaje.soat === 'NO_VIGENTE') {
-                setInputValue('soat_fecha_vencimiento', peritaje.soat_fecha_vencimiento);
-                document.getElementById('soat_fecha').style.display = 'block';
-            }
-
-            // Establecer valores de campos de texto y áreas de texto
-            const textFields = [
-                'fecha',
-                'no_servicio',
-                'servicio_para',
-                'convenio',
-                'nombre_apellidos',
-                'identificacion',
-                'telefono',
-                'direccion',
-                'placa',
-                'clase',
-                'marca',
-                'linea',
-                'cilindraje',
-                'servicio',
-                'modelo',
-                'color',
-                'no_chasis',
-                'no_motor',
-                'no_serie',
-                'tipo_carroceria',
-                'organismo_transito',
-                'observaciones',
-                'observaciones_finales'
-            ];
-
-            textFields.forEach(field => {
-                setInputValue(field, peritaje[field]);
-            });
-
-            // Configurar formulario para actualización
-            const form = document.getElementById('peritajeForm');
-            form.action = 'peritaje_basico/Update.php';
-
-            // Agregar campo oculto para ID
-            if (!form.querySelector('input[name="id"]')) {
-                const idInput = document.createElement('input');
-                idInput.type = 'hidden';
-                idInput.name = 'id';
-                idInput.value = peritaje.id;
-                form.appendChild(idInput);
-            }
-        });
-
         // Función para mostrar/ocultar campos de fecha de vencimiento
         function toggleFechaVencimiento(tipo) {
             const select = document.querySelector(`select[name="${tipo}"]`);
@@ -477,9 +378,56 @@ include 'layouts/header.php';
                 });
             }
         });
-    </script>
 
-
+        // Inicialización y depuración cuando carga la página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Datos del peritaje:', <?php echo json_encode($peritaje); ?>);
+            
+            // Depuración de selects
+            const selects = document.querySelectorAll('select');
+            selects.forEach(select => {
+                console.log(`Select ${select.name} actual: ${select.value}`);
+                console.log(`Valor esperado para ${select.name}: ${<?php echo json_encode($peritaje); ?>['${select.name}']}`)
+                
+                // Forzar la selección correcta en caso de que no coincida
+                if (select.name === 'estado_motor' || select.name === 'estado_chasis' || select.name === 'estado_serial') {
+                    const expectedValue = <?php echo json_encode($peritaje); ?>['estado_' + select.name.split('_')[1]];
+                    if (expectedValue) {
+                        Array.from(select.options).forEach(option => {
+                            if (option.value === expectedValue) {
+                                option.selected = true;
+                                console.log(`Forzado select ${select.name} a valor ${expectedValue}`);
+                            }
+                        });
+                    }
+                } else if (select.name === 'rtm') {
+                    const expectedValue = <?php echo json_encode($peritaje['rtm']); ?>;
+                    if (expectedValue) {
+                        Array.from(select.options).forEach(option => {
+                            if (option.value === expectedValue) {
+                                option.selected = true;
+                                console.log(`Forzado select rtm a valor ${expectedValue}`);
+                            }
+                        });
+                    }
+                } else if (select.name === 'soat') {
+                    const expectedValue = <?php echo json_encode($peritaje['soat']); ?>;
+                    if (expectedValue) {
+                        Array.from(select.options).forEach(option => {
+                            if (option.value === expectedValue) {
+                                option.selected = true;
+                                console.log(`Forzado select soat a valor ${expectedValue}`);
+                            }
+                        });
+                    }
+                }
+            });
+            
+            // Ejecutar las funciones de mostrar/ocultar fechas al iniciar
+            toggleFechaVencimiento('rtm');
+            toggleFechaVencimiento('soat');
+        });
+    </script>  
 </div>
 
 <?php include 'layouts/footer.php'; ?>
