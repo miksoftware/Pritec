@@ -110,6 +110,6 @@ try {
 } finally {
     if (isset($stmt)) $stmt->close();
     if (isset($conn)) $conn->close();
-    header('Location: ../L_peritajeB.php');
+    header('Location: ../l_peritajeB.php');
     exit;
 }

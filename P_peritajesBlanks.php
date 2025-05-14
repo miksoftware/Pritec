@@ -70,7 +70,7 @@ include 'layouts/header.php';
                 </div>
                 
                 <div class="text-center mt-4">
-                    <a href="Dashboard.php" class="btn btn-secondary">
+                    <a href="dashboard.php" class="btn btn-secondary">
                         <i class="fas fa-arrow-left me-2"></i> Volver al Panel
                     </a>
                 </div>

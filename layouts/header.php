@@ -9,10 +9,10 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 $menu_items = [
-  ['icon' => 'fa-home', 'text' => 'Dashboard', 'link' => 'Dashboard.php'],
-  ['icon' => 'fa-file-lines', 'text' => 'Peritaje Basico', 'link' => 'L_peritajeB.php'],
-  ['icon' => 'fa-file-lines', 'text' => 'Peritaje Completo', 'link' => 'L_peritajeC.php'],
-  ['icon' => 'fa-print', 'text' => 'Impresion en Blanco', 'link' => 'P_peritajesBlanks.php'],
+  ['icon' => 'fa-home', 'text' => 'dashboard', 'link' => 'dashboard.php'],
+  ['icon' => 'fa-file-lines', 'text' => 'Peritaje Basico', 'link' => 'l_peritajeB.php'],
+  ['icon' => 'fa-file-lines', 'text' => 'Peritaje Completo', 'link' => 'l_peritajeC.php'],
+  ['icon' => 'fa-print', 'text' => 'Impresion en Blanco', 'link' => 'p_peritajesBlanks.php'],
 ];
 ?>
 <!DOCTYPE html>

@@ -192,7 +192,7 @@ try {
 } finally {
     if (isset($stmt)) $stmt->close();
     if (isset($conn)) $conn->close();
-    header('Location: ../L_peritajeC.php');
+    header('Location: ../l_peritajeC.php');
     exit;
 }
 ?>

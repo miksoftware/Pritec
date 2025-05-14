@@ -11,7 +11,7 @@ if (!isset($_SESSION['usuario'])) {
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if ($id === 0) {
     $_SESSION['error'] = "ID de peritaje no válido";
-    header('Location: L_peritajeB.php');
+    header('Location: l_peritajeB.php');
     exit;
 }
 
@@ -24,7 +24,7 @@ require_once dirname(__FILE__) . '/Enums/ImprontaEnum.php';
 $peritaje = obtenerPeritajePorId($id);
 if (!$peritaje) {
     $_SESSION['error'] = "Peritaje no encontrado";
-    header('Location: L_peritajeB.php');
+    header('Location: l_peritajeB.php');
     exit;
 }
 
@@ -306,7 +306,7 @@ include 'layouts/header.php';
                 </div>
             </div>
             <div class="text-center mt-4 d-flex justify-content-center gap-3">
-                <a href="L_peritajeB.php" class="btn btn-secondary px-5">Volver</a>
+                <a href="l_peritajeB.php" class="btn btn-secondary px-5">Volver</a>
                 <button type="submit" class="btn btn-primary px-5">Actualizar Peritaje</button>
             </div>
         </form>

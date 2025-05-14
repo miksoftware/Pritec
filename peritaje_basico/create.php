@@ -171,7 +171,7 @@ $stmt->bind_param($types,
     if(isset($conn)) {
         error_log("Error MySQL: " . $conn->error);
     }
-    header('Location: ../C_peritajeB.php');
+    header('Location: ../c_peritajeB.php');
     exit;
 
 } finally {

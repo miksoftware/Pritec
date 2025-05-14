@@ -182,7 +182,7 @@ try {
     $conn->commit();
 
     $_SESSION['success'] = "Peritaje guardado correctamente";
-    header('Location: ../L_peritajeC.php');
+    header('Location: ../l_peritajeC.php');
     exit;
 } catch (Exception $e) {
     if (isset($conn) && $conn->ping()) {

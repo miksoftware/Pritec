@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     
     if ($login->iniciarSesion($email, $password)) {
-        header("Location: Dashboard.php");
+        header("Location: dashboard.php");
         exit();
     } else {
         $error = "Credenciales incorrectas";

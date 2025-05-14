@@ -7,7 +7,7 @@ include 'layouts/header.php';
     <div class="card mt-4">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h3 class="card-title mb-0">Listado de Peritajes</h3>
-        <a href="C_peritajeB.php" class="btn btn-primary">
+        <a href="c_peritajeB.php" class="btn btn-primary">
             <i class="fas fa-plus"></i> Nuevo
         </a>
     </div>
@@ -71,7 +71,7 @@ $(document).ready(function() {
 });
 
 function editarPeritaje(id) {
-    window.location.href = `E_peritajeB.php?id=${id}`;
+    window.location.href = `e_peritajeB.php?id=${id}`;
 }
 
 function eliminarPeritaje(id) {
@@ -120,7 +120,7 @@ function eliminarPeritaje(id) {
 }
 
 function imprimirPeritaje(id) {
-    window.open(`P_peritajeB.php?id=${id}`, '_blank');
+    window.open(`p_peritajeB.php?id=${id}`, '_blank');
 }
 </script>
 

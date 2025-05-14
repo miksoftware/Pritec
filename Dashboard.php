@@ -56,9 +56,9 @@ $conn->close();
 ?>
 
 <div id="content" class="container-fluid py-4">
-    <!-- Encabezado del Dashboard -->
+    <!-- Encabezado del dashboard -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Dashboard PRITEC</h1>
+        <h1 class="h3 mb-0 text-gray-800">dashboard PRITEC</h1>
         <div>
             <button class="btn btn-primary btn-sm me-2">
                 <i class="fas fa-download fa-sm me-2"></i>Generar Reporte
@@ -158,21 +158,21 @@ $conn->close();
                 </div>
                 <div class="card-body">
                     <div class="list-group">
-                        <a href="C_peritajeB.php" class="list-group-item list-group-item-action">
+                        <a href="c_peritajeB.php" class="list-group-item list-group-item-action">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">Crear Peritaje Básico</h5>
                                 <i class="fas fa-arrow-right"></i>
                             </div>
                             <p class="mb-1">Iniciar un nuevo formato de peritaje básico</p>
                         </a>
-                        <a href="C_peritajeC.php" class="list-group-item list-group-item-action">
+                        <a href="c_peritajeC.php" class="list-group-item list-group-item-action">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">Crear Peritaje Completo</h5>
                                 <i class="fas fa-arrow-right"></i>
                             </div>
                             <p class="mb-1">Iniciar un nuevo formato de peritaje completo</p>
                         </a>
-                        <a href="P_peritajesBlanks.php" class="list-group-item list-group-item-action">
+                        <a href="p_peritajesBlanks.php" class="list-group-item list-group-item-action">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">Formatos en Blanco</h5>
                                 <i class="fas fa-arrow-right"></i>
@@ -244,7 +244,7 @@ $conn->close();
                         </table>
                     </div>
                     <div class="text-center mt-3">
-                        <a href="L_peritajeB.php" class="btn btn-sm btn-primary">
+                        <a href="l_peritajeB.php" class="btn btn-sm btn-primary">
                             Ver todos los peritajes <i class="fas fa-chevron-right ml-1"></i>
                         </a>
                     </div>

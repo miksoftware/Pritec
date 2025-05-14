@@ -8,7 +8,7 @@ include 'layouts/header.php';
 // Validar que se reciba un ID
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     $_SESSION['error'] = "ID de peritaje no especificado";
-    header('Location: L_peritajeC.php');
+    header('Location: l_peritajeC.php');
     exit;
 }
 
@@ -25,7 +25,7 @@ try {
 
     if ($result->num_rows === 0) {
         $_SESSION['error'] = "Peritaje no encontrado";
-        header('Location: L_peritajeC.php');
+        header('Location: l_peritajeC.php');
         exit;
     }
 
@@ -56,7 +56,7 @@ try {
     $conn->close();
 } catch (Exception $e) {
     $_SESSION['error'] = "Error al cargar el peritaje: " . $e->getMessage();
-    header('Location: L_peritajeC.php');
+    header('Location: l_peritajeC.php');
     exit;
 }
 
@@ -744,7 +744,7 @@ $tiposChasis = [
             </div>
 
             <div class="text-center mt-4">
-                <a href="L_peritajeC.php" class="btn btn-secondary px-4 me-2">Cancelar</a>
+                <a href="l_peritajeC.php" class="btn btn-secondary px-4 me-2">Cancelar</a>
                 <button type="submit" class="btn btn-primary px-5">Actualizar Peritaje</button>
             </div>
         </form>

@@ -11,7 +11,7 @@ if (!isset($_SESSION['usuario'])) {
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if ($id === 0) {
     $_SESSION['error'] = "ID de peritaje no válido";
-    header('Location: L_peritajeB.php');
+    header('Location: l_peritajeB.php');
     exit;
 }
 
@@ -24,7 +24,7 @@ $peritaje = obtenerPeritajePorId($id);
 
 if (!$peritaje) {
     $_SESSION['error'] = "Peritaje no encontrado";
-    header('Location: L_peritajeB.php');
+    header('Location: l_peritajeB.php');
     exit;
 }
 
