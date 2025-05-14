@@ -1,10 +1,22 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
 require_once '../conexion/conexion.php';
+require_once '../Enums/SeguroEnum.php';
+require_once '../Enums/ImprontaEnum.php';
 
 try {
+    // Debug para ver qué datos están llegando
+    error_log("POST data: " . print_r($_POST, true));
+    error_log("FILES data: " . print_r($_FILES, true));
+
     $conexion = new Conexion();
     $conn = $conexion->conectar();
+    
+    // Iniciar transacción
+    $conn->begin_transaction();
 
     // Validación de campos obligatorios
     if (empty($_POST['placa']) || empty($_POST['fecha']) || empty($_POST['nombre_apellidos']) || empty($_POST['identificacion'])) {
@@ -18,160 +30,233 @@ try {
     $tiene_comparendos = isset($_POST['comparendos']) ? 1 : 0;
     $vehiculo_rematado = isset($_POST['rematado']) ? 1 : 0;
 
-    // Inicializar variables para archivos
+    // Directorio de subida seguro
+    $uploadDir = '../uploads/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+    // Validación y subida de imágenes
+    $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+    
+    // Procesamiento de la licencia frontal
     $licencia_frente_nombre = '';
+    if (isset($_FILES['licencia_frente']) && $_FILES['licencia_frente']['error'] === UPLOAD_ERR_OK && $_FILES['licencia_frente']['size'] > 0) {
+        $file_ext = strtolower(pathinfo($_FILES['licencia_frente']['name'], PATHINFO_EXTENSION));
+        if (!in_array($file_ext, $allowed_extensions)) {
+            throw new Exception("Formato de archivo no permitido para licencia frente: $file_ext");
+        }
+        $licencia_frente_nombre = uniqid() . '_' . basename($_FILES['licencia_frente']['name']);
+        if (!move_uploaded_file($_FILES['licencia_frente']['tmp_name'], $uploadDir . $licencia_frente_nombre)) {
+            throw new Exception("Error al subir la imagen de licencia (frente)");
+        }
+    }
+
+    // Procesamiento de la licencia trasera
     $licencia_atras_nombre = '';
-
-    // Procesamiento de archivos
-    if (isset($_FILES['licencia_frente']) && $_FILES['licencia_frente']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = '../uploads/';
-        if (!file_exists($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
+    if (isset($_FILES['licencia_atras']) && $_FILES['licencia_atras']['error'] === UPLOAD_ERR_OK && $_FILES['licencia_atras']['size'] > 0) {
+        $file_ext = strtolower(pathinfo($_FILES['licencia_atras']['name'], PATHINFO_EXTENSION));
+        if (!in_array($file_ext, $allowed_extensions)) {
+            throw new Exception("Formato de archivo no permitido para licencia atrás: $file_ext");
         }
-        $licencia_frente_nombre = uniqid() . '_' . $_FILES['licencia_frente']['name'];
-        move_uploaded_file($_FILES['licencia_frente']['tmp_name'], $uploadDir . $licencia_frente_nombre);
+        $licencia_atras_nombre = uniqid() . '_' . basename($_FILES['licencia_atras']['name']);
+        if (!move_uploaded_file($_FILES['licencia_atras']['tmp_name'], $uploadDir . $licencia_atras_nombre)) {
+            throw new Exception("Error al subir la imagen de licencia (atrás)");
+        }
     }
 
-    if (isset($_FILES['licencia_atras']) && $_FILES['licencia_atras']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = '../uploads/';
-        if (!file_exists($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
-        $licencia_atras_nombre = uniqid() . '_' . $_FILES['licencia_atras']['name'];
-        move_uploaded_file($_FILES['licencia_atras']['tmp_name'], $uploadDir . $licencia_atras_nombre);
+    // Convertir los valores de los ENUMs a minúsculas para la base de datos
+    // Para revision_tecnicomecanica y soat
+    $rtm_valor = isset($_POST['rtm']) ? strtolower($_POST['rtm']) : '';
+    if ($rtm_valor === 'no_aplica' || $rtm_valor === 'no aplica') {
+        $rtm_valor = 'no_aplica';
+    } elseif ($rtm_valor === 'vigente') {
+        $rtm_valor = 'vigente';
+    } elseif ($rtm_valor === 'no_vigente' || $rtm_valor === 'no vigente') {
+        $rtm_valor = 'no_vigente';
     }
 
-    // Asegurar que todos los campos existan, incluso vacíos
-    $fields = [
-        'placa' => $_POST['placa'] ?? '',
-        'fecha' => $_POST['fecha'] ?? '',
-        'no_servicio' => $_POST['no_servicio'] ?? '',
-        'servicio_para' => $_POST['servicio_para'] ?? '',
-        'convenio' => $_POST['convenio'] ?? '',
-        'nombre_apellidos' => $_POST['nombre_apellidos'] ?? '',
-        'identificacion' => $_POST['identificacion'] ?? '',
-        'telefono' => $_POST['telefono'] ?? '',
-        'direccion' => $_POST['direccion'] ?? '',
-        'clase' => $_POST['clase'] ?? '',
-        'marca' => $_POST['marca'] ?? '',
-        'linea' => $_POST['linea'] ?? '',
-        'cilindraje' => $_POST['cilindraje'] ?? '',
-        'servicio' => $_POST['servicio'] ?? '',
-        'modelo' => $_POST['modelo'] ?? '',
-        'color' => $_POST['color'] ?? '',
-        'no_chasis' => $_POST['no_chasis'] ?? '',
-        'no_motor' => $_POST['no_motor'] ?? '',
-        'no_serie' => $_POST['no_serie'] ?? '',
-        'tipo_carroceria' => $_POST['tipo_carroceria'] ?? '',
-        'organismo_transito' => $_POST['organismo_transito'] ?? '',
-        'rtm' => $_POST['rtm'] ?? '',
-        'rtm_fecha_vencimiento' => $_POST['rtm_fecha_vencimiento'] ?? '',
-        'soat' => $_POST['soat'] ?? '',
-        'soat_fecha_vencimiento' => $_POST['soat_fecha_vencimiento'] ?? '',
-        'observaciones' => $_POST['observaciones'] ?? '',
-        'estado_motor' => $_POST['estado_motor'] ?? '',
-        'estado_chasis' => $_POST['estado_chasis'] ?? '',
-        'estado_serial' => $_POST['estado_serial'] ?? '',
-        'observaciones_finales' => $_POST['observaciones_finales'] ?? ''
+    $soat_valor = isset($_POST['soat']) ? strtolower($_POST['soat']) : '';
+    if ($soat_valor === 'no_aplica' || $soat_valor === 'no aplica') {
+        $soat_valor = 'no_aplica';
+    } elseif ($soat_valor === 'vigente') {
+        $soat_valor = 'vigente';
+    } elseif ($soat_valor === 'no_vigente' || $soat_valor === 'no vigente') {
+        $soat_valor = 'no_vigente';
+    }
+
+    // Para estado_motor, estado_chasis y estado_serial
+    $estado_motor = isset($_POST['estado_motor']) ? strtolower($_POST['estado_motor']) : '';
+    if ($estado_motor === 'original') {
+        $estado_motor = 'original';
+    } elseif ($estado_motor === 'regrabado') {
+        $estado_motor = 'regrabado';
+    } elseif ($estado_motor === 'grabado_no_original' || $estado_motor === 'grabado no original') {
+        $estado_motor = 'grabado_no_original';
+    }
+
+    $estado_chasis = isset($_POST['estado_chasis']) ? strtolower($_POST['estado_chasis']) : '';
+    if ($estado_chasis === 'original') {
+        $estado_chasis = 'original';
+    } elseif ($estado_chasis === 'regrabado') {
+        $estado_chasis = 'regrabado';
+    } elseif ($estado_chasis === 'grabado_no_original' || $estado_chasis === 'grabado no original') {
+        $estado_chasis = 'grabado_no_original';
+    }
+
+    $estado_serial = isset($_POST['estado_serial']) ? strtolower($_POST['estado_serial']) : '';
+    if ($estado_serial === 'original') {
+        $estado_serial = 'original';
+    } elseif ($estado_serial === 'regrabado') {
+        $estado_serial = 'regrabado';
+    } elseif ($estado_serial === 'grabado_no_original' || $estado_serial === 'grabado no original') {
+        $estado_serial = 'grabado_no_original';
+    }
+
+    // Manejo de fechas vacías
+    $rtm_fecha_vencimiento = !empty($_POST['rtm_fecha_vencimiento']) ? $_POST['rtm_fecha_vencimiento'] : null;
+    $soat_fecha_vencimiento = !empty($_POST['soat_fecha_vencimiento']) ? $_POST['soat_fecha_vencimiento'] : null;
+
+    // Definir columnas explícitamente
+    $columnas = [
+        'placa', 'fecha', 'no_servicio', 'servicio_para', 'convenio',
+        'nombre_apellidos', 'identificacion', 'telefono', 'direccion',
+        'clase', 'marca', 'linea', 'cilindraje', 'servicio', 'modelo', 'color',
+        'no_chasis', 'no_motor', 'no_serie', 'tipo_carroceria', 'organismo_transito',
+        'tiene_prenda', 'tiene_limitacion', 'debe_impuestos', 'tiene_comparendos', 'vehiculo_rematado',
+        'revision_tecnicomecanica'
     ];
 
-   // Modificar la consulta SQL para especificar exactamente las columnas que vamos a insertar
-$query = "INSERT INTO peritaje_basico (
-    placa, fecha, no_servicio, servicio_para, convenio,
-    nombre_apellidos, identificacion, telefono, direccion,
-    clase, marca, linea, cilindraje, servicio, modelo, color,
-    no_chasis, no_motor, no_serie, tipo_carroceria, organismo_transito,
-    tiene_prenda, tiene_limitacion, debe_impuestos, tiene_comparendos, vehiculo_rematado,
-    revision_tecnicomecanica, rtm_fecha_vencimiento,
-    soat, soat_fecha_vencimiento, observaciones,
-    licencia_frente, licencia_atras,
-    estado_motor, estado_chasis, estado_serial, observaciones_finales
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    // Valores iniciales en el mismo orden
+    $valores = [
+        $_POST['placa'] ?? '',
+        $_POST['fecha'] ?? '',
+        $_POST['no_servicio'] ?? '',
+        $_POST['servicio_para'] ?? '',
+        $_POST['convenio'] ?? '',
+        $_POST['nombre_apellidos'] ?? '',
+        $_POST['identificacion'] ?? '',
+        $_POST['telefono'] ?? '',
+        $_POST['direccion'] ?? '',
+        $_POST['clase'] ?? '',
+        $_POST['marca'] ?? '',
+        $_POST['linea'] ?? '',
+        $_POST['cilindraje'] ?? '',
+        $_POST['servicio'] ?? '',
+        $_POST['modelo'] ?? '',
+        $_POST['color'] ?? '',
+        $_POST['no_chasis'] ?? '',
+        $_POST['no_motor'] ?? '',
+        $_POST['no_serie'] ?? '',
+        $_POST['tipo_carroceria'] ?? '',
+        $_POST['organismo_transito'] ?? '',
+        $tiene_prenda,
+        $tiene_limitacion,
+        $debe_impuestos,
+        $tiene_comparendos,
+        $vehiculo_rematado,
+        $rtm_valor
+    ];
 
-$stmt = $conn->prepare($query);
+    // Añadir columnas y valores de forma condicional para las fechas
+    if ($rtm_fecha_vencimiento !== null) {
+        $columnas[] = 'rtm_fecha_vencimiento';
+        $valores[] = $rtm_fecha_vencimiento;
+    }
 
-if (!$stmt) {
-    throw new Exception("Error en la preparación de la consulta: " . $conn->error);
-}
+    $columnas[] = 'soat';
+    $valores[] = $soat_valor;
 
-foreach(['rtm_fecha_vencimiento', 'soat_fecha_vencimiento'] as $fecha_campo) {
-    $fields[$fecha_campo] = !empty($fields[$fecha_campo]) ? $fields[$fecha_campo] : null;
-}
+    if ($soat_fecha_vencimiento !== null) {
+        $columnas[] = 'soat_fecha_vencimiento';
+        $valores[] = $soat_fecha_vencimiento;
+    }
 
-// Modificar el tipo de parámetro en la cadena de tipos
-$types = '';
-$params = [];
+    // Añadir el resto de las columnas
+    $columnas = array_merge($columnas, [
+        'observaciones',
+        'licencia_frente', 'licencia_atras',
+        'estado_motor', 'estado_chasis', 'estado_serial', 'observaciones_finales'
+    ]);
+    
+    // Añadir el resto de los valores
+    $valores = array_merge($valores, [
+        $_POST['observaciones'] ?? '',
+        $licencia_frente_nombre,
+        $licencia_atras_nombre,
+        $estado_motor,
+        $estado_chasis,
+        $estado_serial,
+        $_POST['observaciones_finales'] ?? ''
+    ]);
 
-// Primeros 21 parámetros string
-for($i = 0; $i < 21; $i++) {
-    $types .= 's';
-}
+    // Generar placeholders dinámicamente
+    $placeholders = implode(',', array_fill(0, count($columnas), '?'));
+    
+    // Construir consulta SQL
+    $query = "INSERT INTO peritaje_basico (" . implode(',', $columnas) . ") VALUES ($placeholders)";
+    
+    error_log("SQL Query: " . $query);
+    error_log("Values count: " . count($valores));
+    
+    // Imprimir valores para depuración
+    error_log("RTM valor: " . $rtm_valor);
+    error_log("RTM fecha: " . ($rtm_fecha_vencimiento ?? 'NULL'));
+    error_log("SOAT valor: " . $soat_valor);
+    error_log("SOAT fecha: " . ($soat_fecha_vencimiento ?? 'NULL'));
+    error_log("Estado motor: " . $estado_motor);
+    error_log("Estado chasis: " . $estado_chasis);
+    error_log("Estado serial: " . $estado_serial);
 
-// 5 parámetros TINYINT (booleanos)
-$types .= 'iiiii';
-
-// Último bloque incluyendo fechas
-$types .= 's'; // rtm
-$types .= empty($fields['rtm_fecha_vencimiento']) ? 's' : 's';  // rtm_fecha_vencimiento
-$types .= 's'; // soat
-$types .= empty($fields['soat_fecha_vencimiento']) ? 's' : 's';  // soat_fecha_vencimiento
-$types .= str_repeat('s', 7); // resto de campos
-
-$stmt->bind_param($types,
-    $fields['placa'],
-    $fields['fecha'],
-    $fields['no_servicio'],
-    $fields['servicio_para'],
-    $fields['convenio'],
-    $fields['nombre_apellidos'],
-    $fields['identificacion'],
-    $fields['telefono'],
-    $fields['direccion'],
-    $fields['clase'],
-    $fields['marca'],
-    $fields['linea'],
-    $fields['cilindraje'],
-    $fields['servicio'],
-    $fields['modelo'],
-    $fields['color'],
-    $fields['no_chasis'],
-    $fields['no_motor'],
-    $fields['no_serie'],
-    $fields['tipo_carroceria'],
-    $fields['organismo_transito'],
-    $tiene_prenda,
-    $tiene_limitacion,
-    $debe_impuestos,
-    $tiene_comparendos,
-    $vehiculo_rematado,
-    $fields['rtm'],
-    $fields['rtm_fecha_vencimiento'],
-    $fields['soat'],
-    $fields['soat_fecha_vencimiento'],
-    $fields['observaciones'],
-    $licencia_frente_nombre,
-    $licencia_atras_nombre,
-    $fields['estado_motor'],
-    $fields['estado_chasis'],
-    $fields['estado_serial'],
-    $fields['observaciones_finales']
-);
-
+    // Preparar y ejecutar consulta
+    $stmt = $conn->prepare($query);
+    
+    if (!$stmt) {
+        throw new Exception("Error en la preparación de la consulta: " . $conn->error);
+    }
+    
+    // Usar string para todos los parámetros
+    $types = str_repeat('s', count($valores));
+    
+    error_log("Binding parameters with type string: " . $types);
+    
+    // Bind parameters
+    $stmt->bind_param($types, ...$valores);
+    
     if (!$stmt->execute()) {
         throw new Exception("Error al ejecutar la consulta: " . $stmt->error);
     }
-
-    $_SESSION['success'] = "Peritaje guardado correctamente";
-    header('Location: ../admin_panel.php');
+    
+    // Confirmar transacción
+    $conn->commit();
+    
+    $_SESSION['success'] = "Peritaje básico guardado correctamente";
+    header('Location: ../l_peritajeB.php');
     exit;
 
 } catch (Exception $e) {
-    error_log("Error en peritaje: " . $e->getMessage());
+    // Revertir transacción en caso de error
+    if (isset($conn) && $conn->ping()) {
+        $conn->rollback();
+    }
+    
+    error_log("Error en peritaje básico: " . $e->getMessage());
     $_SESSION['error'] = "Error: " . $e->getMessage();
-    if(isset($conn)) {
+    
+    if (isset($conn)) {
         error_log("Error MySQL: " . $conn->error);
     }
-    header('Location: ../c_peritajeB.php');
+    
+    // Para depuración, muestra errores en pantalla
+    echo "<h2>Error: " . htmlspecialchars($e->getMessage()) . "</h2>";
+    if (isset($conn)) {
+        echo "<pre>MySQL: " . htmlspecialchars($conn->error) . "</pre>";
+    }
+    echo "<h3>POST:</h3><pre>" . print_r($_POST, true) . "</pre>";
+    echo "<h3>FILES:</h3><pre>" . print_r($_FILES, true) . "</pre>";
+    
+    // Comentado para mostrar errores en pantalla
+    // header('Location: ../c_peritajeB.php');
     exit;
 
 } finally {
