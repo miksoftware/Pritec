@@ -29,17 +29,17 @@ function obtenerPeritajePorId($id) {
                 $peritaje['fecha'] = date('Y-m-d', strtotime($peritaje['fecha']));
             }
             
-            // Para el campo RTM (revision_tecnicomecanica)
-            $peritaje['rtm'] = $peritaje['revision_tecnicomecanica'] ?? '';
+            // IMPORTANTE: Asignar el valor de revision_tecnicomecanica al campo rtm
+            // Convertir de minúsculas a mayúsculas para que coincida con las constantes ENUM
+            $peritaje['rtm'] = strtoupper($peritaje['revision_tecnicomecanica'] ?? '');
             
-            // Asegurar que los valores de los enums sean exactamente los mismos que en las clases Enum
-            // Para los campos de estado (improntas)
-            $mapeoImprontas = [
-                'ORIGINAL' => ImprontaEnum::ORIGINAL,
-                'REGRABADO' => ImprontaEnum::REGRABADO,
-                'GRABADO_NO_ORIGINAL' => ImprontaEnum::GRABADO_NO_ORIGINAL,
-            ];
+            // Convertir valores de enum a mayúsculas para que coincidan con las constantes
+            $peritaje['soat'] = strtoupper($peritaje['soat'] ?? '');
+            $peritaje['estado_motor'] = strtoupper($peritaje['estado_motor'] ?? '');
+            $peritaje['estado_chasis'] = strtoupper($peritaje['estado_chasis'] ?? '');
+            $peritaje['estado_serial'] = strtoupper($peritaje['estado_serial'] ?? '');
             
+            // Mapeo directo a las constantes ENUM (asegura valores exactos)
             // Para los campos de seguro (SOAT, RTM)
             $mapeoSeguros = [
                 'VIGENTE' => SeguroEnum::VIGENTE,
@@ -47,27 +47,19 @@ function obtenerPeritajePorId($id) {
                 'NO_APLICA' => SeguroEnum::NO_APLICA,
             ];
             
-            // Aplicar mapeo para asegurar valores exactos
-            if (isset($peritaje['estado_motor'])) {
-                $peritaje['estado_motor'] = $mapeoImprontas[$peritaje['estado_motor']] ?? ImprontaEnum::ORIGINAL;
-            }
+            // Para los campos de estado (improntas)
+            $mapeoImprontas = [
+                'ORIGINAL' => ImprontaEnum::ORIGINAL,
+                'REGRABADO' => ImprontaEnum::REGRABADO, 
+                'GRABADO_NO_ORIGINAL' => ImprontaEnum::GRABADO_NO_ORIGINAL,
+            ];
             
-            if (isset($peritaje['estado_chasis'])) {
-                $peritaje['estado_chasis'] = $mapeoImprontas[$peritaje['estado_chasis']] ?? ImprontaEnum::ORIGINAL;
-            }
-            
-            if (isset($peritaje['estado_serial'])) {
-                $peritaje['estado_serial'] = $mapeoImprontas[$peritaje['estado_serial']] ?? ImprontaEnum::ORIGINAL;
-            }
-            
-            if (isset($peritaje['soat'])) {
-                $peritaje['soat'] = $mapeoSeguros[$peritaje['soat']] ?? SeguroEnum::NO_APLICA;
-            }
-            
-            if (isset($peritaje['revision_tecnicomecanica'])) {
-                $peritaje['revision_tecnicomecanica'] = $mapeoSeguros[$peritaje['revision_tecnicomecanica']] ?? SeguroEnum::NO_APLICA;
-                $peritaje['rtm'] = $peritaje['revision_tecnicomecanica']; // Garantizar que rtm tenga el valor correcto
-            }
+            // Verificar y asegurarse que los valores se mapean correctamente
+            $peritaje['rtm'] = isset($mapeoSeguros[$peritaje['rtm']]) ? $peritaje['rtm'] : SeguroEnum::NO_APLICA;
+            $peritaje['soat'] = isset($mapeoSeguros[$peritaje['soat']]) ? $peritaje['soat'] : SeguroEnum::NO_APLICA;
+            $peritaje['estado_motor'] = isset($mapeoImprontas[$peritaje['estado_motor']]) ? $peritaje['estado_motor'] : ImprontaEnum::ORIGINAL;
+            $peritaje['estado_chasis'] = isset($mapeoImprontas[$peritaje['estado_chasis']]) ? $peritaje['estado_chasis'] : ImprontaEnum::ORIGINAL;
+            $peritaje['estado_serial'] = isset($mapeoImprontas[$peritaje['estado_serial']]) ? $peritaje['estado_serial'] : ImprontaEnum::ORIGINAL;
             
             // Asegurar que los campos booleanos están como enteros 0/1
             $booleanFields = ['tiene_prenda', 'tiene_limitacion', 'debe_impuestos', 
@@ -78,14 +70,13 @@ function obtenerPeritajePorId($id) {
                 }
             }
             
-            // Debug para ver qué valores tenemos
-            error_log("Valores disponibles en ImprontaEnum: " . print_r(ImprontaEnum::getOptions(), true));
-            error_log("Valores disponibles en SeguroEnum: " . print_r(SeguroEnum::getOptions(), true));
-            error_log("Valor de estado_motor: " . $peritaje['estado_motor']);
-            error_log("Valor de estado_chasis: " . $peritaje['estado_chasis']);
-            error_log("Valor de estado_serial: " . $peritaje['estado_serial']);
-            error_log("Valor de soat: " . $peritaje['soat']);
-            error_log("Valor de rtm: " . $peritaje['rtm']);
+            // Debug para verificar valores
+            error_log("Valores cargados desde BD:");
+            error_log("RTM: " . $peritaje['rtm'] . " - Original: " . $peritaje['revision_tecnicomecanica']);
+            error_log("SOAT: " . $peritaje['soat']);
+            error_log("Estado motor: " . $peritaje['estado_motor']);
+            error_log("Estado chasis: " . $peritaje['estado_chasis']);
+            error_log("Estado serial: " . $peritaje['estado_serial']);
             
             return $peritaje;
         }
@@ -101,4 +92,3 @@ function obtenerPeritajePorId($id) {
         if (isset($conn)) $conn->close();
     }
 }
-?>

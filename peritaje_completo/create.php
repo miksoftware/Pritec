@@ -46,7 +46,8 @@ try {
         'clase', 'marca', 'linea', 'cilindraje', 'servicio', 'modelo', 'color', 'no_chasis', 'no_motor', 'no_serie', 'tipo_carroceria',
         'organismo_transito', 'llanta_anterior_izquierda', 'llanta_anterior_derecha', 'llanta_posterior_izquierda',
         'llanta_posterior_derecha', 'amortiguador_anterior_izquierdo', 'amortiguador_anterior_derecho',
-        'amortiguador_posterior_izquierdo', 'amortiguador_posterior_derecho', 'prueba_bateria', 'prueba_arranque',
+        'amortiguador_posterior_izquierdo', 'amortiguador_posterior_derecho', 
+        'observaciones_amortiguadores','prueba_escaner','observaciones_escaner','prueba_bateria', 'prueba_arranque',
         'carga_bateria', 'observaciones_bateria', 'fijacion_fotografica_1', 'fijacion_fotografica_2', 'fijacion_fotografica_3',
         'fijacion_fotografica_4', 'fijacion_fotografica_5', 'fijacion_fotografica_6', 'observaciones', 'observaciones2',
         'observaciones_llantas', 'email', 'kilometraje', 'codigo_fasecolda', 'valor_fasecolda', 'valor_sugerido', 'valor_accesorios',
@@ -94,7 +95,7 @@ try {
         'observaciones_motor',
         'observaciones_interior',
         'tipo_chasis',
-        'prueba_escaner'
+        
     ];
 
     $valores = [];

@@ -1,6 +1,6 @@
 <footer class="footer">
     <div class="footer-content">
-        <p>&copy; 2025 MikSoftware. Todos los derechos reservados. Desarrollado con <i class="fas fa-heart"></i> por MikSoftware.</p>
+        <p>&copy; 2025 MikSoftware. Todos los derechos reservados. Desarrollado por MikSoftware.</p>
 
     </div>
 </footer>
