@@ -229,9 +229,10 @@ try {
     
     // Confirmar transacción
     $conn->commit();
-    
-    $_SESSION['success'] = "Peritaje básico guardado correctamente";
-    header('Location: ../l_peritajeB.php');
+
+    $_SESSION['success'] = "Peritaje guardado correctamente";
+    $_SESSION['peritaje_id'] = $peritajeId; // Guardar el ID del peritaje recién creado
+    header('Location: ../c_peritajeB.php?saved=true'); // Redirige de vuelta con parámetro saved
     exit;
 
 } catch (Exception $e) {

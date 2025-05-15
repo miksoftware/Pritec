@@ -3,10 +3,47 @@ session_start();
 require_once 'Enums/SeguroEnum.php';
 require_once 'Enums/ImprontaEnum.php';
 include 'layouts/header.php';
+
+
+// Verificar si se acaba de guardar un peritaje
+$justSaved = isset($_GET['saved']) && $_GET['saved'] === 'true';
+$peritajeId = $_SESSION['peritaje_id'] ?? null;
+// Limpiar la variable de sesión después de usarla
+if (isset($_SESSION['peritaje_id'])) {
+    unset($_SESSION['peritaje_id']);
+}
 ?>
 
 <div id="content">
-    <?php if (isset($_SESSION['error']) || isset($_SESSION['success'])): ?>
+
+ <?php if ($justSaved): ?>
+    <!-- Mensaje de éxito fijo en la parte superior cuando se acaba de guardar -->
+    <div class="alert alert-success alert-dismissible sticky-top shadow-sm" role="alert">
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <i class="fas fa-check-circle fa-lg me-2"></i>
+                <strong>¡Peritaje guardado con éxito!</strong> 
+                <?php echo $peritajeId ? "ID del peritaje: #$peritajeId" : ''; ?>
+            </div>
+            <div>
+                <a href="l_peritajeB.php" class="btn btn-sm btn-outline-success me-2">
+                    <i class="fas fa-list me-1"></i> Ver listado
+                </a>
+                <?php if ($peritajeId): ?>
+                <a href="p_peritajeB.php?id=<?php echo $peritajeId; ?>" class="btn btn-sm btn-outline-primary me-2" target="_blank">
+                    <i class="fas fa-print me-1"></i> Imprimir
+                </a>
+                <a href="e_peritajeB.php?id=<?php echo $peritajeId; ?>" class="btn btn-sm btn-outline-info me-2">
+                    <i class="fas fa-edit me-1"></i> Editar
+                </a>
+                <?php endif; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['error']) || (isset($_SESSION['success']) && !$justSaved)): ?>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 <?php if (isset($_SESSION['error'])): ?>
@@ -22,7 +59,7 @@ include 'layouts/header.php';
                     <?php unset($_SESSION['error']); ?>
                 <?php endif; ?>
 
-                <?php if (isset($_SESSION['success'])): ?>
+                <?php if (isset($_SESSION['success']) && !$justSaved): ?>
                     Swal.fire({
                         title: '¡Éxito!',
                         text: '<?php echo $_SESSION['success']; ?>',
@@ -37,6 +74,7 @@ include 'layouts/header.php';
             });
         </script>
     <?php endif; ?>
+
     <div class="container py-5">
         <h2 class="text-center mb-4">Nuevo Peritaje</h2>
         <form id="peritajeForm" action="peritaje_basico/create.php" method="POST" enctype="multipart/form-data">
@@ -323,6 +361,12 @@ include 'layouts/header.php';
                 fechaDiv.style.display = 'none';
             }
         }
+
+         <?php if ($justSaved): ?>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        <?php endif; ?>
     </script>
 </div>
 
