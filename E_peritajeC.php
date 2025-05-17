@@ -1,11 +1,20 @@
 <?php
 session_start();
+
+// Verificar sesión
+if (!isset($_SESSION['usuario'])) {
+    header('Location: index.php');
+    exit;
+}
+
 require_once 'Enums/SeguroEnum.php';
 require_once 'Enums/ImprontaEnum.php';
 require_once 'Enums/EstadoEnum.php';
 require_once 'conexion/conexion.php';
+
+// Definir constante para evitar salida JSON directa
+define('NO_DIRECT_JSON_OUTPUT', true);
 require_once 'peritaje_completo/Getid.php';
-include 'layouts/header.php';
 
 // Validar que se reciba un ID
 if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -14,7 +23,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
     exit;
 }
 
-$id = $_GET['id'];
+$id = intval($_GET['id']);
 $peritaje = obtenerPeritajePorId($id);
 
 if (!$peritaje || isset($peritaje['error'])) {
@@ -103,6 +112,16 @@ function generarSelectEstado($nombreCampo, $valorActual = "", $requerido = true)
     $html .= "</select>";
     return $html;
 }
+
+// Variables para manejar visualización responsiva
+$titleClass = "h4 mb-4";
+$gridClass = "row g-3";
+$fullWidthCol = "col-12 mb-3";
+$halfCol = "col-md-6 mb-3";
+$thirdCol = "col-md-4 mb-3";
+$quarterCol = "col-md-3 mb-3";
+
+include 'layouts/header.php';
 ?>
 
 <div id="content">

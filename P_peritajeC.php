@@ -7,6 +7,9 @@ if (!isset($_SESSION['usuario'])) {
     exit;
 }
 
+// Definir constante para evitar salida JSON directa
+define('NO_DIRECT_JSON_OUTPUT', true);
+
 // Validar y obtener ID
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if ($id === 0) {

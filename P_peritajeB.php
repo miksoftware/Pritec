@@ -7,6 +7,9 @@ if (!isset($_SESSION['usuario'])) {
     exit;
 }
 
+// Definir constante para evitar salida JSON directa
+define('NO_DIRECT_JSON_OUTPUT', true);
+
 // Validar y obtener ID
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if ($id === 0) {
@@ -22,12 +25,11 @@ require_once dirname(__FILE__) . '/Enums/ImprontaEnum.php';
 // Obtener datos del peritaje
 $peritaje = obtenerPeritajePorId($id);
 
-if (!$peritaje) {
-    $_SESSION['error'] = "Peritaje no encontrado";
+if (!$peritaje || isset($peritaje['error'])) {
+    $_SESSION['error'] = isset($peritaje['error']) ? $peritaje['error'] : "Peritaje no encontrado";
     header('Location: l_peritajeB.php');
     exit;
 }
-
 include 'layouts/empty_header.php';
 ?>
 

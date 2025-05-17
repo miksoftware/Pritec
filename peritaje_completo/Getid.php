@@ -1,5 +1,26 @@
 <?php
+// filepath: c:\laragon\www\Pritec\peritaje_completo\Getid.php
 require_once dirname(__DIR__) . '/conexion/conexion.php';
+
+// Si existen, cargar los Enums
+if (file_exists(dirname(__DIR__) . '/Enums/SeguroEnum.php')) {
+    require_once dirname(__DIR__) . '/Enums/SeguroEnum.php';
+}
+if (file_exists(dirname(__DIR__) . '/Enums/ImprontaEnum.php')) {
+    require_once dirname(__DIR__) . '/Enums/ImprontaEnum.php';
+}
+
+// Detectar si es una llamada AJAX directa, y sólo entonces enviar cabeceras JSON y salida directa
+if (isset($_GET['id']) && !defined('NO_DIRECT_JSON_OUTPUT')) {
+    header('Content-Type: application/json');
+    $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    if ($id) {
+        echo json_encode(obtenerPeritajePorId($id));
+    } else {
+        echo json_encode(['error' => 'ID inválido']);
+    }
+    exit;
+}
 
 function obtenerPeritajePorId($id) {
     try {
@@ -19,6 +40,12 @@ function obtenerPeritajePorId($id) {
             // Formatear fechas si existen
             if (!empty($peritaje['fecha'])) {
                 $peritaje['fecha'] = date('Y-m-d', strtotime($peritaje['fecha']));
+                $peritaje['fecha_formateada'] = date('d/m/Y', strtotime($peritaje['fecha']));
+            }
+            
+            // Formatear fecha de creación
+            if (!empty($peritaje['fecha_creacion'])) {
+                $peritaje['fecha_creacion_formateada'] = date('d/m/Y H:i', strtotime($peritaje['fecha_creacion']));
             }
             
             // Asegurar que los campos para los selects estén correctos
@@ -53,21 +80,67 @@ function obtenerPeritajePorId($id) {
                 }
             }
             
-            // Log para depuración
-            error_log("Peritaje recuperado con ID {$id}: " . print_r($peritaje, true));
+            // Si existen los Enums, mapearlos
+            if (class_exists('ImprontaEnum')) {
+                // Mapear enums para interfaz
+                $mapeoImprontas = [
+                    'ORIGINAL' => 'ORIGINAL',
+                    'REGRABADO' => 'REGRABADO',
+                    'GRABADO_NO_ORIGINAL' => 'GRABADO_NO_ORIGINAL',
+                ];
+                
+                // Verificar y asegurarse que los valores se mapean correctamente
+                if (isset($peritaje['estado_motor'])) {
+                    $peritaje['estado_motor_valor'] = isset($mapeoImprontas[strtoupper($peritaje['estado_motor'])]) 
+                        ? strtoupper($peritaje['estado_motor']) 
+                        : 'ORIGINAL';
+                }
+                
+                if (isset($peritaje['estado_chasis'])) {
+                    $peritaje['estado_chasis_valor'] = isset($mapeoImprontas[strtoupper($peritaje['estado_chasis'])]) 
+                        ? strtoupper($peritaje['estado_chasis']) 
+                        : 'ORIGINAL';
+                }
+                
+                if (isset($peritaje['estado_serial'])) {
+                    $peritaje['estado_serial_valor'] = isset($mapeoImprontas[strtoupper($peritaje['estado_serial'])]) 
+                        ? strtoupper($peritaje['estado_serial']) 
+                        : 'ORIGINAL';
+                }
+            }
+            
+            // Asegurar que los campos booleanos están como enteros 0/1
+            $booleanFields = [
+                'tiene_prenda', 'tiene_limitacion', 'debe_impuestos', 
+                'tiene_comparendos', 'vehiculo_rematado'
+            ];
+            
+            foreach ($booleanFields as $field) {
+                if (isset($peritaje[$field])) {
+                    $peritaje[$field] = (int)$peritaje[$field];
+                } else {
+                    $peritaje[$field] = 0;
+                }
+            }
+            
+            // Asegurar que no hay datos null
+            foreach ($peritaje as $key => $value) {
+                if ($value === null) {
+                    $peritaje[$key] = '';
+                }
+            }
             
             return $peritaje;
         }
         
-        error_log("No se encontró peritaje con ID: $id");
-        return null;
+        error_log("No se encontró peritaje completo con ID: $id");
+        return ['error' => 'No se encontró el peritaje solicitado'];
         
     } catch (Exception $e) {
         error_log("Error al obtener peritaje completo: " . $e->getMessage());
-        return array('error' => $e->getMessage());
+        return ['error' => 'Error al cargar los datos: ' . $e->getMessage()];
     } finally {
         if (isset($stmt)) $stmt->close();
         if (isset($conn)) $conn->close();
     }
 }
-?>

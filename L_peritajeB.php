@@ -1,4 +1,5 @@
 <?php
+// filepath: c:\laragon\www\Pritec\l_peritajeB.php
 session_start();
 include 'layouts/header.php';
 ?>
@@ -12,7 +13,8 @@ include 'layouts/header.php';
                         icon: 'success',
                         title: '¡Operación exitosa!',
                         text: '<?php echo $_SESSION["success"]; ?>',
-                        confirmButtonText: 'Aceptar'
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor: 'var(--primary-color, #3f51b5)'
                     });
                     <?php unset($_SESSION['success']); ?>
                 <?php endif; ?>
@@ -30,35 +32,34 @@ include 'layouts/header.php';
         </script>
     <?php endif; ?>
 
-    <div class="card shadow-sm mt-4">
-        <div class="card-header bg-black text-white d-flex justify-content-between align-items-center">
-            <h3 class="card-title mb-0">
+    <div class="card shadow mt-3 mb-4">
+        <div class="card-header bg-black text-white d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <h3 class="card-title mb-0 h5">
                 <i class="fas fa-clipboard me-2"></i>Listado de Peritajes Básicos
             </h3>
-            <a href="c_peritajeB.php" class="btn btn-light">
+            <a href="c_peritajeB.php" class="btn btn-light btn-sm">
                 <i class="fas fa-plus me-1"></i> Nuevo Peritaje
             </a>
         </div>
         <div class="card-body">
-                       
+            
+            <!-- Tabla responsive -->
             <div class="table-responsive">
-                <table id="tablaPeriajes" class="table table-striped table-hover border">
+                <table id="tablaPeriajes" class="table table-sm table-striped table-hover border">
                     <thead class="table-light">
                         <tr>
                             <th>ID</th>
                             <th>Solicitante</th>
-                            <th>Identificación</th>
+                            <th class="d-none d-md-table-cell">Identificación</th>
                             <th>Placa</th>
-                            <th>Teléfono</th>
-                            <th>Marca</th>
-                            <th>Modelo</th>
-                            <th>Fecha</th>
-                            <th>Creado</th>
-                            <th>Acciones</th>
+                            <th class="d-none d-md-table-cell">Teléfono</th>
+                            <th class="d-none d-lg-table-cell">Marca</th>
+                            <th class="d-none d-lg-table-cell">Modelo</th>
+                            <th class="d-none d-md-table-cell">Fecha</th>
+                            <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Los datos se cargan mediante AJAX -->
                     </tbody>
                 </table>
             </div>
@@ -94,51 +95,70 @@ include 'layouts/header.php';
 
 <script>
 $(document).ready(function() {
-    // Inicializar DataTable con configuración mejorada
+    // Detectar si es dispositivo móvil
+    const isMobile = window.innerWidth < 768;
+    
+    // Inicializar DataTable con configuración optimizada
     var table = $('#tablaPeriajes').DataTable({
         "ajax": {
             "url": "peritaje_basico/List.php",
-            "dataSrc": function(json) {
-                if (json.error) {
-                    Swal.fire('Error', json.error, 'error');
-                    return [];
-                }
-                return json;
-            },
-            "data": function(d) {
-                d.order_by = $('#filterSelect').val();
-                d.order_dir = 'DESC';
+            "type": "GET",
+            "dataSrc": "",
+            "error": function(xhr, error, thrown) {
+                console.error('Error en la carga de datos:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al cargar datos',
+                    text: 'No se pudieron cargar los peritajes. Por favor, intente nuevamente.'
+                });
             }
         },
         "columns": [
             {"data": "id"},
             {"data": "nombre_apellidos"},
-            {"data": "identificacion"},
+            {"data": "identificacion", "className": "d-none d-md-table-cell"},
             {"data": "placa"},
-            {"data": "telefono"},
-            {"data": "marca"},
-            {"data": "modelo"},
-            {"data": "fecha"},
-            {"data": "fecha_creacion"},
+            {"data": "telefono", "className": "d-none d-md-table-cell"},
+            {"data": "marca", "className": "d-none d-lg-table-cell"},
+            {"data": "modelo", "className": "d-none d-lg-table-cell"},
+            {"data": "fecha", "className": "d-none d-md-table-cell"},
             {
                 "data": "id",
-                "render": function(data) {
-                    return `
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="editarPeritaje(${data})" title="Editar">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-info" onclick="imprimirPeritaje(${data})" title="Imprimir">
-                                <i class="fas fa-print"></i>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarPeritaje(${data})" title="Eliminar">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>`;
+                "className": "text-center",
+                "render": function(data, type, row) {
+                    if (isMobile) {
+                        // Vista compacta para móviles
+                        return `
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="vistaPrevia(${data})" title="Ver detalles">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarPeritaje(${data})" title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>`;
+                    } else {
+                        // Vista completa para desktop
+                        return `
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="editarPeritaje(${data})" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-success" onclick="vistaPrevia(${data})" title="Ver detalles">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-info" onclick="imprimirPeritaje(${data})" title="Imprimir">
+                                    <i class="fas fa-print"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarPeritaje(${data})" title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>`;
+                    }
                 }
             }
         ],
-        "order": [[0, 'desc']], // Ordenar por fecha de creación (columna oculta)
+        "order": [[0, 'desc']], 
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"
         },
@@ -154,14 +174,40 @@ $(document).ready(function() {
         }
     });
     
-    // Búsqueda personalizada
+    // Optimización de búsqueda (debounce)
+    let searchTimeout;
     $('#searchInput').on('keyup', function() {
-        table.search($(this).val()).draw();
+        clearTimeout(searchTimeout);
+        const value = $(this).val();
+        searchTimeout = setTimeout(function() {
+            table.search(value).draw();
+        }, 300); // Esperar 300ms para reducir el número de búsquedas
     });
     
     // Filtro personalizado
     $('#filterSelect').on('change', function() {
-        table.ajax.reload();
+        const orderBy = $(this).val();
+        $.ajax({
+            url: 'peritaje_basico/List.php',
+            type: 'GET',
+            data: { order_by: orderBy, order_dir: 'DESC' },
+            dataType: 'json',
+            success: function(data) {
+                table.clear().rows.add(data).draw();
+            },
+            error: function() {
+                Swal.fire('Error', 'No se pudieron actualizar los datos', 'error');
+            }
+        });
+    });
+    
+    // Adaptar a cambios de tamaño de pantalla
+    $(window).resize(function() {
+        const newIsMobile = window.innerWidth < 768;
+        if (newIsMobile !== isMobile) {
+            // Si cambia el tamaño de la pantalla, recargar la tabla
+            table.ajax.reload();
+        }
     });
 });
 
@@ -176,7 +222,7 @@ function vistaPrevia(id) {
     modal.show();
     
     // Cargar contenido
-    $('#previewContent').html('<div class="d-flex justify-content-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div></div>');
+    $('#previewContent').html('<div class="d-flex justify-content-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div></div>');
     
     // Configurar el botón de imprimir
     $('#printFromPreview').off('click').on('click', function() {
@@ -185,7 +231,7 @@ function vistaPrevia(id) {
     
     // Cargar datos del peritaje
     $.ajax({
-        url: 'peritaje_basico/Get.php',
+        url: 'peritaje_basico/Getid.php',
         type: 'GET',
         data: { id: id },
         dataType: 'json',
@@ -195,43 +241,63 @@ function vistaPrevia(id) {
                 return;
             }
             
-            // Construir vista previa
+            // Construir vista previa mejorada
             let html = `
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Datos del Peritaje Básico #${data.id}</h5>
-                        <div class="row">
+                <div class="card border-0 mb-3">
+                    <div class="card-body px-0">
+                        <h5 class="card-title border-bottom pb-2 mb-3">Datos del Peritaje Básico #${data.id}</h5>
+                        
+                        <div class="row g-3">
                             <div class="col-md-6">
-                                <p><strong>Solicitante:</strong> ${data.nombre_apellidos}</p>
-                                <p><strong>Identificación:</strong> ${data.identificacion}</p>
-                                <p><strong>Teléfono:</strong> ${data.telefono || 'No registrado'}</p>
-                                <p><strong>Fecha:</strong> ${data.fecha}</p>
+                                <div class="card h-100 bg-light">
+                                    <div class="card-header bg-primary bg-opacity-10">
+                                        <strong><i class="fas fa-user me-2"></i>Información del Solicitante</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="mb-2"><strong>Nombre:</strong> ${data.nombre_apellidos || 'No registrado'}</p>
+                                        <p class="mb-2"><strong>Identificación:</strong> ${data.identificacion || 'No registrada'}</p>
+                                        <p class="mb-0"><strong>Teléfono:</strong> ${data.telefono || 'No registrado'}</p>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                <p><strong>Placa:</strong> ${data.placa}</p>
-                                <p><strong>Marca:</strong> ${data.marca || 'No registrada'}</p>
-                                <p><strong>Modelo:</strong> ${data.modelo || 'No registrado'}</p>
-                                <p><strong>Color:</strong> ${data.color || 'No registrado'}</p>
+                                <div class="card h-100 bg-light">
+                                    <div class="card-header bg-primary bg-opacity-10">
+                                        <strong><i class="fas fa-car me-2"></i>Información del Vehículo</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="mb-2"><strong>Placa:</strong> ${data.placa ? data.placa.toUpperCase() : 'No registrada'}</p>
+                                        <p class="mb-2"><strong>Marca:</strong> ${data.marca || 'No especificada'}</p>
+                                        <p class="mb-2"><strong>Modelo:</strong> ${data.modelo || 'No especificado'}</p>
+                                        <p class="mb-0"><strong>Color:</strong> ${data.color || 'No especificado'}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="e_peritajeB.php?id=${data.id}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-edit me-1"></i> Editar
+                            </a>
+                            <button type="button" class="btn btn-sm btn-outline-success" onclick="imprimirPeritaje(${data.id})">
+                                <i class="fas fa-print me-1"></i> Imprimir
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="text-center">
-                    <p class="text-muted">Para ver el reporte completo, haz clic en "Imprimir"</p>
                 </div>
             `;
             
             $('#previewContent').html(html);
         },
         error: function() {
-            $('#previewContent').html('<div class="alert alert-danger">Error al cargar los datos del peritaje</div>');
+            $('#previewContent').html('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error al cargar los datos del peritaje</div>');
         }
     });
 }
 
 function eliminarPeritaje(id) {
     Swal.fire({
-        title: '¿Está seguro?',
+        title: '¿Eliminar peritaje?',
         text: "Esta acción no se puede deshacer",
         icon: 'warning',
         showCancelButton: true,
@@ -241,6 +307,16 @@ function eliminarPeritaje(id) {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
+            // Mostrar loader mientras se procesa la eliminación
+            Swal.fire({
+                title: 'Eliminando...',
+                html: 'Por favor espere',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
             $.ajax({
                 url: 'peritaje_basico/UpdateStatus.php',
                 type: 'POST',
@@ -279,6 +355,24 @@ function eliminarPeritaje(id) {
 }
 
 function imprimirPeritaje(id) {
+    // Mostrar indicador de carga antes de abrir la ventana
+    const loadingToast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    loadingToast.fire({
+        icon: 'info',
+        title: 'Generando documento para impresión...'
+    });
+    
     window.open(`p_peritajeB.php?id=${id}`, '_blank');
 }
 </script>
