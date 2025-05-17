@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `inspeccion_visual_chasis` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `peritaje_id` (`peritaje_id`) USING BTREE,
   CONSTRAINT `inspeccion_visual_chasis_ibfk_1` FOREIGN KEY (`peritaje_id`) REFERENCES `peritaje_completo` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Volcando datos para la tabla pritec.inspeccion_visual_chasis: ~12 rows (aproximadamente)
 INSERT INTO `inspeccion_visual_chasis` (`id`, `peritaje_id`, `descripcion_pieza`, `concepto`, `created_at`) VALUES
@@ -63,11 +63,11 @@ INSERT INTO `inspeccion_visual_chasis` (`id`, `peritaje_id`, `descripcion_pieza`
 	(12, 11, '9', '9', '2025-05-14 20:29:43'),
 	(13, 14, '7', '7', '2025-05-14 20:32:52'),
 	(14, 15, '8', '8', '2025-05-15 03:18:23'),
-	(16, 17, 'BBBBBBBBBBB', 'JJJJJJJJJJJ', '2025-05-15 04:41:21'),
-	(17, 17, 'JJJJJJJJJJJ', 'JJJJJJJJJJ', '2025-05-15 04:41:21'),
-	(18, 17, 'BBBBBBBBBBBBBB', 'BBBBBBBBBBB', '2025-05-15 04:41:21'),
-	(19, 17, 'BBBBBBBBBBV', 'VVVVVVVVVV', '2025-05-15 04:41:21'),
-	(20, 16, '9', '9', '2025-05-15 04:49:41');
+	(20, 16, '9', '9', '2025-05-15 04:49:41'),
+	(21, 17, 'BBBBBBBBBBB', 'JJJJJJJJJJJ', '2025-05-17 02:17:34'),
+	(22, 17, 'JJJJJJJJJJJ', 'JJJJJJJJJJ', '2025-05-17 02:17:34'),
+	(23, 17, 'BBBBBBBBBBBBBB', 'BBBBBBBBBBB', '2025-05-17 02:17:34'),
+	(24, 17, 'BBBBBBBBBBV', 'VVVVVVVVVV', '2025-05-17 02:17:34');
 
 -- Volcando estructura para tabla pritec.inspeccion_visual_estructura
 CREATE TABLE IF NOT EXISTS `inspeccion_visual_estructura` (
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `inspeccion_visual_estructura` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `peritaje_id` (`peritaje_id`) USING BTREE,
   CONSTRAINT `inspeccion_visual_estructura_ibfk_1` FOREIGN KEY (`peritaje_id`) REFERENCES `peritaje_completo` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Volcando datos para la tabla pritec.inspeccion_visual_estructura: ~11 rows (aproximadamente)
 INSERT INTO `inspeccion_visual_estructura` (`id`, `peritaje_id`, `descripcion_pieza`, `concepto`, `created_at`) VALUES
@@ -91,9 +91,9 @@ INSERT INTO `inspeccion_visual_estructura` (`id`, `peritaje_id`, `descripcion_pi
 	(13, 11, '9', '9', '2025-05-14 20:29:43'),
 	(14, 14, '7', '7', '2025-05-14 20:32:52'),
 	(15, 15, '8', '8', '2025-05-15 03:18:23'),
-	(17, 17, 'HWCWJUEHCUWCW', 'JHWEWGCWGYCYGE', '2025-05-15 04:41:21'),
-	(18, 17, 'EKHWUEUHWUC JHECUWECH', 'UIUIUIIU', '2025-05-15 04:41:21'),
-	(19, 16, '9', '9', '2025-05-15 04:49:41');
+	(19, 16, '9', '9', '2025-05-15 04:49:41'),
+	(20, 17, 'HWCWJUEHCUWCW', 'JHWEWGCWGYCYGE', '2025-05-17 02:17:34'),
+	(21, 17, 'EKHWUEUHWUC JHECUWECH', 'UIUIUIIU', '2025-05-17 02:17:34');
 
 -- Volcando estructura para tabla pritec.peritaje_basico
 CREATE TABLE IF NOT EXISTS `peritaje_basico` (
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `peritaje_basico` (
   `fecha_actualizacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `estado` int DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Volcando datos para la tabla pritec.peritaje_basico: ~9 rows (aproximadamente)
 INSERT INTO `peritaje_basico` (`id`, `placa`, `fecha`, `no_servicio`, `servicio_para`, `convenio`, `nombre_apellidos`, `identificacion`, `telefono`, `direccion`, `clase`, `marca`, `linea`, `cilindraje`, `servicio`, `modelo`, `color`, `no_chasis`, `no_motor`, `no_serie`, `tipo_carroceria`, `organismo_transito`, `tiene_prenda`, `tiene_limitacion`, `debe_impuestos`, `tiene_comparendos`, `vehiculo_rematado`, `revision_tecnicomecanica`, `rtm_fecha_vencimiento`, `soat`, `soat_fecha_vencimiento`, `observaciones`, `licencia_frente`, `licencia_atras`, `estado_motor`, `estado_chasis`, `estado_serial`, `observaciones_finales`, `fecha_creacion`, `fecha_actualizacion`, `estado`) VALUES
@@ -151,7 +151,8 @@ INSERT INTO `peritaje_basico` (`id`, `placa`, `fecha`, `no_servicio`, `servicio_
 	(6, 'XRW345', '2025-05-14', '1', '111', 'na', 'SASASA', 'SASASAS', 'SASASA', 'WAS WEWD', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', 0, 0, 1, 0, 0, 'no_aplica', NULL, 'no_aplica', NULL, 'NO UEYE BBWUEUFYW9E UEFUYW', '6824f38991752_licencia frente.jpeg', '6824f38992003_licencia atras.jpg', 'original', 'regrabado', 'grabado_no_original', 'DNNDWHJHNV JHVBWJH', '2025-05-14 19:27:48', '2025-05-14 19:48:25', 1),
 	(7, 'CTY456', '2025-05-14', '9', 'w', 'HUHU', 'JUAQO', '111', '2', '2', 'JJ', 'J', 'J', 'J', 'J', 'J', 'JJ', 'J', 'JJ', '', 'J', 'J', 0, 0, 1, 0, 0, 'no_aplica', NULL, 'no_aplica', NULL, 'JSKFHKJEHFEW FWUHFIWFHIFHW JWHFIF', '6824f5b3d8379_licencia atras.jpg', '6824f5b3d84c6_licencia frente.jpeg', 'original', 'regrabado', 'regrabado', 'JUJUJUJ', '2025-05-14 19:57:39', '2025-05-14 19:57:39', 1),
 	(8, '4', '2025-05-14', '23', '9000', '009', 'NIFUNIFA', '4', '4', '4', '4', '4', '4', '4', '44', '4', '4', '4', '4', '44', '4', '4', 0, 0, 0, 0, 1, 'no_aplica', NULL, 'no_aplica', NULL, 'NWEHIEWFEW YFWUWWUI', '68256da57af59_licencia atras.jpg', '68256da57b64b_licencia frente.jpeg', 'original', 'regrabado', 'grabado_no_original', 'KWJD3 3J3HFI3F F3UIFHU', '2025-05-15 04:29:25', '2025-05-15 04:29:25', 1),
-	(9, 'HJH567', '2025-05-14', 'CCCCCCCCcC', 'CC', 'JNKHUH', 'PRUEBAAAA', 'HHU', 'J', 'HHJ', 'JHJHJ', 'HJHJH', 'JHJHJG', 'HHGJHJ', 'GJGHGH', 'HGJGHJGHJ', 'HGGHJGJ', 'GJHGJGJH', 'GHGJJH', 'GGH', 'GGH', 'GHHJGH', 0, 0, 1, 0, 0, 'vigente', '2025-05-14', 'no_vigente', '2025-05-01', 'HGUHGYUG YUG YU G', '68256e79d4ffe_1.png', '68256e79d64cd_2.png', 'original', 'regrabado', 'grabado_no_original', 'NJJH HJBBSBHBHJS SHHSJH', '2025-05-15 04:32:57', '2025-05-15 04:32:57', 1);
+	(9, 'HJH567', '2025-05-14', '123123123', 'CC', 'colombia ', 'daniel david chavarro quimbaya ', '222222222', 'J', 'HHJ', 'JHJHJ', 'HJHJH', 'JHJHJG', 'HHGJHJ', 'GJGHGH', 'HGJGHJGHJ', 'HGGHJGJ', 'GJHGJGJH', 'GHGJJH', 'GGH', 'GGH', 'GHHJGH', 0, 0, 1, 0, 0, 'vigente', '2025-05-14', 'no_vigente', '2025-05-01', 'HGUHGYUG YUG YU G', '68256e79d4ffe_1.png', '68256e79d64cd_2.png', 'original', 'regrabado', 'grabado_no_original', 'NJJH HJBBSBHBHJS SHHSJH', '2025-05-15 04:32:57', '2025-05-17 01:38:24', 1),
+	(10, '123 ABC', '2025-05-17', '123123', 'mi', 'no tiene', 'ps yo quien mas', '12345678901', '123', '123', 'asd', 'asdads', 'asdihi', 'iu', 'iu', 'iu', 'iu', 'iu', 'iu', 'iu', 'iu', 'iu', 0, 1, 1, 1, 0, 'no_vigente', '2025-05-22', 'no_aplica', NULL, 'sdasasasdasd', '6827ea3a44e60_Captura de pantalla 2025-04-28 221455.png', '6827ea3a45f53_Captura de pantalla 2025-04-29 095427.png', 'original', 'regrabado', 'grabado_no_original', 'asdasdads', '2025-05-17 01:45:30', '2025-05-17 01:45:30', 1);
 
 -- Volcando estructura para tabla pritec.peritaje_completo
 CREATE TABLE IF NOT EXISTS `peritaje_completo` (
@@ -317,20 +318,27 @@ INSERT INTO `peritaje_completo` (`id`, `placa`, `fecha`, `no_servicio`, `servici
 	(14, '7', '2025-05-07', '8', '8', '8', 'seven', '7', '7', '7', '7', '7', '7', '7', '7', '7', '7', '7', '7', '7', '7', '7', 7, 7, 7, 7, 77, 8, 77, 7, '', '7', '7', 7, 7, 7, '787', '68243e055eef3_Frame 1.png', '68243672a7537_2.png', '68243cf85c016_4.png', '68243db33e1d3_4.png', NULL, NULL, NULL, NULL, '787', 'qqq@qq.q', '7', '7', '7', '7', '7', 'MICROBUS', '787', '787', '787', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', 'NO_APLICA', '7', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', '2025-05-14 06:21:38', '2025-05-14 20:32:52', 1, 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', 'NO_APLICA', '7', '7', '7', '7', '7', '7', '7', '7', '7', '7', '7', '7', '7', '77', '7', '7', '7', '7', '7', '7', '7877', '787', '78', '78', ''),
 	(15, '8', '2025-05-08', '8', '8', '8', '8', '8', '8', '8', '8', '8', '8', '8', '8', '8', '8', '8', '8', '8', '8', '8', 8, 8, 8, 8, 8, 8, 8, 8, '8', '8', '8', 8, 8, 8, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '8', 'qqq@qq.q', '8', '8', '8', '8', '8', 'COUPE - 3 PUERTAS', '8', '8', '8', 'MALO', '8', 'BUENO', '8', 'MALO', '8', 'BUENO', '', 'BUENO', '', 'BUENO', 'BUENO', '', '', 'BUENO', '', 'BUENO', '', 'BUENO', '', 'BUENO', '', 'BUENO', '', 'REGULAR', '', 'MALO', '', 'MALO', '', 'MALO', '', 'MALO', '', 'BUENO', '', 'MALO', '', 'BUENO', '', 'BUENO', '', 'BUENO', '', 'BUENO', '', '2025-05-15 03:18:23', '2025-05-15 03:18:23', 1, 'BUENO', '', 'BUENO', '', 'BUENO', '', 'BUENO', '', 'BUENO', '', 'BUENO', '', 'BUENO', '', 'BUENO', 'SSSSSS', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', '0', '0', 'o', 'o', ''),
 	(16, '9hhh', '2025-05-07', '9', '9', '9', '9', '9', '9', '9', '9', '9', '9', '9', '9', '9', '9', '9', '9', '9', '9', '9', 99, 9, 9, 9, 9, 9, 9, 9, '', '9', '9', 9, 9, 9, '9', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '9', 'qqq@qq.q9', '9', '9', '9', '9', '9', 'NO APLICA', '9', '9', '9', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', 'NO_APLICA', '', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', '2025-05-15 03:39:13', '2025-05-15 04:49:41', 1, 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', '', '', '', 'i', 'i', 'i', 'oi', 'io', 'oioi', 'io', 'oi', 'oi', 'oi', 'oi', 'oi', 'oi', 'oi', 'oi', 'oi', 'oi', 'oi', '', '', ''),
-	(17, 'CTY67H', '2025-05-14', 'ggggg', 'gggg', 'gggg', 'ÑEÑEÑEÑ', 'Ñ', 'ÑÑ', 'Ñ', 'KJJI', 'IUJIIU', 'JUIII', 'IJIJJIJI', 'JIUJJJI', 'UIIJIJ', 'UIUJ', 'JIJIJI', 'IUIJI', 'JIJJII', 'JIUJIYU', 'UHUJH', 16, 0, 15, 0, 29, 0, 15, 14, 'JHHHHHHHHHHHHHHHHHHH', 'AHJHAHJHJAHJ', 'HHAJJAJHAHJ', 76, 78, 89, 'JAHJAJHJHAJAJHAJHAJHA', '6825707105904_licencia atras.jpg', '6825707105bf8_licencia frente.jpeg', '6825707105e1a_licencia frente.jpeg', '6825707106104_licencia atras.jpg', '6825707106423_licencia frente.jpeg', '6825707106922_licencia frente.jpeg', NULL, NULL, 'BHG BHJK JKAJJKAJK', 'NIINJCJHC@GM', '45', '89HNI', '888666', '7876786', '676767678', 'MOTOCICLETA DEPORTIVA', '', 'BBBBBBBBBBBBBBBBBBBBBBBB', 'HBBYUGUYV YUV', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', 'NO_APLICA', '', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'BUENO', 'KOFO', 'BUENO', 'JJJK', 'BUENO', 'NJHJHHJ', 'BUENO', '', 'MALO', '', 'BUENO', '', 'REGULAR', '', 'BUENO', '', 'MALO', '', 'MALO', '', 'BUENO', '', '2025-05-15 04:41:21', '2025-05-15 04:41:21', 1, 'MALO', '', 'MALO', '', 'REGULAR', '', 'MALO', '', 'BUENO', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'KKKKKKKKK', 'KKKK', 'K', 'K', 'K', 'KK', 'K', 'KK', 'K', 'K', 'K', 'KK', 'K', 'K', 'KK', 'K', 'K', 'KK', 'K', 'JHUYGBBBMNNMKKJKUH', 'JNJJHJKKKJIUH HGYGTYGHAHUHAUI', 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH', 'JJJJJJJJJJJJJJJJJJJJJJJJJJJ', 'DOBLE CUNA');
+	(17, 'CTY67H', '2025-05-14', 'ggggg', 'gggg', 'gggg', 'asdasdadsads', 'Ñ', 'ÑÑ', 'Ñ', 'KJJI', 'IUJIIU', 'JUIII', 'IJIJJIJI', 'JIUJJJI', 'UIIJIJ', 'UIUJ', 'JIJIJI', 'IUIJI', 'JIJJII', 'JIUJIYU', 'UHUJH', 16, 0, 15, 0, 29, 0, 15, 14, '', 'AHJHAHJHJAHJ', 'HHAJJAJHAHJ', 76, 78, 89, 'JAHJAJHJHAJAJHAJHAJHA', '6825707105904_licencia atras.jpg', '6825707105bf8_licencia frente.jpeg', '6825707105e1a_licencia frente.jpeg', '6825707106104_licencia atras.jpg', '6825707106423_licencia frente.jpeg', '6825707106922_licencia frente.jpeg', NULL, NULL, 'BHG BHJK JKAJJKAJK', 'NIINJCJHC@GM', '45', '89HNI', '888666', '7876786', '676767678', 'MOTOCICLETA DEPORTIVA', '', 'BBBBBBBBBBBBBBBBBBBBBBBB', 'HBBYUGUYV YUV', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', 'NO_APLICA', '', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', 'KOFO', 'NO_APLICA', 'JJJK', 'NO_APLICA', 'NJHJHHJ', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', '2025-05-15 04:41:21', '2025-05-17 02:17:34', 1, 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'NO_APLICA', '', 'KKKKKKKKK', 'KKKK', 'K', 'K', 'K', 'KK', 'K', 'KK', 'K', 'K', 'K', 'KK', 'K', 'K', 'KK', 'K', 'K', 'KK', 'K', 'JHUYGBBBMNNMKKJKUH', 'JNJJHJKKKJIUH HGYGTYGHAHUHAUI', 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH', 'JJJJJJJJJJJJJJJJJJJJJJJJJJJ', 'DOBLE CUNA');
 
 -- Volcando estructura para tabla pritec.usuarios
 CREATE TABLE IF NOT EXISTS `usuarios` (
   `id` int NOT NULL AUTO_INCREMENT,
   `usuario` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `nombre_completo` varchar(150) COLLATE utf8mb4_bin DEFAULT NULL,
+  `email` varchar(150) COLLATE utf8mb4_bin DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
+  `ultimo_login` datetime DEFAULT NULL,
+  `activo` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `usuario` (`usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+  UNIQUE KEY `usuario` (`usuario`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Volcando datos para la tabla pritec.usuarios: ~1 rows (aproximadamente)
-INSERT INTO `usuarios` (`id`, `usuario`, `password`) VALUES
-	(1, 'danielcr7122@gmail.com', 'd829b843a6550a947e82f2f38ed6b7a7');
+-- Volcando datos para la tabla pritec.usuarios: ~2 rows (aproximadamente)
+INSERT INTO `usuarios` (`id`, `usuario`, `nombre_completo`, `email`, `password`, `fecha_creacion`, `ultimo_login`, `activo`) VALUES
+	(1, 'danielcr7122@gmail.com', NULL, NULL, 'd829b843a6550a947e82f2f38ed6b7a7', '2025-05-16 19:17:26', NULL, 1),
+	(3, 'admin', 'admin', 'admin@admin.com', '$2y$10$ZC2qaTRaMSpPNF9vFFF3POzqeKJUtpEvZUx5k64nhiosPaDe/HoRe', '2025-05-16 19:24:48', '2025-05-16 19:24:54', 1);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
