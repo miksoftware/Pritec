@@ -14,6 +14,7 @@ $menu_items = [
   ['icon' => 'fa-file-lines', 'text' => 'Peritaje Básico', 'link' => 'l_peritajeB.php'],
   ['icon' => 'fa-file-lines', 'text' => 'Peritaje Completo', 'link' => 'l_peritajeC.php'],
   ['icon' => 'fa-print', 'text' => 'Impresión en Blanco', 'link' => 'p_peritajesBlanks.php'],
+  ['icon' => 'fa-users', 'text' => 'Usuarios', 'link' => 'usuarios.php'],
 ];
 
 // Obtener nombre del usuario para mostrar

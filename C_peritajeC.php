@@ -24,11 +24,10 @@ $tiposVehiculos = [
     'MOTOCICLETA DEPORTIVA',
     'MOTOCICLETA SCOOTER',
     'MOTOCICLETA: TIPO ENDURO',
-    'MOTOCICLETA CUSTOM',
-    'NO APLICA'
+    'MOTOCICLETA CUSTOM'
 ];
 
-$tiposChasis = [
+$tiposChasismoto = [
     'CUNA INTERRUMPIDA',
     'MONO CUNA',
     'MONO CUNA DESDOBLADO',
@@ -37,17 +36,22 @@ $tiposChasis = [
     'MULTI-TUBULAR',
     'NO APLICA'
 ];
+$tiposChasisCarro = [
+    'APLICA',
+    'NO APLICA'
+];
 
 // Función para generar select de estados usando EstadoEnum
-function generarSelectEstado($nombreCampo, $requerido = true) {
+function generarSelectEstado($nombreCampo, $requerido = true)
+{
     $required = $requerido ? 'required' : '';
     $html = "<select class=\"form-select\" name=\"{$nombreCampo}\" {$required}>";
     $html .= "<option value=\"\">Seleccione</option>";
-    
+
     foreach (EstadoEnum::getOptions() as $valor => $etiqueta) {
         $html .= "<option value=\"{$valor}\">{$etiqueta}</option>";
     }
-    
+
     $html .= "</select>";
     return $html;
 }
@@ -64,30 +68,30 @@ if (isset($_SESSION['peritaje_id'])) {
 
 <div id="content">
     <?php if ($justSaved): ?>
-    <!-- Mensaje de éxito fijo en la parte superior cuando se acaba de guardar -->
-    <div class="alert alert-success alert-dismissible sticky-top shadow-sm" role="alert">
-        <div class="d-flex align-items-center justify-content-between">
-            <div>
-                <i class="fas fa-check-circle fa-lg me-2"></i>
-                <strong>¡Peritaje guardado con éxito!</strong> 
-                <?php echo $peritajeId ? "ID del peritaje: #$peritajeId" : ''; ?>
-            </div>
-            <div>
-                <a href="l_peritajeC.php" class="btn btn-sm btn-outline-success me-2">
-                    <i class="fas fa-list me-1"></i> Ver listado
-                </a>
-                <?php if ($peritajeId): ?>
-                <a href="p_peritajeC.php?id=<?php echo $peritajeId; ?>" class="btn btn-sm btn-outline-primary me-2" target="_blank">
-                    <i class="fas fa-print me-1"></i> Imprimir
-                </a>
-                <a href="e_peritajeC.php?id=<?php echo $peritajeId; ?>" class="btn btn-sm btn-outline-info me-2">
-                    <i class="fas fa-edit me-1"></i> Editar
-                </a>
-                <?php endif; ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <!-- Mensaje de éxito fijo en la parte superior cuando se acaba de guardar -->
+        <div class="alert alert-success alert-dismissible sticky-top shadow-sm" role="alert">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <i class="fas fa-check-circle fa-lg me-2"></i>
+                    <strong>¡Peritaje guardado con éxito!</strong>
+                    <?php echo $peritajeId ? "ID del peritaje: #$peritajeId" : ''; ?>
+                </div>
+                <div>
+                    <a href="l_peritajeC.php" class="btn btn-sm btn-outline-success me-2">
+                        <i class="fas fa-list me-1"></i> Ver listado
+                    </a>
+                    <?php if ($peritajeId): ?>
+                        <a href="p_peritajeC.php?id=<?php echo $peritajeId; ?>" class="btn btn-sm btn-outline-primary me-2" target="_blank">
+                            <i class="fas fa-print me-1"></i> Imprimir
+                        </a>
+                        <a href="e_peritajeC.php?id=<?php echo $peritajeId; ?>" class="btn btn-sm btn-outline-info me-2">
+                            <i class="fas fa-edit me-1"></i> Editar
+                        </a>
+                    <?php endif; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             </div>
         </div>
-    </div>
     <?php endif; ?>
 
     <?php if (isset($_SESSION['error']) || (isset($_SESSION['success']) && !$justSaved)): ?>
@@ -121,7 +125,7 @@ if (isset($_SESSION['peritaje_id'])) {
             });
         </script>
     <?php endif; ?>
-    
+
     <div class="container py-5">
         <h2 class="text-center mb-4">Nuevo Peritaje Completo</h2>
         <form id="peritajeForm" action="peritaje_completo/create.php" method="POST" enctype="multipart/form-data">
@@ -389,11 +393,7 @@ if (isset($_SESSION['peritaje_id'])) {
                             <label for="tipo_chasis" class="form-label">Tipo de chasis</label>
                             <select id="tipo_chasis" class="form-select" name="tipo_chasis">
                                 <option value="">-- Seleccione --</option>
-                                <?php foreach ($tiposChasis as $tipoChasis): ?>
-                                    <option value="<?php echo htmlspecialchars($tipoChasis) ?>">
-                                        <?php echo htmlspecialchars($tipoChasis) ?>
-                                    </option>
-                                <?php endforeach; ?>
+                                <!-- Las opciones se cargarán dinámicamente mediante JavaScript -->
                             </select>
                         </div>
                     </div>
@@ -577,7 +577,7 @@ if (isset($_SESSION['peritaje_id'])) {
                                     ['Estado filtro de aire', 'estado_filtro_aire', 'respuesta_filtro_aire'],
                                     ['Estado externo baterías', 'estado_externo_bateria', 'respuesta_externo_bateria'],
                                 ];
-                                
+
                                 $secciones = [
                                     12 => [
                                         'titulo' => 'Sistema de Frenos y Suspensión',
@@ -609,7 +609,7 @@ if (isset($_SESSION['peritaje_id'])) {
                                         ]
                                     ]
                                 ];
-                                
+
                                 // Mostrar la sección de Motor
                                 foreach ($sistemas as $sis) {
                                     echo '<tr>';
@@ -618,11 +618,11 @@ if (isset($_SESSION['peritaje_id'])) {
                                     echo '<td><input type="text" class="form-control" name="' . $sis[2] . '" placeholder="Observación"></td>';
                                     echo '</tr>';
                                 }
-                                
+
                                 // Mostrar las demás secciones
                                 foreach ($secciones as $seccion) {
                                     echo '<tr><td class="table-secondary fw-bold" colspan="3">' . htmlspecialchars($seccion['titulo']) . '</td></tr>';
-                                    
+
                                     foreach ($seccion['items'] as $item) {
                                         echo '<tr>';
                                         echo '<td>' . htmlspecialchars($item[0]) . '</td>';
@@ -635,7 +635,7 @@ if (isset($_SESSION['peritaje_id'])) {
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-12 mb-3">
                             <label>Observaciones de motor</label>
@@ -706,7 +706,7 @@ if (isset($_SESSION['peritaje_id'])) {
                     </div>
                 </div>
             </div>
-            
+
             <!-- Fijación fotográfica -->
             <div class="card mb-3">
                 <div class="card-header bg-dark text-white">
@@ -741,7 +741,7 @@ if (isset($_SESSION['peritaje_id'])) {
                     </div>
                 </div>
             </div>
-            
+
             <div class="text-center mt-4 mb-4">
                 <button type="submit" class="btn btn-primary btn-lg px-5">
                     <i class="fas fa-save me-2"></i>Guardar Peritaje
@@ -866,13 +866,39 @@ if (isset($_SESSION['peritaje_id'])) {
 
                     const rowChasisInput = document.getElementById('rowTipoChasis');
                     const cardCarroceria = document.getElementById('cardCarroceria');
+                    const selectChasis = document.getElementById('tipo_chasis');
 
-                    if (tipoSeleccionado.includes('MOTOCICLETA')){
+                    // Limpiar el select de opciones actuales
+                    if (selectChasis) {
+                        selectChasis.innerHTML = '<option value="">-- Seleccione --</option>';
+                    }
+
+                    if (tipoSeleccionado.includes('MOTOCICLETA')) {
                         rowChasisInput.classList.remove('d-none');
                         cardCarroceria.classList.add('d-none');
+
+                        // Agregar opciones de tipo de chasis para motocicletas
+                        <?php foreach ($tiposChasismoto as $tipo): ?>
+                            if (selectChasis) {
+                                const optionMoto = document.createElement('option');
+                                optionMoto.value = "<?php echo htmlspecialchars($tipo); ?>";
+                                optionMoto.textContent = "<?php echo htmlspecialchars($tipo); ?>";
+                                selectChasis.appendChild(optionMoto);
+                            }
+                        <?php endforeach; ?>
                     } else {
-                        rowChasisInput.classList.add('d-none');
+                        rowChasisInput.classList.remove('d-none'); // También mostrar para carros
                         cardCarroceria.classList.remove('d-none');
+
+                        // Agregar opciones de tipo de chasis para carros
+                        <?php foreach ($tiposChasisCarro as $tipo): ?>
+                            if (selectChasis) {
+                                const optionCarro = document.createElement('option');
+                                optionCarro.value = "<?php echo htmlspecialchars($tipo); ?>";
+                                optionCarro.textContent = "<?php echo htmlspecialchars($tipo); ?>";
+                                selectChasis.appendChild(optionCarro);
+                            }
+                        <?php endforeach; ?>
                     }
                 });
             });
@@ -897,7 +923,7 @@ if (isset($_SESSION['peritaje_id'])) {
             const tbody = document.querySelector(`#${tablaId} tbody`);
             const nuevaFila = document.createElement('tr');
             nuevaFila.className = claseFilas;
-            
+
             nuevaFila.innerHTML = `
                 <td>
                     <input type="text" class="form-control" name="${nombreCampo1}" placeholder="Ej: Descripción">
@@ -911,9 +937,9 @@ if (isset($_SESSION['peritaje_id'])) {
                     </button>
                 </td>
             `;
-            
+
             tbody.appendChild(nuevaFila);
-            
+
             // Agregar evento al nuevo botón
             nuevaFila.querySelector(`.${claseBoton}`).addEventListener('click', function() {
                 eliminarFila(this, claseFilas);
@@ -925,7 +951,7 @@ if (isset($_SESSION['peritaje_id'])) {
             const fila = boton.closest('tr');
             const tabla = fila.closest('table');
             const todasLasFilas = tabla.querySelectorAll(`.${claseFilas}`);
-            
+
             if (todasLasFilas.length > 1) {
                 fila.remove();
             } else {
@@ -939,11 +965,13 @@ if (isset($_SESSION['peritaje_id'])) {
         }
 
         <?php if ($justSaved): ?>
-        document.addEventListener('DOMContentLoaded', function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+            document.addEventListener('DOMContentLoaded', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
         <?php endif; ?>
-        
     </script>
 </div>
 
