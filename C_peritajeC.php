@@ -41,6 +41,46 @@ $tiposChasisCarro = [
     'NO APLICA'
 ];
 
+$conceptosCarroceria = [
+    'Bueno',
+    'Buena reparación',
+    'Mala reparación',
+    'Bien repintado',
+    'Mal repintado',
+    'Regular',
+    'Regular (Oxidación- corrosión)',
+    'Fisurado',
+    'Deformidad media',
+    'Deformidad fuerte',
+    'Sumido',
+    'Rayón',
+    'Hermeticidad deficiente'
+];
+
+$conceptosEstructura = [
+    'Bueno',
+    'Buena reparación',
+    'Mala reparación',
+    'Bien repintado',
+    'Mal repintado',
+    'Regular (Oxidación- corrosión)',
+    'Fisurado',
+    'Deformidad media',
+    'Deformidad fuerte',
+    'Sumido',
+    'Rayón'
+];
+
+$conceptosChasis = [
+    'Bueno',
+    'Mala reparación',
+    'Buena reparación',
+    'Regular (soldadura no original)',
+    'Deformidad media',
+    'Deformidad fuerte',
+    'Sumido'
+];
+
 // Función para generar select de estados usando EstadoEnum
 function generarSelectEstado($nombreCampo, $requerido = true)
 {
@@ -309,7 +349,12 @@ if (isset($_SESSION['peritaje_id'])) {
                                         <input type="text" class="form-control" name="descripcion_pieza[]" placeholder="Ej: Parachoques delantero">
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" name="concepto_pieza[]" placeholder="Ej: Buen estado, rayado, etc.">
+                                        <select class="form-select" name="concepto_pieza[]">
+                                            <option value="">-- Seleccione un concepto --</option>
+                                            <?php foreach ($conceptosCarroceria as $concepto): ?>
+                                                <option value="<?php echo htmlspecialchars($concepto); ?>"><?php echo htmlspecialchars($concepto); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </td>
                                     <td class="text-center">
                                         <button type="button" class="btn btn-danger btn-sm eliminar-fila">
@@ -356,7 +401,12 @@ if (isset($_SESSION['peritaje_id'])) {
                                         <input type="text" class="form-control" name="descripcion_pieza_estructura[]" placeholder="Ej: Tablero central">
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" name="concepto_pieza_estructura[]" placeholder="Ej: Buen estado, deteriorado, etc.">
+                                        <select class="form-select" name="concepto_pieza_estructura[]">
+                                            <option value="">-- Seleccione un concepto --</option>
+                                            <?php foreach ($conceptosEstructura as $concepto): ?>
+                                                <option value="<?php echo htmlspecialchars($concepto); ?>"><?php echo htmlspecialchars($concepto); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </td>
                                     <td class="text-center">
                                         <button type="button" class="btn btn-danger btn-sm eliminar-fila-estructura">
@@ -412,7 +462,12 @@ if (isset($_SESSION['peritaje_id'])) {
                                         <input type="text" class="form-control" name="descripcion_pieza_chasis[]" placeholder="Ej: Larguero derecho">
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" name="concepto_pieza_chasis[]" placeholder="Ej: Original, intervenido, etc.">
+                                        <select class="form-select" name="concepto_pieza_chasis[]">
+                                            <option value="">-- Seleccione un concepto --</option>
+                                            <?php foreach ($conceptosChasis as $concepto): ?>
+                                                <option value="<?php echo htmlspecialchars($concepto); ?>"><?php echo htmlspecialchars($concepto); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </td>
                                     <td class="text-center">
                                         <button type="button" class="btn btn-danger btn-sm eliminar-fila-chasis">
@@ -857,26 +912,27 @@ if (isset($_SESSION['peritaje_id'])) {
             });
 
             // Manejar la selección de un tipo de vehículo
+                        // Manejar la selección de un tipo de vehículo
             document.querySelectorAll('.tipo-vehiculo-item').forEach(function(item) {
                 item.addEventListener('click', function() {
                     const tipoSeleccionado = this.textContent.trim();
                     displayEl.value = tipoSeleccionado;
                     inputEl.value = tipoSeleccionado;
                     tipoVehiculoModal.hide();
-
+            
                     const rowChasisInput = document.getElementById('rowTipoChasis');
                     const cardCarroceria = document.getElementById('cardCarroceria');
                     const selectChasis = document.getElementById('tipo_chasis');
-
+            
                     // Limpiar el select de opciones actuales
                     if (selectChasis) {
                         selectChasis.innerHTML = '<option value="">-- Seleccione --</option>';
                     }
-
+            
                     if (tipoSeleccionado.includes('MOTOCICLETA')) {
                         rowChasisInput.classList.remove('d-none');
                         cardCarroceria.classList.add('d-none');
-
+            
                         // Agregar opciones de tipo de chasis para motocicletas
                         <?php foreach ($tiposChasismoto as $tipo): ?>
                             if (selectChasis) {
@@ -889,7 +945,7 @@ if (isset($_SESSION['peritaje_id'])) {
                     } else {
                         rowChasisInput.classList.remove('d-none'); // También mostrar para carros
                         cardCarroceria.classList.remove('d-none');
-
+            
                         // Agregar opciones de tipo de chasis para carros
                         <?php foreach ($tiposChasisCarro as $tipo): ?>
                             if (selectChasis) {
@@ -899,6 +955,18 @@ if (isset($_SESSION['peritaje_id'])) {
                                 selectChasis.appendChild(optionCarro);
                             }
                         <?php endforeach; ?>
+            
+                        // Si solo hay dos opciones (APLICA/NO APLICA) y la primera es APLICA
+                        // preseleccionamos por defecto el valor según si es motocicleta o no
+                        if (selectChasis && selectChasis.options.length == 3) {
+                            // Dejar sin seleccionar para que el usuario elija explícitamente
+                            selectChasis.selectedIndex = 0;
+                        }
+                    }
+            
+                    // Mostrar/ocultar componentes según el valor inicial del tipo de chasis
+                    if (selectChasis) {
+                        toggleChasisComponents(selectChasis.value);
                     }
                 });
             });
@@ -918,25 +986,134 @@ if (isset($_SESSION['peritaje_id'])) {
             });
         });
 
+        // Añadir esto después de inicializar los selectores
+// Crear un event listener para el selector de tipo de chasis
+document.addEventListener('DOMContentLoaded', function() {
+    const selectChasis = document.getElementById('tipo_chasis');
+    if (selectChasis) {
+        selectChasis.addEventListener('change', function() {
+            toggleChasisComponents(this.value);
+        });
+    }
+});
+
+// Función para mostrar/ocultar componentes del chasis según la selección
+function toggleChasisComponents(selectedValue) {
+    const tablaChasis = document.getElementById('tablaInspeccionChasis').closest('.table-responsive');
+    const btnAgregarChasis = document.getElementById('agregarFilaChasis').closest('.col-md-12');
+    const observacionesChasis = document.getElementById('observaciones_chasis').closest('.col-md-12');
+    
+    if (selectedValue === 'NO APLICA') {
+        // Ocultar tabla y botones cuando es "NO APLICA"
+        tablaChasis.classList.add('d-none');
+        btnAgregarChasis.classList.add('d-none');
+        
+        // Mantener visibles las observaciones, pero añadir una nota
+        observacionesChasis.querySelector('label').textContent = 'Observaciones generales (No Aplica Chasis)';
+    } else {
+        // Mostrar todos los componentes para cualquier otra selección
+        tablaChasis.classList.remove('d-none');
+        btnAgregarChasis.classList.remove('d-none');
+        observacionesChasis.querySelector('label').textContent = 'Observaciones generales';
+    }
+}
+
         // Función para agregar fila a una tabla
         function agregarFila(tablaId, claseFilas, nombreCampo1, nombreCampo2, claseBoton) {
             const tbody = document.querySelector(`#${tablaId} tbody`);
             const nuevaFila = document.createElement('tr');
             nuevaFila.className = claseFilas;
 
-            nuevaFila.innerHTML = `
-                <td>
-                    <input type="text" class="form-control" name="${nombreCampo1}" placeholder="Ej: Descripción">
-                </td>
-                <td>
-                    <input type="text" class="form-control" name="${nombreCampo2}" placeholder="Ej: Concepto">
-                </td>
-                <td class="text-center">
-                    <button type="button" class="btn btn-danger btn-sm ${claseBoton}">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            `;
+            // Si estamos agregando a la tabla de inspección visual externa (carrocería)
+            if (tablaId === 'tablaInspeccionVisual') {
+                // Crear select para conceptos de carrocería
+                let opcionesConcepto = '<option value="">-- Seleccione un concepto --</option>';
+
+                <?php foreach ($conceptosCarroceria as $concepto): ?>
+                    opcionesConcepto += `<option value="<?php echo htmlspecialchars($concepto); ?>"><?php echo htmlspecialchars($concepto); ?></option>`;
+                <?php endforeach; ?>
+
+                nuevaFila.innerHTML = `
+            <td>
+                <input type="text" class="form-control" name="${nombreCampo1}" placeholder="Ej: Descripción">
+            </td>
+            <td>
+                <select class="form-select" name="${nombreCampo2}">
+                    ${opcionesConcepto}
+                </select>
+            </td>
+            <td class="text-center">
+                <button type="button" class="btn btn-danger btn-sm ${claseBoton}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+            }
+            // Si estamos agregando a la tabla de inspección visual interna (estructura)
+            else if (tablaId === 'tablaInspeccionEstructura') {
+                // Crear select para conceptos de estructura
+                let opcionesConcepto = '<option value="">-- Seleccione un concepto --</option>';
+
+                <?php foreach ($conceptosEstructura as $concepto): ?>
+                    opcionesConcepto += `<option value="<?php echo htmlspecialchars($concepto); ?>"><?php echo htmlspecialchars($concepto); ?></option>`;
+                <?php endforeach; ?>
+
+                nuevaFila.innerHTML = `
+            <td>
+                <input type="text" class="form-control" name="${nombreCampo1}" placeholder="Ej: Descripción">
+            </td>
+            <td>
+                <select class="form-select" name="${nombreCampo2}">
+                    ${opcionesConcepto}
+                </select>
+            </td>
+            <td class="text-center">
+                <button type="button" class="btn btn-danger btn-sm ${claseBoton}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+            }
+            // Si estamos agregando a la tabla de inspección de chasis
+            else if (tablaId === 'tablaInspeccionChasis') {
+                // Crear select para conceptos de chasis
+                let opcionesConcepto = '<option value="">-- Seleccione un concepto --</option>';
+
+                <?php foreach ($conceptosChasis as $concepto): ?>
+                    opcionesConcepto += `<option value="<?php echo htmlspecialchars($concepto); ?>"><?php echo htmlspecialchars($concepto); ?></option>`;
+                <?php endforeach; ?>
+
+                nuevaFila.innerHTML = `
+            <td>
+                <input type="text" class="form-control" name="${nombreCampo1}" placeholder="Ej: Descripción">
+            </td>
+            <td>
+                <select class="form-select" name="${nombreCampo2}">
+                    ${opcionesConcepto}
+                </select>
+            </td>
+            <td class="text-center">
+                <button type="button" class="btn btn-danger btn-sm ${claseBoton}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+            } else {
+                // Para otras tablas, mantener el comportamiento original
+                nuevaFila.innerHTML = `
+            <td>
+                <input type="text" class="form-control" name="${nombreCampo1}" placeholder="Ej: Descripción">
+            </td>
+            <td>
+                <input type="text" class="form-control" name="${nombreCampo2}" placeholder="Ej: Concepto">
+            </td>
+            <td class="text-center">
+                <button type="button" class="btn btn-danger btn-sm ${claseBoton}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+            }
 
             tbody.appendChild(nuevaFila);
 
@@ -945,7 +1122,6 @@ if (isset($_SESSION['peritaje_id'])) {
                 eliminarFila(this, claseFilas);
             });
         }
-
         // Función para eliminar fila de una tabla
         function eliminarFila(boton, claseFilas) {
             const fila = boton.closest('tr');
