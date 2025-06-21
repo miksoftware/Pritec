@@ -1,8 +1,8 @@
 <?php
-session_start();
-
-// Verificar sesión
-if (!isset($_SESSION['usuario'])) {
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['id_usuario'])) {
     header('Location: index.php');
     exit;
 }
@@ -70,7 +70,7 @@ include 'layouts/header.php';
                 </div>
                 
                 <div class="text-center mt-4">
-                    <a href="dashboard.php" class="btn btn-secondary">
+                    <a href="Dashboard.php" class="btn btn-secondary">
                         <i class="fas fa-arrow-left me-2"></i> Volver al Panel
                     </a>
                 </div>

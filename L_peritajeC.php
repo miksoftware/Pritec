@@ -1,31 +1,34 @@
 <?php
-// filepath: c:\laragon\www\Pritec\l_peritajeC.php
 session_start();
-include 'layouts/header.php';
+if (!isset($_SESSION['id_usuario'])) {
+    header('Location: index.php');
+    exit();
+}
+include "layouts/header.php";
 ?>
 
 <div id="content" class="container-fluid">
-    <?php if (isset($_SESSION['success']) || isset($_SESSION['error'])): ?>
+    <?php if (isset($_SESSION["success"]) || isset($_SESSION["error"])): ?>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                <?php if (isset($_SESSION['success'])): ?>
+                <?php if (isset($_SESSION["success"])): ?>
                     Swal.fire({
                         icon: 'success',
                         title: '¡Operación exitosa!',
                         text: '<?php echo $_SESSION["success"]; ?>',
                         confirmButtonText: 'Aceptar'
                     });
-                    <?php unset($_SESSION['success']); ?>
+                    <?php unset($_SESSION["success"]); ?>
                 <?php endif; ?>
-                
-                <?php if (isset($_SESSION['error'])): ?>
+
+                <?php if (isset($_SESSION["error"])): ?>
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
                         text: '<?php echo $_SESSION["error"]; ?>',
                         confirmButtonText: 'Aceptar'
                     });
-                    <?php unset($_SESSION['error']); ?>
+                    <?php unset($_SESSION["error"]); ?>
                 <?php endif; ?>
             });
         </script>
@@ -41,7 +44,7 @@ include 'layouts/header.php';
             </a>
         </div>
         <div class="card-body">
-            
+
             <div class="table-responsive">
                 <table id="tablaPeriajes" class="table table-striped table-hover border">
                     <thead class="table-light">
@@ -137,7 +140,7 @@ $(document).ready(function() {
                 }
             }
         ],
-        "order": [[0, 'desc']], 
+        "order": [[0, 'desc']],
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"
         },
@@ -152,12 +155,12 @@ $(document).ready(function() {
             );
         }
     });
-    
+
     // Búsqueda personalizada
     $('#searchInput').on('keyup', function() {
         table.search($(this).val()).draw();
     });
-    
+
     // Filtro personalizado
     $('#filterSelect').on('change', function() {
         table.ajax.reload();
@@ -170,18 +173,18 @@ function editarPeritaje(id) {
 
 function vistaPrevia(id) {
     const modal = new bootstrap.Modal(document.getElementById('previewModal'));
-    
+
     // Mostrar el modal con spinner de carga
     modal.show();
-    
+
     // Cargar contenido
     $('#previewContent').html('<div class="d-flex justify-content-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div></div>');
-    
+
     // Configurar el botón de imprimir
     $('#printFromPreview').off('click').on('click', function() {
         imprimirPeritaje(id);
     });
-    
+
     // Cargar datos del peritaje
     $.ajax({
         url: 'peritaje_completo/Getid.php',
@@ -193,13 +196,13 @@ function vistaPrevia(id) {
                 $('#previewContent').html(`<div class="alert alert-danger">${data.error}</div>`);
                 return;
             }
-            
+
             // Construir vista previa mejorada
             let html = `
                 <div class="card border-0 mb-3">
                     <div class="card-body px-0">
                         <h5 class="card-title border-bottom pb-2 mb-3">Datos del Peritaje Completo #${data.id}</h5>
-                        
+
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="card h-100 bg-light">
@@ -232,7 +235,7 @@ function vistaPrevia(id) {
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <div class="card h-100 bg-light">
                                     <div class="card-header bg-primary bg-opacity-10">
@@ -264,7 +267,7 @@ function vistaPrevia(id) {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="mt-3 p-3 bg-light border rounded">
                             <h6 class="border-bottom pb-2">Improntas y Estado</h6>
                             <div class="row">
@@ -291,7 +294,7 @@ function vistaPrevia(id) {
                     </div>
                 </div>
             `;
-            
+
             // Agregar conclusión si existe
             if (data.conclusiones) {
                 html += `
@@ -300,7 +303,7 @@ function vistaPrevia(id) {
                     <p class="small mb-0">${data.conclusiones}</p>
                 </div>`;
             }
-            
+
             // Imagen principal si existe
             if (data.foto_frontal) {
                 html += `
@@ -308,13 +311,13 @@ function vistaPrevia(id) {
                     <img src="uploads/${data.foto_frontal}" alt="Foto frontal" class="img-fluid img-thumbnail" style="max-height: 200px">
                 </div>`;
             }
-            
+
             html += `
                 <div class="text-center mt-3">
                     <p class="text-muted small">Para ver el reporte completo, haga clic en "Imprimir"</p>
                 </div>
             `;
-            
+
             $('#previewContent').html(html);
         },
         error: function() {
@@ -373,8 +376,8 @@ function eliminarPeritaje(id) {
 }
 
 function imprimirPeritaje(id) {
-    window.open(`p_peritajeC.php?id=${id}`, '_blank');
+    window.open(`P_peritajeC.php?id=${id}`, '_blank');
 }
 </script>
 
-<?php include 'layouts/footer.php'; ?>
+<?php include "layouts/footer.php"; ?>

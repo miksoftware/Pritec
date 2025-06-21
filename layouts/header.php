@@ -1,24 +1,36 @@
 <?php
 // filepath: c:\laragon\www\Pritec\layouts\header.php
 if (session_status() === PHP_SESSION_NONE) {
-  session_start();
+    session_start();
 }
 
-if (!isset($_SESSION['usuario'])) {
-  header('Location: ../pritec/index.php');
-  exit();
+if (!isset($_SESSION["id_usuario"])) {
+    header("Location: index.php");
+    exit();
 }
 
 $menu_items = [
-  ['icon' => 'fa-home', 'text' => 'Dashboard', 'link' => 'dashboard.php'],
-  ['icon' => 'fa-file-lines', 'text' => 'Peritaje Básico', 'link' => 'l_peritajeB.php'],
-  ['icon' => 'fa-file-lines', 'text' => 'Peritaje Completo', 'link' => 'l_peritajeC.php'],
-  ['icon' => 'fa-print', 'text' => 'Impresión en Blanco', 'link' => 'p_peritajesBlanks.php'],
-  ['icon' => 'fa-users', 'text' => 'Usuarios', 'link' => 'usuarios.php'],
+    ["icon" => "fa-home", "text" => "Dashboard", "link" => "Dashboard.php"],
+    [
+        "icon" => "fa-file-lines",
+        "text" => "Peritaje Básico",
+        "link" => "L_peritajeB.php",
+    ],
+    [
+        "icon" => "fa-file-lines",
+        "text" => "Peritaje Completo",
+        "link" => "L_peritajeC.php",
+    ],
+    [
+        "icon" => "fa-print",
+        "text" => "Impresión en Blanco",
+        "link" => "P_peritajesBlanks.php",
+    ],
+    ["icon" => "fa-users", "text" => "Usuarios", "link" => "usuarios.php"],
 ];
 
 // Obtener nombre del usuario para mostrar
-$nombreUsuario = $_SESSION['nombre_completo'] ?? $_SESSION['usuario'];
+$nombreUsuario = $_SESSION["nombre_completo"] ?? $_SESSION["usuario"];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -52,7 +64,7 @@ $nombreUsuario = $_SESSION['nombre_completo'] ?? $_SESSION['usuario'];
       --primary-hover: #303f9f;
       --transition-speed: 0.3s;
     }
-    
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
@@ -246,13 +258,13 @@ $nombreUsuario = $_SESSION['nombre_completo'] ?? $_SESSION['usuario'];
     .btn-logout {
       color: #ff6b6b;
     }
-    
+
     .user-name {
       font-weight: 500;
       font-size: 14px;
       margin: 0;
     }
-    
+
     .user-role {
       font-size: 12px;
       color: rgba(255, 255, 255, 0.6);
@@ -265,17 +277,17 @@ $nombreUsuario = $_SESSION['nombre_completo'] ?? $_SESSION['usuario'];
         transform: translateX(-100%);
         position: fixed;
       }
-      
+
       #sidebar.active {
         transform: translateX(0);
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
       }
-      
+
       #content {
         margin-left: 0;
         width: 100%;
       }
-      
+
       #mobile-toggle {
         position: fixed;
         bottom: 20px;
@@ -294,17 +306,17 @@ $nombreUsuario = $_SESSION['nombre_completo'] ?? $_SESSION['usuario'];
         z-index: 1001;
         transition: all var(--transition-speed);
       }
-      
+
       #mobile-toggle:hover {
         background-color: var(--primary-hover);
         transform: scale(1.05);
       }
-      
+
       #mobile-toggle:focus {
         outline: none;
       }
     }
-    
+
     @media (min-width: 992px) {
       #mobile-toggle {
         display: none;
@@ -333,7 +345,7 @@ $nombreUsuario = $_SESSION['nombre_completo'] ?? $_SESSION['usuario'];
       opacity: 1;
       transition: opacity 0.3s linear;
     }
-    
+
     .loader {
       border: 5px solid #f3f3f3;
       border-radius: 50%;
@@ -364,26 +376,27 @@ $nombreUsuario = $_SESSION['nombre_completo'] ?? $_SESSION['usuario'];
         <i class="fas fa-bars"></i>
       </button>
     </div>
-    
+
     <div id="sidebar-content">
       <!-- Main navigation -->
       <ul class="nav-menu">
-        <?php 
+        <?php
         // Obtener la página actual para resaltar el menú activo
-        $current_page = basename($_SERVER['PHP_SELF']);
-        
-        foreach ($menu_items as $item): 
-          $is_active = ($current_page === $item['link']) ? 'active' : '';
-        ?>
+        $current_page = basename($_SERVER["PHP_SELF"]);
+
+        foreach ($menu_items as $item):
+            $is_active = $current_page === $item["link"] ? "active" : ""; ?>
           <li class="<?php echo $is_active; ?>">
-            <a href="<?php echo $item['link']; ?>">
-              <i class="fas <?php echo $item['icon']; ?>"></i>
-              <span><?php echo $item['text']; ?></span>
+            <a href="<?php echo $item["link"]; ?>">
+              <i class="fas <?php echo $item["icon"]; ?>"></i>
+              <span><?php echo $item["text"]; ?></span>
             </a>
           </li>
-        <?php endforeach; ?>
+        <?php
+        endforeach;
+        ?>
       </ul>
-      
+
       <!-- User profile and logout -->
       <ul class="user-menu">
         <li>
@@ -392,7 +405,9 @@ $nombreUsuario = $_SESSION['nombre_completo'] ?? $_SESSION['usuario'];
               <?php echo strtoupper(substr($nombreUsuario, 0, 1)); ?>
             </div>
             <div class="user-info">
-              <p class="user-name"><?php echo htmlspecialchars($nombreUsuario); ?></p>
+              <p class="user-name"><?php echo htmlspecialchars(
+                  $nombreUsuario
+              ); ?></p>
               <p class="user-role">Usuario</p>
             </div>
           </div>
@@ -406,7 +421,7 @@ $nombreUsuario = $_SESSION['nombre_completo'] ?? $_SESSION['usuario'];
       </ul>
     </div>
   </div>
-  
+
   <!-- Mobile toggle button -->
   <button id="mobile-toggle" aria-label="Show menu">
     <i class="fas fa-bars"></i>
@@ -419,25 +434,25 @@ $nombreUsuario = $_SESSION['nombre_completo'] ?? $_SESSION['usuario'];
         document.dispatchEvent(new CustomEvent(event));
       }
     };
-  
+
     // Toggle sidebar con función actualizada
     document.getElementById('toggle-btn').addEventListener('click', function() {
       const sidebar = document.getElementById('sidebar');
       sidebar.classList.toggle('collapsed');
-      
+
       // Guardar preferencia en localStorage
       localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
-      
+
       // Notificar a otros componentes sobre el cambio
       setTimeout(function() {
         eventDispatcher.dispatch('sidebar-toggled');
       }, 50);
     });
-    
+
     // Mobile sidebar toggle
     document.getElementById('mobile-toggle').addEventListener('click', function() {
       document.getElementById('sidebar').classList.toggle('active');
-      
+
       // Cambiar el icono
       const icon = this.querySelector('i');
       if (document.getElementById('sidebar').classList.contains('active')) {
@@ -447,17 +462,17 @@ $nombreUsuario = $_SESSION['nombre_completo'] ?? $_SESSION['usuario'];
         icon.classList.remove('fa-times');
         icon.classList.add('fa-bars');
       }
-      
+
       // Notificar a otros componentes
       eventDispatcher.dispatch('sidebar-mobile-toggled');
     });
-    
+
     // Función para actualizar la posición del contenido y footer
     function updateLayoutOnToggle() {
       const sidebar = document.getElementById('sidebar');
       const content = document.getElementById('content');
       const footer = document.querySelector('.footer');
-      
+
       if (sidebar.classList.contains('collapsed')) {
         content.style.marginLeft = 'var(--sidebar-collapsed-width)';
         if (footer) {
@@ -472,18 +487,18 @@ $nombreUsuario = $_SESSION['nombre_completo'] ?? $_SESSION['usuario'];
         }
       }
     }
-    
+
     // Inicialización y configuración al cargar la página
     document.addEventListener('DOMContentLoaded', function() {
       // Restaurar estado del sidebar desde localStorage
       const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
       if (sidebarCollapsed) {
         document.getElementById('sidebar').classList.add('collapsed');
-        
+
         // Asegurarse de que el layout esté actualizado inmediatamente
         setTimeout(updateLayoutOnToggle, 0);
       }
-      
+
       // Cerrar el menú en móviles al hacer clic en un elemento
       const navLinks = document.querySelectorAll('.nav-menu a');
       navLinks.forEach(link => {
@@ -496,11 +511,11 @@ $nombreUsuario = $_SESSION['nombre_completo'] ?? $_SESSION['usuario'];
           }
         });
       });
-      
+
       // Escuchar eventos de cambio de sidebar
       document.addEventListener('sidebar-toggled', updateLayoutOnToggle);
     });
-    
+
     // Logout functionality
     document.getElementById('btnLogout').addEventListener('click', function() {
       Swal.fire({
@@ -516,13 +531,13 @@ $nombreUsuario = $_SESSION['nombre_completo'] ?? $_SESSION['usuario'];
         if (result.isConfirmed) {
           // Mostrar loader
           document.querySelector('.page-loader').classList.add('active');
-          
+
           // Redirigir al logout
           window.location.href = 'logout.php';
         }
       });
     });
-    
+
     // Mostrar loader al cambiar de página
     document.addEventListener('DOMContentLoaded', function() {
       const links = document.querySelectorAll('a:not([target="_blank"]):not([href^="javascript"])');
@@ -532,7 +547,7 @@ $nombreUsuario = $_SESSION['nombre_completo'] ?? $_SESSION['usuario'];
           if (link.getAttribute('data-bs-toggle') === 'modal') {
             return;
           }
-          
+
           document.querySelector('.page-loader').classList.add('active');
         });
       });

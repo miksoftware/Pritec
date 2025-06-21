@@ -1,18 +1,18 @@
 <?php
 // filepath: c:\laragon\www\Pritec\e_peritajeB.php
-session_start();
-
-// Verificar sesión
-if (!isset($_SESSION['usuario'])) {
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['id_usuario'])) {
     header('Location: index.php');
-    exit;
+    exit();
 }
 
 // Validar y obtener ID
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if ($id === 0) {
     $_SESSION['error'] = "ID de peritaje no válido";
-    header('Location: l_peritajeB.php');
+    header('Location: L_peritajeB.php');
     exit;
 }
 
@@ -103,7 +103,7 @@ include 'layouts/header.php';
             </h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="dashboard.php">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="Dashboard.php">Inicio</a></li>
                     <li class="breadcrumb-item"><a href="l_peritajeB.php">Peritajes Básicos</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Editar Peritaje #<?php echo $peritaje['id']; ?></li>
                 </ol>

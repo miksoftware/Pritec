@@ -1,10 +1,12 @@
 <?php
 // filepath: c:\laragon\www\Pritec\index.php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Si ya está logueado, redirigir al dashboard
 if (isset($_SESSION['id_usuario'])) {
-    header("Location: dashboard.php");
+    header("Location: Dashboard.php");
     exit();
 }
 
@@ -19,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     $resultado = $login->iniciarSesion($usuario, $password);
     
     if ($resultado['status']) {
-        header("Location: dashboard.php");
+        header("Location: Dashboard.php");
         exit();
     } else {
         $error = $resultado['message'];

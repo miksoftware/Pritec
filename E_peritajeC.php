@@ -19,7 +19,7 @@ require_once 'peritaje_completo/Getid.php';
 // Validar que se reciba un ID
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     $_SESSION['error'] = "ID de peritaje no especificado";
-    header('Location: l_peritajeC.php');
+    header('Location: L_peritajeC.php');
     exit;
 }
 

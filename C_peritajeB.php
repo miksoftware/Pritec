@@ -1,6 +1,13 @@
 <?php
 // filepath: c:\laragon\www\Pritec\c_peritajeB.php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['id_usuario'])) {
+    header('Location: index.php');
+    exit();
+}
+
 require_once 'Enums/SeguroEnum.php';
 require_once 'Enums/ImprontaEnum.php';
 include 'layouts/header.php';
@@ -85,7 +92,7 @@ $quarterCol = "col-md-3 mb-3";
             </h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="dashboard.php">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="Dashboard.php">Inicio</a></li>
                     <li class="breadcrumb-item"><a href="l_peritajeB.php">Peritajes Básicos</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Nuevo Peritaje</li>
                 </ol>

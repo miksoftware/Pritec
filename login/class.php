@@ -73,7 +73,9 @@ class Login
             $updateStmt->close();
 
             // Iniciar sesión
-            session_start();
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
             $_SESSION['id_usuario'] = $datos['id'];
             $_SESSION['usuario'] = $datos['usuario'];
             $_SESSION['nombre_completo'] = $datos['nombre_completo'] ?? $datos['usuario'];
@@ -192,7 +194,9 @@ class Login
      */
     public function cerrarSesion()
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         session_destroy();
         return true;
     }
