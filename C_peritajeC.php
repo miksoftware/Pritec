@@ -850,6 +850,18 @@ if (isset($_SESSION['peritaje_id'])) {
                 </div>
             </div>
 
+            <?php if ($_SERVER['HTTP_HOST'] === 'localhost' || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false): ?>
+    <!-- Botón de prueba - Solo en desarrollo -->
+    <div class="text-center mt-3 mb-3">
+        <button type="button" class="btn btn-warning btn-sm" id="fillTestData">
+            <i class="fas fa-flask me-2"></i>Llenar con Datos de Prueba
+        </button>
+        <button type="button" class="btn btn-info btn-sm ms-2" id="clearForm">
+            <i class="fas fa-eraser me-2"></i>Limpiar Formulario
+        </button>
+    </div>
+<?php endif; ?>
+
             <div class="text-center mt-4 mb-4">
                 <button type="submit" class="btn btn-primary btn-lg px-5">
                     <i class="fas fa-save me-2"></i>Guardar Peritaje
@@ -1221,6 +1233,58 @@ if (isset($_SESSION['peritaje_id'])) {
                 });
             });
         <?php endif; ?>
+
+
+
+
+<?php if ($_SERVER['HTTP_HOST'] === 'localhost' || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false): ?>
+// Funcionalidad de prueba - Solo en desarrollo
+document.addEventListener('DOMContentLoaded', function() {
+    const fillTestBtn = document.getElementById('fillTestData');
+    const clearFormBtn = document.getElementById('clearForm');
+    
+    if (fillTestBtn) {
+        fillTestBtn.addEventListener('click', function() {
+            Swal.fire({
+                title: '¿Llenar con datos de prueba?',
+                text: 'Esto llenará todo el formulario con datos aleatorios',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, llenar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fillTestData();
+                    Swal.fire('¡Completado!', 'Formulario llenado con datos de prueba', 'success');
+                }
+            });
+        });
+    }
+    
+    if (clearFormBtn) {
+        clearFormBtn.addEventListener('click', function() {
+            Swal.fire({
+                title: '¿Limpiar formulario?',
+                text: 'Esto eliminará todos los datos del formulario',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, limpiar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('peritajeForm').reset();
+                    // Resetear también los selects de tipo de vehículo
+                    document.getElementById('tipo_vehiculo_display').value = '';
+                    document.getElementById('tipo_vehiculo_input').value = '';
+                    Swal.fire('¡Limpiado!', 'Formulario reiniciado', 'success');
+                }
+            });
+        });
+    }
+});
+<?php endif; ?>
+
+
     </script>
 </div>
 
