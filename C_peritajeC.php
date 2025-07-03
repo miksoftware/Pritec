@@ -81,6 +81,49 @@ $conceptosChasis = [
     'Sumido'
 ];
 
+$descripcionesPiezas = [
+    1 => 'BOMPER DELANTERO',
+    2 => 'PERSIANA',
+    3 => 'GUARDAFANGO DELANTERO IZQ',
+    4 => 'PUERTA DELANTERA IZQ',
+    5 => 'PUERTA TRASERA IZQ',
+    6 => 'COSTADO IZQUIERDO',
+    7 => 'PUERTA BAUL',
+    8 => 'COSTADO DERECHO',
+    9 => 'PUERTA TRASERA DERECHA',
+    10 => 'PUERTA DELANTERA DERECHA',
+    11 => 'GUARDAFANGO DELANTERO DERECHO',
+    12 => 'CAPOT',
+    13 => 'TECHO CARROCERIA',
+    14 => 'BOMPER TRASERO',
+    15 => 'PISO CARROCERIA'
+];
+
+$descripcionesPiezasEstructura = [
+    1 => 'PANEL FRONTAL SUPERIOR',
+    2 => 'PANEL FRONTAL INFERIOR',
+    3 => 'PUNTA DELANTERA DERECHA',
+    4 => 'PUNTA DELANTERA IZQUIERDA',
+    5 => 'PUNTA TRASERA DERECHA',
+    6 => 'PUNTA TRASERA IZQUIERDA',
+    7 => 'MARCO PARALLAMAS',
+    8 => 'PARAL PUERTA DELANTERA IZQUIERDA',
+    9 => 'PARAL PUERTA DELANTERA DERECHA',
+    10 => 'PARAL LARGERO CAPOTA IZQUIERDO',
+    11 => 'PARAL LARGERO CAPOTA DERECHO',
+    12 => 'PARAL PANORAMICO IZQUIERDO',
+    13 => 'PARAL PANORAMICO DERECHO',
+    14 => 'PARAL TRASERO CABINA DERECHO N/A PARA ESTRUCTURA DE AUTOMOVILES',
+    15 => 'PARAL TRASERO CABINA IZQUIERDO N/A PARA ESTRUCTURA DE AUTOMOVILES',
+    16 => 'PARAL CENTRAL IZQUIERDO',
+    17 => 'PARAL CENTRAL DERECHO',
+    18 => 'CUNA MOTOR',
+    19 => 'CAJA DE IMPACTO',
+    20 => 'ESTRIBO DERECHO',
+    21 => 'ESTRIBO IZQUIERDO',
+    22 => 'PANEL TRASERO'
+];
+
 // Función para generar select de estados usando EstadoEnum
 function generarSelectEstado($nombreCampo, $requerido = true)
 {
@@ -346,7 +389,12 @@ if (isset($_SESSION['peritaje_id'])) {
                             <tbody>
                                 <tr class="fila-inspeccion">
                                     <td>
-                                        <input type="text" class="form-control" name="descripcion_pieza[]" placeholder="Ej: Parachoques delantero">
+                                        <select class="form-select" name="descripcion_pieza[]">
+                                            <option value="">-- Seleccione una pieza --</option>
+                                            <?php foreach ($descripcionesPiezas as $valor => $descripcion): ?>
+                                                <option value="<?php echo $valor; ?>"><?php echo htmlspecialchars($descripcion); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </td>
                                     <td>
                                         <select class="form-select" name="concepto_pieza[]">
@@ -398,7 +446,12 @@ if (isset($_SESSION['peritaje_id'])) {
                             <tbody>
                                 <tr class="fila-estructura">
                                     <td>
-                                        <input type="text" class="form-control" name="descripcion_pieza_estructura[]" placeholder="Ej: Tablero central">
+                                        <select class="form-select" name="descripcion_pieza_estructura[]">
+                                            <option value="">-- Seleccione una pieza --</option>
+                                            <?php foreach ($descripcionesPiezasEstructura as $valor => $descripcion): ?>
+                                                <option value="<?php echo $valor; ?>"><?php echo htmlspecialchars($descripcion); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </td>
                                     <td>
                                         <select class="form-select" name="concepto_pieza_estructura[]">
@@ -797,6 +850,18 @@ if (isset($_SESSION['peritaje_id'])) {
                 </div>
             </div>
 
+            <?php if ($_SERVER['HTTP_HOST'] === 'localhost' || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false): ?>
+    <!-- Botón de prueba - Solo en desarrollo -->
+    <div class="text-center mt-3 mb-3">
+        <button type="button" class="btn btn-warning btn-sm" id="fillTestData">
+            <i class="fas fa-flask me-2"></i>Llenar con Datos de Prueba
+        </button>
+        <button type="button" class="btn btn-info btn-sm ms-2" id="clearForm">
+            <i class="fas fa-eraser me-2"></i>Limpiar Formulario
+        </button>
+    </div>
+<?php endif; ?>
+
             <div class="text-center mt-4 mb-4">
                 <button type="submit" class="btn btn-primary btn-lg px-5">
                     <i class="fas fa-save me-2"></i>Guardar Peritaje
@@ -912,27 +977,27 @@ if (isset($_SESSION['peritaje_id'])) {
             });
 
             // Manejar la selección de un tipo de vehículo
-                        // Manejar la selección de un tipo de vehículo
+            // Manejar la selección de un tipo de vehículo
             document.querySelectorAll('.tipo-vehiculo-item').forEach(function(item) {
                 item.addEventListener('click', function() {
                     const tipoSeleccionado = this.textContent.trim();
                     displayEl.value = tipoSeleccionado;
                     inputEl.value = tipoSeleccionado;
                     tipoVehiculoModal.hide();
-            
+
                     const rowChasisInput = document.getElementById('rowTipoChasis');
                     const cardCarroceria = document.getElementById('cardCarroceria');
                     const selectChasis = document.getElementById('tipo_chasis');
-            
+
                     // Limpiar el select de opciones actuales
                     if (selectChasis) {
                         selectChasis.innerHTML = '<option value="">-- Seleccione --</option>';
                     }
-            
+
                     if (tipoSeleccionado.includes('MOTOCICLETA')) {
                         rowChasisInput.classList.remove('d-none');
                         cardCarroceria.classList.add('d-none');
-            
+
                         // Agregar opciones de tipo de chasis para motocicletas
                         <?php foreach ($tiposChasismoto as $tipo): ?>
                             if (selectChasis) {
@@ -945,7 +1010,7 @@ if (isset($_SESSION['peritaje_id'])) {
                     } else {
                         rowChasisInput.classList.remove('d-none'); // También mostrar para carros
                         cardCarroceria.classList.remove('d-none');
-            
+
                         // Agregar opciones de tipo de chasis para carros
                         <?php foreach ($tiposChasisCarro as $tipo): ?>
                             if (selectChasis) {
@@ -955,7 +1020,7 @@ if (isset($_SESSION['peritaje_id'])) {
                                 selectChasis.appendChild(optionCarro);
                             }
                         <?php endforeach; ?>
-            
+
                         // Si solo hay dos opciones (APLICA/NO APLICA) y la primera es APLICA
                         // preseleccionamos por defecto el valor según si es motocicleta o no
                         if (selectChasis && selectChasis.options.length == 3) {
@@ -963,7 +1028,7 @@ if (isset($_SESSION['peritaje_id'])) {
                             selectChasis.selectedIndex = 0;
                         }
                     }
-            
+
                     // Mostrar/ocultar componentes según el valor inicial del tipo de chasis
                     if (selectChasis) {
                         toggleChasisComponents(selectChasis.value);
@@ -987,37 +1052,38 @@ if (isset($_SESSION['peritaje_id'])) {
         });
 
         // Añadir esto después de inicializar los selectores
-// Crear un event listener para el selector de tipo de chasis
-document.addEventListener('DOMContentLoaded', function() {
-    const selectChasis = document.getElementById('tipo_chasis');
-    if (selectChasis) {
-        selectChasis.addEventListener('change', function() {
-            toggleChasisComponents(this.value);
+        // Crear un event listener para el selector de tipo de chasis
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectChasis = document.getElementById('tipo_chasis');
+            if (selectChasis) {
+                selectChasis.addEventListener('change', function() {
+                    toggleChasisComponents(this.value);
+                });
+            }
         });
-    }
-});
 
-// Función para mostrar/ocultar componentes del chasis según la selección
-function toggleChasisComponents(selectedValue) {
-    const tablaChasis = document.getElementById('tablaInspeccionChasis').closest('.table-responsive');
-    const btnAgregarChasis = document.getElementById('agregarFilaChasis').closest('.col-md-12');
-    const observacionesChasis = document.getElementById('observaciones_chasis').closest('.col-md-12');
-    
-    if (selectedValue === 'NO APLICA') {
-        // Ocultar tabla y botones cuando es "NO APLICA"
-        tablaChasis.classList.add('d-none');
-        btnAgregarChasis.classList.add('d-none');
-        
-        // Mantener visibles las observaciones, pero añadir una nota
-        observacionesChasis.querySelector('label').textContent = 'Observaciones generales (No Aplica Chasis)';
-    } else {
-        // Mostrar todos los componentes para cualquier otra selección
-        tablaChasis.classList.remove('d-none');
-        btnAgregarChasis.classList.remove('d-none');
-        observacionesChasis.querySelector('label').textContent = 'Observaciones generales';
-    }
-}
+        // Función para mostrar/ocultar componentes del chasis según la selección
+        function toggleChasisComponents(selectedValue) {
+            const tablaChasis = document.getElementById('tablaInspeccionChasis').closest('.table-responsive');
+            const btnAgregarChasis = document.getElementById('agregarFilaChasis').closest('.col-md-12');
+            const observacionesChasis = document.getElementById('observaciones_chasis').closest('.col-md-12');
 
+            if (selectedValue === 'NO APLICA') {
+                // Ocultar tabla y botones cuando es "NO APLICA"
+                tablaChasis.classList.add('d-none');
+                btnAgregarChasis.classList.add('d-none');
+
+                // Mantener visibles las observaciones, pero añadir una nota
+                observacionesChasis.querySelector('label').textContent = 'Observaciones generales (No Aplica Chasis)';
+            } else {
+                // Mostrar todos los componentes para cualquier otra selección
+                tablaChasis.classList.remove('d-none');
+                btnAgregarChasis.classList.remove('d-none');
+                observacionesChasis.querySelector('label').textContent = 'Observaciones generales';
+            }
+        }
+
+        // Función para agregar fila a una tabla
         // Función para agregar fila a una tabla
         function agregarFila(tablaId, claseFilas, nombreCampo1, nombreCampo2, claseBoton) {
             const tbody = document.querySelector(`#${tablaId} tbody`);
@@ -1026,6 +1092,13 @@ function toggleChasisComponents(selectedValue) {
 
             // Si estamos agregando a la tabla de inspección visual externa (carrocería)
             if (tablaId === 'tablaInspeccionVisual') {
+                // Crear select para descripciones de piezas
+                let opcionesDescripcion = '<option value="">-- Seleccione una pieza --</option>';
+
+                <?php foreach ($descripcionesPiezas as $valor => $descripcion): ?>
+                    opcionesDescripcion += `<option value="<?php echo $valor; ?>"><?php echo htmlspecialchars($descripcion); ?></option>`;
+                <?php endforeach; ?>
+
                 // Crear select para conceptos de carrocería
                 let opcionesConcepto = '<option value="">-- Seleccione un concepto --</option>';
 
@@ -1035,7 +1108,9 @@ function toggleChasisComponents(selectedValue) {
 
                 nuevaFila.innerHTML = `
             <td>
-                <input type="text" class="form-control" name="${nombreCampo1}" placeholder="Ej: Descripción">
+                <select class="form-select" name="${nombreCampo1}">
+                    ${opcionesDescripcion}
+                </select>
             </td>
             <td>
                 <select class="form-select" name="${nombreCampo2}">
@@ -1050,7 +1125,15 @@ function toggleChasisComponents(selectedValue) {
         `;
             }
             // Si estamos agregando a la tabla de inspección visual interna (estructura)
+            // Si estamos agregando a la tabla de inspección visual interna (estructura)
             else if (tablaId === 'tablaInspeccionEstructura') {
+                // Crear select para descripciones de piezas de estructura
+                let opcionesDescripcion = '<option value="">-- Seleccione una pieza --</option>';
+
+                <?php foreach ($descripcionesPiezasEstructura as $valor => $descripcion): ?>
+                    opcionesDescripcion += `<option value="<?php echo $valor; ?>"><?php echo htmlspecialchars($descripcion); ?></option>`;
+                <?php endforeach; ?>
+
                 // Crear select para conceptos de estructura
                 let opcionesConcepto = '<option value="">-- Seleccione un concepto --</option>';
 
@@ -1059,20 +1142,22 @@ function toggleChasisComponents(selectedValue) {
                 <?php endforeach; ?>
 
                 nuevaFila.innerHTML = `
-            <td>
-                <input type="text" class="form-control" name="${nombreCampo1}" placeholder="Ej: Descripción">
-            </td>
-            <td>
-                <select class="form-select" name="${nombreCampo2}">
-                    ${opcionesConcepto}
-                </select>
-            </td>
-            <td class="text-center">
-                <button type="button" class="btn btn-danger btn-sm ${claseBoton}">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </td>
-        `;
+                    <td>
+                        <select class="form-select" name="${nombreCampo1}">
+                            ${opcionesDescripcion}
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select" name="${nombreCampo2}">
+                            ${opcionesConcepto}
+                        </select>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-danger btn-sm ${claseBoton}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
             }
             // Si estamos agregando a la tabla de inspección de chasis
             else if (tablaId === 'tablaInspeccionChasis') {
@@ -1148,6 +1233,58 @@ function toggleChasisComponents(selectedValue) {
                 });
             });
         <?php endif; ?>
+
+
+
+
+<?php if ($_SERVER['HTTP_HOST'] === 'localhost' || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false): ?>
+// Funcionalidad de prueba - Solo en desarrollo
+document.addEventListener('DOMContentLoaded', function() {
+    const fillTestBtn = document.getElementById('fillTestData');
+    const clearFormBtn = document.getElementById('clearForm');
+    
+    if (fillTestBtn) {
+        fillTestBtn.addEventListener('click', function() {
+            Swal.fire({
+                title: '¿Llenar con datos de prueba?',
+                text: 'Esto llenará todo el formulario con datos aleatorios',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, llenar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fillTestData();
+                    Swal.fire('¡Completado!', 'Formulario llenado con datos de prueba', 'success');
+                }
+            });
+        });
+    }
+    
+    if (clearFormBtn) {
+        clearFormBtn.addEventListener('click', function() {
+            Swal.fire({
+                title: '¿Limpiar formulario?',
+                text: 'Esto eliminará todos los datos del formulario',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, limpiar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('peritajeForm').reset();
+                    // Resetear también los selects de tipo de vehículo
+                    document.getElementById('tipo_vehiculo_display').value = '';
+                    document.getElementById('tipo_vehiculo_input').value = '';
+                    Swal.fire('¡Limpiado!', 'Formulario reiniciado', 'success');
+                }
+            });
+        });
+    }
+});
+<?php endif; ?>
+
+
     </script>
 </div>
 

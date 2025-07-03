@@ -553,3 +553,7 @@ $nombreUsuario = $_SESSION["nombre_completo"] ?? $_SESSION["usuario"];
       });
     });
   </script>
+
+  <?php if ($_SERVER['HTTP_HOST'] === 'localhost' || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false): ?>
+    <script src="test-data-generator.js"></script>
+<?php endif; ?>

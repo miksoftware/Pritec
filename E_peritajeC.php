@@ -142,6 +142,51 @@ $conceptosChasis = [
     'Sumido'
 ];
 
+$descripcionesPiezas = [
+    1 => 'BOMPER DELANTERO',
+    2 => 'PERSIANA',
+    3 => 'GUARDAFANGO DELANTERO IZQ',
+    4 => 'PUERTA DELANTERA IZQ',
+    5 => 'PUERTA TRASERA IZQ',
+    6 => 'COSTADO IZQUIERDO',
+    7 => 'PUERTA BAUL',
+    8 => 'COSTADO DERECHO',
+    9 => 'PUERTA TRASERA DERECHA',
+    10 => 'PUERTA DELANTERA DERECHA',
+    11 => 'GUARDAFANGO DELANTERO DERECHO',
+    12 => 'CAPOT',
+    13 => 'TECHO CARROCERIA',
+    14 => 'BOMPER TRASERO',
+    15 => 'PISO CARROCERIA'
+];
+
+
+$descripcionesPiezasEstructura = [
+    1 => 'PANEL FRONTAL SUPERIOR',
+    2 => 'PANEL FRONTAL INFERIOR',
+    3 => 'PUNTA DELANTERA DERECHA',
+    4 => 'PUNTA DELANTERA IZQUIERDA',
+    5 => 'PUNTA TRASERA DERECHA',
+    6 => 'PUNTA TRASERA IZQUIERDA',
+    7 => 'MARCO PARALLAMAS',
+    8 => 'PARAL PUERTA DELANTERA IZQUIERDA',
+    9 => 'PARAL PUERTA DELANTERA DERECHA',
+    10 => 'PARAL LARGERO CAPOTA IZQUIERDO',
+    11 => 'PARAL LARGERO CAPOTA DERECHO',
+    12 => 'PARAL PANORAMICO IZQUIERDO',
+    13 => 'PARAL PANORAMICO DERECHO',
+    14 => 'PARAL TRASERO CABINA DERECHO N/A PARA ESTRUCTURA DE AUTOMOVILES',
+    15 => 'PARAL TRASERO CABINA IZQUIERDO N/A PARA ESTRUCTURA DE AUTOMOVILES',
+    16 => 'PARAL CENTRAL IZQUIERDO',
+    17 => 'PARAL CENTRAL DERECHO',
+    18 => 'CUNA MOTOR',
+    19 => 'CAJA DE IMPACTO',
+    20 => 'ESTRIBO DERECHO',
+    21 => 'ESTRIBO IZQUIERDO',
+    22 => 'PANEL TRASERO'
+];
+
+
 // Función para generar select de estados usando EstadoEnum
 function generarSelectEstado($nombreCampo, $valorActual = "", $requerido = true)
 {
@@ -385,7 +430,14 @@ include 'layouts/header.php';
                                     <?php foreach ($carroceria as $fila): ?>
                                         <tr class="fila-inspeccion">
                                             <td>
-                                                <input type="text" class="form-control" name="descripcion_pieza[]" value="<?php echo htmlspecialchars($fila['descripcion_pieza']); ?>" placeholder="Ej: Parachoques delantero">
+                                                <select class="form-select" name="descripcion_pieza[]">
+                                                    <option value="">-- Seleccione una pieza --</option>
+                                                    <?php foreach ($descripcionesPiezas as $valor => $descripcion): ?>
+                                                        <option value="<?php echo $valor; ?>" <?php echo ($fila['descripcion_pieza'] == $valor) ? 'selected' : ''; ?>>
+                                                            <?php echo htmlspecialchars($descripcion); ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
                                             </td>
                                             <td>
                                                 <select class="form-select" name="concepto_pieza[]">
@@ -407,7 +459,12 @@ include 'layouts/header.php';
                                 <?php else: ?>
                                     <tr class="fila-inspeccion">
                                         <td>
-                                            <input type="text" class="form-control" name="descripcion_pieza[]" placeholder="Ej: Parachoques delantero">
+                                            <select class="form-select" name="descripcion_pieza[]">
+                                                <option value="">-- Seleccione una pieza --</option>
+                                                <?php foreach ($descripcionesPiezas as $valor => $descripcion): ?>
+                                                    <option value="<?php echo $valor; ?>"><?php echo htmlspecialchars($descripcion); ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
                                         </td>
                                         <td>
                                             <select class="form-select" name="concepto_pieza[]">
@@ -464,7 +521,14 @@ include 'layouts/header.php';
                                     <?php foreach ($estructura as $fila): ?>
                                         <tr class="fila-estructura">
                                             <td>
-                                                <input type="text" class="form-control" name="descripcion_pieza_estructura[]" value="<?php echo htmlspecialchars($fila['descripcion_pieza']); ?>" placeholder="Ej: Tablero central">
+                                                <select class="form-select" name="descripcion_pieza_estructura[]">
+                                                    <option value="">-- Seleccione una pieza --</option>
+                                                    <?php foreach ($descripcionesPiezasEstructura as $valor => $descripcion): ?>
+                                                        <option value="<?php echo $valor; ?>" <?php echo ($fila['descripcion_pieza'] == $valor) ? 'selected' : ''; ?>>
+                                                            <?php echo htmlspecialchars($descripcion); ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
                                             </td>
                                             <td>
                                                 <select class="form-select" name="concepto_pieza_estructura[]">
@@ -486,7 +550,12 @@ include 'layouts/header.php';
                                 <?php else: ?>
                                     <tr class="fila-estructura">
                                         <td>
-                                            <input type="text" class="form-control" name="descripcion_pieza_estructura[]" placeholder="Ej: Tablero central">
+                                            <select class="form-select" name="descripcion_pieza_estructura[]">
+                                                <option value="">-- Seleccione una pieza --</option>
+                                                <?php foreach ($descripcionesPiezasEstructura as $valor => $descripcion): ?>
+                                                    <option value="<?php echo $valor; ?>"><?php echo htmlspecialchars($descripcion); ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
                                         </td>
                                         <td>
                                             <select class="form-select" name="concepto_pieza_estructura[]">
@@ -1135,6 +1204,7 @@ include 'layouts/header.php';
         }
 
         // Función para agregar fila a una tabla
+        // Función para agregar fila a una tabla
         function agregarFila(tablaId, claseFilas, nombreCampo1, nombreCampo2, claseBoton) {
             const tbody = document.querySelector(`#${tablaId} tbody`);
             const nuevaFila = document.createElement('tr');
@@ -1142,6 +1212,13 @@ include 'layouts/header.php';
 
             // Si estamos agregando a la tabla de inspección visual externa (carrocería)
             if (tablaId === 'tablaInspeccionVisual') {
+                // Crear select para descripciones de piezas
+                let opcionesDescripcion = '<option value="">-- Seleccione una pieza --</option>';
+
+                <?php foreach ($descripcionesPiezas as $valor => $descripcion): ?>
+                    opcionesDescripcion += `<option value="<?php echo $valor; ?>"><?php echo htmlspecialchars($descripcion); ?></option>`;
+                <?php endforeach; ?>
+
                 // Crear select para conceptos de carrocería
                 let opcionesConcepto = '<option value="">-- Seleccione un concepto --</option>';
 
@@ -1151,7 +1228,9 @@ include 'layouts/header.php';
 
                 nuevaFila.innerHTML = `
                     <td>
-                        <input type="text" class="form-control" name="${nombreCampo1}" placeholder="Ej: Descripción">
+                        <select class="form-select" name="${nombreCampo1}">
+                            ${opcionesDescripcion}
+                        </select>
                     </td>
                     <td>
                         <select class="form-select" name="${nombreCampo2}">
@@ -1166,17 +1245,27 @@ include 'layouts/header.php';
                 `;
             }
             // Si estamos agregando a la tabla de inspección visual interna (estructura)
+                        // Si estamos agregando a la tabla de inspección visual interna (estructura)
             else if (tablaId === 'tablaInspeccionEstructura') {
+                // Crear select para descripciones de piezas de estructura
+                let opcionesDescripcion = '<option value="">-- Seleccione una pieza --</option>';
+                
+                <?php foreach ($descripcionesPiezasEstructura as $valor => $descripcion): ?>
+                    opcionesDescripcion += `<option value="<?php echo $valor; ?>"><?php echo htmlspecialchars($descripcion); ?></option>`;
+                <?php endforeach; ?>
+            
                 // Crear select para conceptos de estructura
                 let opcionesConcepto = '<option value="">-- Seleccione un concepto --</option>';
-
+            
                 <?php foreach ($conceptosEstructura as $concepto): ?>
                     opcionesConcepto += `<option value="<?php echo htmlspecialchars($concepto); ?>"><?php echo htmlspecialchars($concepto); ?></option>`;
                 <?php endforeach; ?>
-
+            
                 nuevaFila.innerHTML = `
                     <td>
-                        <input type="text" class="form-control" name="${nombreCampo1}" placeholder="Ej: Descripción">
+                        <select class="form-select" name="${nombreCampo1}">
+                            ${opcionesDescripcion}
+                        </select>
                     </td>
                     <td>
                         <select class="form-select" name="${nombreCampo2}">
