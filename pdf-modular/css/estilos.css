@@ -462,6 +462,30 @@ p {
     width: 50%;
 }
 
+/* Estilos específicos para la sección de batería */
+.actuacion-bateria .tabla-inspeccion .header-concepto {
+    width: 25%;
+}
+
+.actuacion-bateria .tabla-inspeccion .header-concepto:first-of-type {
+    width: 25%;
+}
+
+.actuacion-bateria .tabla-inspeccion .celda-concepto {
+    width: 25%;
+    text-align: center;
+    justify-content: center;
+}
+
+/* Ajustes para tablas con 3 columnas (ITEM, CONCEPTO, %) - SOLO batería */
+.actuacion-bateria .tabla-inspeccion .fila-tabla-header .header-descripcion {
+    width: 50%;
+}
+
+.actuacion-bateria .tabla-inspeccion .fila-tabla-datos .celda-descripcion {
+    width: 50%;
+}
+
 /* Clases de color dinámico según porcentaje */
 .porcentaje-excelente {
     background-color: #36d048 !important;

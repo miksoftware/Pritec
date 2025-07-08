@@ -47,6 +47,9 @@ if ($result->num_rows === 0) {
 
 $peritaje = $result->fetch_assoc();
 
+// Agregar datos de prueba para batería (temporal)
+include __DIR__ . '/test-datos-bateria.php';
+
 // Cargar inspección visual externa - carrocería
 $stmt = $conn->prepare("SELECT * FROM inspeccion_visual_carroceria WHERE peritaje_id = ?");
 $stmt->bind_param("i", $id);
@@ -168,9 +171,11 @@ $tiposVehiculos = [
         <!-- Página 2: Inspección Visual Interna - Chasis -->
         <?php include __DIR__ . '/pdf-modular/paginas/pagina-2.php'; ?>
         
+        <!-- Página 3: Actuación de la Batería -->
+        <?php include __DIR__ . '/pdf-modular/paginas/pagina-3.php'; ?>
+        
         <!-- Aquí se incluirán las siguientes páginas cuando se modularicen -->
         <!--  -->
-        <!-- <?php include __DIR__ . '/pdf-modular/paginas/pagina-3.php'; ?> -->
         <!-- <?php include __DIR__ . '/pdf-modular/paginas/pagina-4.php'; ?> -->
         <!-- <?php include __DIR__ . '/pdf-modular/paginas/pagina-5.php'; ?> -->
         <!-- <?php include __DIR__ . '/pdf-modular/paginas/pagina-6.php'; ?> -->

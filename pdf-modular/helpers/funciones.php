@@ -265,4 +265,23 @@ function obtenerClasePorPorcentaje($porcentaje) {
         return 'porcentaje-malo';
     }
 }
+
+/**
+ * Obtiene el estado de la batería según el porcentaje
+ * @param int $porcentaje Porcentaje del 0 al 100
+ * @return string Estado correspondiente
+ */
+function obtenerEstadoBateriaPorPorcentaje($porcentaje) {
+    $porcentaje = intval($porcentaje);
+    
+    if ($porcentaje >= 75) {
+        return 'Excelente';
+    } elseif ($porcentaje >= 50) {
+        return 'Bueno';
+    } elseif ($porcentaje >= 25) {
+        return 'Bajo';
+    } else {
+        return 'Crítico';
+    }
+}
 ?>

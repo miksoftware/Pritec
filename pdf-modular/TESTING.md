@@ -37,8 +37,21 @@ http://localhost/Pritec/peritaje-modular.php?id=1&print=true
   - Datos de amortiguadores: anterior/posterior izquierda/derecha
   - Observaciones independientes para cada sección
 
+### ✅ Página 3 - COMPLETADA
+- Actuación de la Batería
+  - Convenciones de color por porcentajes de funcionalidad
+  - Barras visuales de estado con leyendas específicas
+  - Tabla de 3 columnas con mediciones específicas:
+    - Voltaje
+    - Amperaje
+    - Estado físico
+    - Terminales
+    - Carga
+  - Imagen de batería
+  - Observaciones específicas para batería
+  - Colores dinámicos según porcentaje (Crítico/Bajo/Bueno/Excelente)
+
 ### ⏳ Páginas Pendientes
-- Página 3: Por implementar
 - Página 4: Por implementar  
 - Página 5: Por implementar
 - Página 6: Por implementar
@@ -121,7 +134,7 @@ http://localhost/Pritec/peritaje-modular.php?id=1&print=true
 ```
 pdf-modular/
 ├── css/estilos.css                           # Estilos unificados
-├── helpers/funciones.php                     # Funciones de formateo
+├── helpers/funciones.php                     # Funciones de formateo y colorizado
 ├── secciones/                                # Secciones modulares
 │   ├── header.php
 │   ├── datos-vehiculo.php
@@ -129,14 +142,29 @@ pdf-modular/
 │   ├── inspeccion-externa-estructura.php
 │   ├── inspeccion-interna-estructura-moto.php
 │   ├── inspeccion-interna-chasis-moto.php
+│   ├── inspeccion-interna-chasis.php         # ✅ Nueva sección
+│   ├── llantas-amortiguadores.php            # ✅ Nueva sección
+│   ├── actuacion-bateria.php                 # ✅ Nueva sección
 │   └── pie-pagina.php
 └── paginas/
-    └── pagina-1.php                          # Página completa
+    ├── pagina-1.php                          # ✅ Completada
+    ├── pagina-2.php                          # ✅ Completada
+    └── pagina-3.php                          # ✅ Completada
 ```
+
+## Scripts de prueba disponibles
+
+### Para llantas y amortiguadores:
+- `test-datos-llantas-amortiguadores.js` - Script JavaScript para consola
+- `test-datos-llantas-amortiguadores.php` - Datos PHP incluibles
+
+### Para batería:
+- `test-datos-bateria.js` - Script JavaScript para consola  
+- `test-datos-bateria.php` - Datos PHP incluibles (temporalmente incluido en peritaje-modular.php)
 
 ## Próximos pasos sugeridos
 
-1. **Validar visualmente** que la numeración se vea correcta
-2. **Probar con motocicletas** para verificar que muestre las secciones correctas
-3. **Continuar con páginas 2-6** cuando esta página esté perfecta
+1. **Validar visualmente** la página 3 con los datos de batería
+2. **Probar diferentes porcentajes** para verificar los colores dinámicos
+3. **Continuar con páginas 4-6** cuando la página 3 esté perfecta
 4. **Ajustar CSS** si hay algún detalle visual que mejorar
