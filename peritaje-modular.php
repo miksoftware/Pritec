@@ -165,6 +165,8 @@ $tiposVehiculos = [
         <!-- Página 1: Header, Datos del Vehículo, Inspección Visual Externa e Interna -->
         <?php include __DIR__ . '/pdf-modular/paginas/pagina-1.php'; ?>
         
+        <!-- Página 2: Inspección Visual Interna - Chasis -->
+        <?php include __DIR__ . '/pdf-modular/paginas/pagina-2.php'; ?>
         
         <!-- Aquí se incluirán las siguientes páginas cuando se modularicen -->
         <!--  -->

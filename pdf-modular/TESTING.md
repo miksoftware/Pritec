@@ -17,6 +17,25 @@ http://localhost/Pritec/peritaje-modular.php?id=[ID_DE_MOTOCICLETA]
 http://localhost/Pritec/peritaje-modular.php?id=1&print=true
 ```
 
+## Estado Actual del PDF
+
+### ✅ Página 1 - COMPLETADA
+- Header con información de la empresa
+- Datos del vehículo y solicitante
+- Inspección Visual Externa - Carrocería
+- Inspección Visual Externa - Estructura
+- Inspección Visual Interna - Estructura (motocicletas)
+- Inspección Visual Interna - Chasis (motocicletas)
+
+### ✅ Página 2 - COMPLETADA
+- Inspección Visual Interna - Chasis (vehículos normales)
+
+### ⏳ Páginas Pendientes
+- Página 3: Por implementar
+- Página 4: Por implementar  
+- Página 5: Por implementar
+- Página 6: Por implementar
+
 ## Cambios Implementados
 
 ### ✅ 1. Pie de página corregido
@@ -41,6 +60,16 @@ http://localhost/Pritec/peritaje-modular.php?id=1&print=true
 - Archivo `pdf-modular/helpers/funciones.php`
 - Funciones para formateo automático con numeración
 - Arrays de conceptos y descripciones centralizados
+
+### ✅ 5. Inspección Visual Interna - Chasis (Página 2)
+- Nueva sección de inspección interna para chasis
+- Array de descripciones específicas para piezas de chasis:
+  - LARGUERO IZQUIERDO, LARGUERO DERECHO
+  - TRAVESAÑOS (DELANTERO, CENTRAL, TRASERO)
+  - SOPORTES (MOTOR, TRANSMISIÓN, SUSPENSIÓN)
+  - PUNTOS DE ANCLAJE
+- Imagen dinámica según tipo de vehículo
+- Solo se muestra para vehículos que no sean motocicletas
 
 ## Funcionalidades
 

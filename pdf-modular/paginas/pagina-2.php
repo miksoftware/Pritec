@@ -1,7 +1,7 @@
 <?php
 /**
- * Página 2 del PDF Modular de Peritaje
- * Contiene la inspección visual interna del chasis y llantas/amortiguadores
+ * Página 2 del PDF de Peritaje Completo
+ * Contiene: Inspección Visual Interna - Chasis
  */
 
 // Verificar que todas las variables necesarias estén disponibles
@@ -18,11 +18,11 @@ $numeroPagina = 2;
 
 <div class="page">
     <div class="contenido-pagina">
-        <!-- Inspección Visual Interna - Chasis -->
+        <!-- Inspección Visual Interna - Chasis (solo para vehículos que no sean motocicletas) -->
         <?php include __DIR__ . '/../secciones/inspeccion-interna-chasis.php'; ?>
         
-        <!-- Llantas y Amortiguadores -->
-        <?php include __DIR__ . '/../secciones/llantas-amortiguadores.php'; ?>
+        <!-- Aquí se pueden agregar más secciones para la página 2 en el futuro -->
+        
     </div>
     
     <!-- Pie de página -->

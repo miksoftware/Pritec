@@ -125,6 +125,20 @@ $conceptosEstructura = [
     'Rayón'
 ];
 
+// Descripción de piezas para chasis
+$descripcionesPiezasChasis = [
+    1 => 'LARGUERO IZQUIERDO',
+    2 => 'LARGUERO DERECHO',
+    3 => 'TRAVESAÑO DELANTERO',
+    4 => 'TRAVESAÑO CENTRAL',
+    5 => 'TRAVESAÑO TRASERO',
+    6 => 'SOPORTE DE MOTOR',
+    7 => 'SOPORTE DE TRANSMISIÓN',
+    8 => 'SOPORTE DE SUSPENSIÓN DELANTERA',
+    9 => 'SOPORTE DE SUSPENSIÓN TRASERA',
+    10 => 'PUNTOS DE ANCLAJE'
+];
+
 // Conceptos para chasis
 $conceptosChasis = [
     'Bueno',

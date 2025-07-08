@@ -19,12 +19,12 @@ pdf-modular/
 │   ├── inspeccion-interna-chasis-moto.php
 │   └── pie-pagina.php       # Pie de página
 └── paginas/                 # Páginas que incluyen secciones
-    ├── pagina-1.php         # Primera página del PDF
-    ├── pagina-2.php         # (Por implementar)
-    ├── pagina-3.php         # (Por implementar)
-    ├── pagina-4.php         # (Por implementar)
-    ├── pagina-5.php         # (Por implementar)
-    └── pagina-6.php         # (Por implementar)
+    ├── pagina-1.php         # ✅ Primera página del PDF (Implementada)
+    ├── pagina-2.php         # ✅ Segunda página del PDF (Implementada)
+    ├── pagina-3.php         # ⏳ (Por implementar)
+    ├── pagina-4.php         # ⏳ (Por implementar)
+    ├── pagina-5.php         # ⏳ (Por implementar)
+    └── pagina-6.php         # ⏳ (Por implementar)
 ```
 
 ### Archivo Principal

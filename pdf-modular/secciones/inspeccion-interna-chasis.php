@@ -22,7 +22,7 @@ if (str_contains($peritaje["tipo_vehiculo"], "MOTOCICLETA")) {
     return;
 }
 
-// Incluir funciones helper
+// Incluir funciones helper para acceder a las descripciones de piezas
 require_once __DIR__ . '/../helpers/funciones.php';
 ?>
 
@@ -51,8 +51,8 @@ require_once __DIR__ . '/../helpers/funciones.php';
                                 <div class="celda-descripcion">
                                     <?php 
                                     $descripcion = $fila["descripcion_pieza"] ?? '';
-                                    // Mostrar número y descripción (ej: "1. BOMPER DELANTERO")
-                                    echo htmlspecialchars(obtenerDescripcionConNumero($descripcion, $descripcionesPiezas));
+                                    // Mostrar número y descripción (ej: "1. LARGUERO IZQUIERDO")
+                                    echo htmlspecialchars(obtenerDescripcionConNumero($descripcion, $descripcionesPiezasChasis));
                                     ?>
                                 </div>
                                 <div class="celda-concepto">
