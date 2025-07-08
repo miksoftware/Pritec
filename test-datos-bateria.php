@@ -4,14 +4,13 @@
  * Simula datos de batería para testing del PDF modular
  */
 
-// Datos de prueba para batería
+// Datos de prueba para batería y scanner
 $datosPruebaBateria = [
-    'bateria_voltaje' => 85,           // Excelente
-    'bateria_amperaje' => 60,          // Bueno  
-    'bateria_estado_fisico' => 30,     // Bajo
-    'bateria_terminales' => 95,        // Excelente
-    'bateria_carga' => 15,             // Crítico
-    'observaciones_bateria' => 'Observaciones de prueba para la batería del vehículo. Se recomienda revisar la conexión de los terminales y considerar el reemplazo próximo debido al bajo estado de carga.'
+    'prueba_bateria' => 85,           // Excelente
+    'prueba_arranque' => 60,          // Bueno  
+    'carga_bateria' => 30,            // Bajo
+    'observaciones_bateria' => 'Observaciones de prueba para la batería del vehículo. Se recomienda revisar la conexión de los terminales y considerar el reemplazo próximo debido al bajo estado de carga.',
+    'prueba_escaner' => 'Scanner conectado correctamente. Diagnóstico completado sin errores de comunicación. No se detectaron códigos de error en el sistema. Todos los sensores funcionan correctamente.'
 ];
 
 // Si se incluye en otra página, agregar los datos al array $peritaje

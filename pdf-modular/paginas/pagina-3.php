@@ -23,6 +23,9 @@ if (!isset($peritaje)) {
     <div class="pagina">
         <!-- Sección de Actuación de la Batería -->
         <?php include __DIR__ . '/../secciones/actuacion-bateria.php'; ?>
+        
+        <!-- Sección de Prueba de Scanner -->
+        <?php include __DIR__ . '/../secciones/prueba-scanner.php'; ?>
     </div>
 </body>
 </html>

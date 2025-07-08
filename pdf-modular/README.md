@@ -20,6 +20,7 @@ pdf-modular/
 │   ├── inspeccion-interna-chasis.php # ✅ Nueva sección (Implementada)
 │   ├── llantas-amortiguadores.php    # ✅ Nueva sección (Implementada)
 │   ├── actuacion-bateria.php        # ✅ Nueva sección (Implementada)
+│   ├── prueba-scanner.php           # ✅ Nueva sección (Implementada)
 │   └── pie-pagina.php       # Pie de página
 ├── helpers/                 # Funciones auxiliares
 │   └── funciones.php        # Funciones para formateo y colorizado

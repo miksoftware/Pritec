@@ -42,14 +42,16 @@ http://localhost/Pritec/peritaje-modular.php?id=1&print=true
   - Convenciones de color por porcentajes de funcionalidad
   - Barras visuales de estado con leyendas específicas
   - Tabla de 3 columnas con mediciones específicas:
-    - Voltaje
-    - Amperaje
-    - Estado físico
-    - Terminales
-    - Carga
+    - Prueba de batería
+    - Prueba de arranque
+    - Carga de batería
   - Imagen de batería
   - Observaciones específicas para batería
   - Colores dinámicos según porcentaje (Crítico/Bajo/Bueno/Excelente)
+- Prueba de Observación y Diagnóstico Scanner
+  - Sección informativa sobre el scanner automotriz
+  - Descripción del propósito y funcionamiento
+  - Diseño compacto y limpio
 
 ### ⏳ Páginas Pendientes
 - Página 4: Por implementar  
@@ -145,6 +147,7 @@ pdf-modular/
 │   ├── inspeccion-interna-chasis.php         # ✅ Nueva sección
 │   ├── llantas-amortiguadores.php            # ✅ Nueva sección
 │   ├── actuacion-bateria.php                 # ✅ Nueva sección
+│   ├── prueba-scanner.php                    # ✅ Nueva sección
 │   └── pie-pagina.php
 └── paginas/
     ├── pagina-1.php                          # ✅ Completada
