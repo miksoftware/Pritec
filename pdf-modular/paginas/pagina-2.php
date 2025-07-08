@@ -21,7 +21,8 @@ $numeroPagina = 2;
         <!-- Inspección Visual Interna - Chasis (solo para vehículos que no sean motocicletas) -->
         <?php include __DIR__ . '/../secciones/inspeccion-interna-chasis.php'; ?>
         
-        <!-- Aquí se pueden agregar más secciones para la página 2 en el futuro -->
+        <!-- Llantas y Amortiguadores -->
+        <?php include __DIR__ . '/../secciones/llantas-amortiguadores.php'; ?>
         
     </div>
     

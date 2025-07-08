@@ -329,7 +329,7 @@ p {
     padding: var(--spacing-medium);
     border-radius: var(--border-radius);
     border: 1px solid var(--main-color);
-    margin-bottom: var(--spacing-medium);
+    margin-bottom: var(--spacing-small);
     display: flex;
     flex-direction: column;
     break-inside: avoid;
@@ -353,6 +353,16 @@ p {
 .imagen-vehiculo {
     width: 40%;
     height: 190px;
+    object-fit: contain;
+    border: 1px solid var(--main-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-small);
+    flex-shrink: 0;
+}
+
+.imagen-vehiculo-pag2 {
+    width: 40%;
+    height: 150px;
     object-fit: contain;
     border: 1px solid var(--main-color);
     border-radius: var(--border-radius);
@@ -426,6 +436,55 @@ p {
     min-height: 24px;
     display: flex;
     align-items: center;
+}
+
+/* Estilos específicos SOLO para llantas y amortiguadores */
+.llantas-amortiguadores .tabla-inspeccion .header-concepto {
+    width: 25%;
+}
+
+.llantas-amortiguadores .tabla-inspeccion .header-concepto:first-of-type {
+    width: 25%;
+}
+
+.llantas-amortiguadores .tabla-inspeccion .celda-concepto {
+    width: 25%;
+    text-align: center;
+    justify-content: center;
+}
+
+/* Ajustes para tablas con 3 columnas (ITEM, CONCEPTO, %) - SOLO llantas y amortiguadores */
+.llantas-amortiguadores .tabla-inspeccion .fila-tabla-header .header-descripcion {
+    width: 50%;
+}
+
+.llantas-amortiguadores .tabla-inspeccion .fila-tabla-datos .celda-descripcion {
+    width: 50%;
+}
+
+/* Clases de color dinámico según porcentaje */
+.porcentaje-excelente {
+    background-color: #36d048 !important;
+    border-color: #36d048 !important;
+    color: #fff !important;
+}
+
+.porcentaje-bueno {
+    background-color: #ffff33 !important;
+    border-color: #ffff33 !important;
+    color: #000 !important;
+}
+
+.porcentaje-regular {
+    background-color: #ff8a33 !important;
+    border-color: #ff8a33 !important;
+    color: #fff !important;
+}
+
+.porcentaje-malo {
+    background-color: #ff3933 !important;
+    border-color: #ff3933 !important;
+    color: #fff !important;
 }
 
 /* Responsividad y ajustes específicos */

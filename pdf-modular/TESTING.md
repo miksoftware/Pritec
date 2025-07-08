@@ -29,6 +29,13 @@ http://localhost/Pritec/peritaje-modular.php?id=1&print=true
 
 ### ✅ Página 2 - COMPLETADA
 - Inspección Visual Interna - Chasis (vehículos normales)
+- Llantas y Amortiguadores (con convenciones de color)
+  - Barras de colores para porcentajes de estado
+  - Leyendas explicativas por rangos
+  - Imágenes dinámicas según tipo de vehículo (normal/motocicleta)
+  - Datos de llantas: anterior/posterior izquierda/derecha
+  - Datos de amortiguadores: anterior/posterior izquierda/derecha
+  - Observaciones independientes para cada sección
 
 ### ⏳ Páginas Pendientes
 - Página 3: Por implementar
@@ -70,6 +77,28 @@ http://localhost/Pritec/peritaje-modular.php?id=1&print=true
   - PUNTOS DE ANCLAJE
 - Imagen dinámica según tipo de vehículo
 - Solo se muestra para vehículos que no sean motocicletas
+
+### ✅ 6. Sección Llantas y Amortiguadores (Página 2)
+- Convenciones de color para porcentajes de llantas y amortiguadores
+- Barras de colores con leyendas explicativas
+- Tabla de 3 columnas: ITEM, CONCEPTO, PORCENTAJE
+- Función `obtenerEstadoPorPorcentaje()` para mapear porcentajes a estados
+- Imágenes dinámicas según tipo de vehículo (llantas.png / LLANTAS MOTO.png)
+- Imágenes dinámicas según tipo de vehículo (amortiguadores.png / AMORTIGUADORES MOTO.png)
+- Datos directos desde tabla `peritaje_completo`:
+  - `llanta_anterior_izquierda`, `llanta_anterior_derecha`
+  - `llanta_posterior_izquierda`, `llanta_posterior_derecha`
+  - `amortiguador_anterior_izquierdo`, `amortiguador_anterior_derecho`
+  - `amortiguador_posterior_izquierdo`, `amortiguador_posterior_derecho`
+- Observaciones independientes para llantas y amortiguadores
+
+### ✅ 7. Corrección de Estilos Específicos
+- Estilos de llantas y amortiguadores ahora son específicos (clase `.llantas-amortiguadores`)
+- No afectan las tablas de inspección visual de la página 1
+- Espaciado optimizado entre secciones (`margin-bottom: var(--spacing-small)`)
+- Anchos de columnas corregidos para inspecciones normales:
+  - Descripción: 70% (restaurado)
+  - Concepto: 30% (restaurado)
 
 ## Funcionalidades
 

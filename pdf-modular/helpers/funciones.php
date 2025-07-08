@@ -227,4 +227,42 @@ function formatearConceptoSinNumero($concepto) {
     // Simplemente devolver el concepto tal como está
     return trim($concepto);
 }
+
+/**
+ * Obtiene el estado de una llanta o amortiguador basado en su porcentaje
+ * @param int $porcentaje Porcentaje del 0 al 100
+ * @return string Estado correspondiente al porcentaje
+ */
+function obtenerEstadoPorPorcentaje($porcentaje) {
+    $porcentaje = intval($porcentaje);
+    
+    if ($porcentaje >= 75) {
+        return 'Excelente';
+    } elseif ($porcentaje >= 50) {
+        return 'Bueno';
+    } elseif ($porcentaje >= 25) {
+        return 'Regular';
+    } else {
+        return 'Malo';
+    }
+}
+
+/**
+ * Obtiene la clase CSS correspondiente al porcentaje
+ * @param int $porcentaje Porcentaje del 0 al 100
+ * @return string Clase CSS correspondiente
+ */
+function obtenerClasePorPorcentaje($porcentaje) {
+    $porcentaje = intval($porcentaje);
+    
+    if ($porcentaje >= 75) {
+        return 'porcentaje-excelente';
+    } elseif ($porcentaje >= 50) {
+        return 'porcentaje-bueno';
+    } elseif ($porcentaje >= 25) {
+        return 'porcentaje-regular';
+    } else {
+        return 'porcentaje-malo';
+    }
+}
 ?>
