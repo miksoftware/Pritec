@@ -438,6 +438,30 @@ p {
     align-items: center;
 }
 
+/* Agregar estilos para header-respuesta */
+.header-respuesta {
+    background: var(--main-color);
+    border-radius: var(--border-radius);
+    text-align: center;
+    padding: 4px 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #000 !important;
+}
+
+/* Agregar estilos para celda-respuesta */
+.celda-respuesta {
+    border: 1px var(--main-color) solid;
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    padding: 3px 10px;
+    font-size: 0.9rem;
+    color: #000 !important;
+    min-height: 24px;
+    display: flex;
+    align-items: center;
+}
+
 /* Estilos específicos SOLO para llantas y amortiguadores */
 .llantas-amortiguadores .tabla-inspeccion .header-concepto {
     width: 25%;
@@ -575,4 +599,356 @@ p {
     flex-grow: 1;
     min-height: fit-content;
     overflow: visible;
+}
+
+/* Estilos específicos para la sección de fugas */
+.seccion-fugas {
+    padding: var(--spacing-medium);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--main-color);
+    margin-bottom: var(--spacing-small);
+    display: flex;
+    flex-direction: column;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.seccion-fugas .inspeccion-contenido {
+    display: flex;
+    gap: var(--spacing-small);
+    flex-grow: 1;
+    width: 100%;
+}
+
+.seccion-fugas .inspeccion-detalle {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--spacing-small);
+    min-height: fit-content;
+}
+
+.seccion-fugas .tabla-inspeccion {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    width: 100%; /* Ocupar todo el ancho disponible */
+    flex-grow: 1;
+    min-height: fit-content;
+    overflow: visible;
+    max-height: none;
+}
+
+.seccion-fugas .fila-tabla-header .header-descripcion {
+    width: 60%;
+}
+
+.seccion-fugas .fila-tabla-header .header-concepto {
+    width: 40%;
+}
+
+.seccion-fugas .fila-tabla-datos .celda-descripcion {
+    width: 60%;
+}
+
+.seccion-fugas .fila-tabla-datos .celda-concepto {
+    width: 40%;
+}
+
+/* Estilos específicos para la sección de tren motriz */
+.seccion-tren-motriz {
+    padding: var(--spacing-medium);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--main-color);
+    margin-bottom: var(--spacing-small);
+    display: flex;
+    flex-direction: column;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.seccion-tren-motriz .inspeccion-contenido {
+    display: flex;
+    gap: var(--spacing-small);
+    flex-grow: 1;
+    width: 100%;
+}
+
+.seccion-tren-motriz .inspeccion-detalle {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--spacing-small);
+    min-height: fit-content;
+}
+
+.seccion-tren-motriz .tabla-inspeccion {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    width: 100%;
+    flex-grow: 1;
+    min-height: fit-content;
+    overflow: visible;
+    max-height: none;
+}
+
+.seccion-tren-motriz .fila-tabla-header .header-descripcion {
+    width: 20%;
+}
+
+.seccion-tren-motriz .fila-tabla-header .header-concepto {
+    width: 20%;
+}
+
+.seccion-tren-motriz .fila-tabla-header .header-respuesta {
+    width: 60%;
+}
+
+.seccion-tren-motriz .fila-tabla-datos .celda-descripcion {
+    width: 20%;
+}
+
+.seccion-tren-motriz .fila-tabla-datos .celda-concepto {
+    width: 20%;
+}
+
+.seccion-tren-motriz .fila-tabla-datos .celda-respuesta {
+    width: 60%;
+}
+
+/* Estilos específicos para la sección de motor */
+.seccion-motor {
+    padding: var(--spacing-medium);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--main-color);
+    margin-bottom: var(--spacing-small);
+    display: flex;
+    flex-direction: column;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.seccion-motor .inspeccion-contenido {
+    display: flex;
+    gap: var(--spacing-small);
+    flex-grow: 1;
+    width: 100%;
+}
+
+.seccion-motor .inspeccion-detalle {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--spacing-small);
+    min-height: fit-content;
+}
+
+.seccion-motor .tabla-inspeccion {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    width: 100%;
+    flex-grow: 1;
+    min-height: fit-content;
+    overflow: visible;
+    max-height: none;
+}
+
+/* Configuración para 3 columnas: SISTEMA (20%), ESTADO (20%), RESPUESTA (60%) */
+.seccion-motor .fila-tabla-header .header-descripcion {
+    width: 20%;
+}
+
+.seccion-motor .fila-tabla-header .header-concepto {
+    width: 20%;
+}
+
+.seccion-motor .fila-tabla-header .header-respuesta {
+    width: 60%;
+}
+
+.seccion-motor .fila-tabla-datos .celda-descripcion {
+    width: 20%;
+}
+
+.seccion-motor .fila-tabla-datos .celda-concepto {
+    width: 20%;
+}
+
+.seccion-motor .fila-tabla-datos .celda-respuesta {
+    width: 60%;
+}
+
+/* Estilos específicos para la sección de interior automotor */
+.seccion-interior-automotor {
+    padding: var(--spacing-medium);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--main-color);
+    margin-bottom: var(--spacing-small);
+    display: flex;
+    flex-direction: column;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.seccion-interior-automotor .inspeccion-contenido {
+    display: flex;
+    gap: var(--spacing-small);
+    flex-grow: 1;
+    width: 100%;
+}
+
+.seccion-interior-automotor .inspeccion-detalle {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--spacing-small);
+    min-height: fit-content;
+}
+
+.seccion-interior-automotor .tabla-inspeccion {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    width: 100%;
+    flex-grow: 1;
+    min-height: fit-content;
+    overflow: visible;
+    max-height: none;
+}
+
+/* Configuración para 3 columnas: SISTEMA (20%), ESTADO (20%), RESPUESTA (60%) */
+.seccion-interior-automotor .fila-tabla-header .header-descripcion {
+    width: 20%;
+}
+
+.seccion-interior-automotor .fila-tabla-header .header-concepto {
+    width: 20%;
+}
+
+.seccion-interior-automotor .fila-tabla-header .header-respuesta {
+    width: 60%;
+}
+
+.seccion-interior-automotor .fila-tabla-datos .celda-descripcion {
+    width: 20%;
+}
+
+.seccion-interior-automotor .fila-tabla-datos .celda-concepto {
+    width: 20%;
+}
+
+.seccion-interior-automotor .fila-tabla-datos .celda-respuesta {
+    width: 60%;
+}
+
+/* Estilos específicos para la sección de estado de componentes */
+.seccion-estado-componentes {
+    padding: var(--spacing-medium);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--main-color);
+    margin-bottom: var(--spacing-small);
+    display: flex;
+    flex-direction: column;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.seccion-estado-componentes .inspeccion-contenido {
+    display: flex;
+    gap: var(--spacing-small);
+    flex-grow: 1;
+    width: 100%;
+}
+
+.seccion-estado-componentes .inspeccion-detalle {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--spacing-small);
+    min-height: fit-content;
+}
+
+.seccion-estado-componentes .tabla-inspeccion {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    width: 100%;
+    flex-grow: 1;
+    min-height: fit-content;
+    overflow: visible;
+    max-height: none;
+}
+
+/* Configuración para 2 columnas: SISTEMA (60%), RESPUESTA (40%) */
+.seccion-estado-componentes .fila-tabla-header .header-descripcion {
+    width: 60%;
+}
+
+.seccion-estado-componentes .fila-tabla-header .header-concepto {
+    width: 40%;
+}
+
+.seccion-estado-componentes .fila-tabla-datos .celda-descripcion {
+    width: 60%;
+}
+
+.seccion-estado-componentes .fila-tabla-datos .celda-concepto {
+    width: 40%;
+}
+
+/* Estilos específicos para la sección de líquidos */
+.seccion-liquidos {
+    padding: var(--spacing-medium);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--main-color);
+    margin-bottom: var(--spacing-small);
+    display: flex;
+    flex-direction: column;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.seccion-liquidos .inspeccion-contenido {
+    display: flex;
+    gap: var(--spacing-small);
+    flex-grow: 1;
+    width: 100%;
+}
+
+.seccion-liquidos .inspeccion-detalle {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--spacing-small);
+    min-height: fit-content;
+}
+
+.seccion-liquidos .tabla-inspeccion {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    width: 100%;
+    flex-grow: 1;
+    min-height: fit-content;
+    overflow: visible;
+    max-height: none;
+}
+
+/* Configuración para 2 columnas: SISTEMA (60%), RESPUESTA (40%) */
+.seccion-liquidos .fila-tabla-header .header-descripcion {
+    width: 60%;
+}
+
+.seccion-liquidos .fila-tabla-header .header-concepto {
+    width: 40%;
+}
+
+.seccion-liquidos .fila-tabla-datos .celda-descripcion {
+    width: 60%;
+}
+
+.seccion-liquidos .fila-tabla-datos .celda-concepto {
+    width: 40%;
 }
