@@ -124,6 +124,19 @@ $descripcionesPiezasEstructura = [
     22 => 'PANEL TRASERO'
 ];
 
+$descripcionesPiezasChasis = [
+    1 => 'LARGUERO IZQUIERDO',
+    2 => 'LARGUERO DERECHO',
+    3 => 'TRAVESAÑO DELANTERO',
+    4 => 'TRAVESAÑO CENTRAL',
+    5 => 'TRAVESAÑO TRASERO',
+    6 => 'SOPORTE DE MOTOR',
+    7 => 'SOPORTE DE TRANSMISIÓN',
+    8 => 'SOPORTE DE SUSPENSIÓN DELANTERA',
+    9 => 'SOPORTE DE SUSPENSIÓN TRASERA',
+    10 => 'PUNTOS DE ANCLAJE'
+];
+
 // Función para generar select de estados usando EstadoEnum
 function generarSelectEstado($nombreCampo, $requerido = true)
 {
@@ -512,7 +525,12 @@ if (isset($_SESSION['peritaje_id'])) {
                             <tbody>
                                 <tr class="fila-chasis">
                                     <td>
-                                        <input type="text" class="form-control" name="descripcion_pieza_chasis[]" placeholder="Ej: Larguero derecho">
+                                        <select class="form-select" name="descripcion_pieza_chasis[]">
+                                            <option value="">-- Seleccione una pieza --</option>
+                                            <?php foreach ($descripcionesPiezasChasis as $valor => $descripcion): ?>
+                                                <option value="<?php echo $valor; ?>"><?php echo htmlspecialchars($descripcion); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </td>
                                     <td>
                                         <select class="form-select" name="concepto_pieza_chasis[]">
@@ -851,16 +869,16 @@ if (isset($_SESSION['peritaje_id'])) {
             </div>
 
             <?php if ($_SERVER['HTTP_HOST'] === 'localhost' || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false): ?>
-    <!-- Botón de prueba - Solo en desarrollo -->
-    <div class="text-center mt-3 mb-3">
-        <button type="button" class="btn btn-warning btn-sm" id="fillTestData">
-            <i class="fas fa-flask me-2"></i>Llenar con Datos de Prueba
-        </button>
-        <button type="button" class="btn btn-info btn-sm ms-2" id="clearForm">
-            <i class="fas fa-eraser me-2"></i>Limpiar Formulario
-        </button>
-    </div>
-<?php endif; ?>
+                <!-- Botón de prueba - Solo en desarrollo -->
+                <div class="text-center mt-3 mb-3">
+                    <button type="button" class="btn btn-warning btn-sm" id="fillTestData">
+                        <i class="fas fa-flask me-2"></i>Llenar con Datos de Prueba
+                    </button>
+                    <button type="button" class="btn btn-info btn-sm ms-2" id="clearForm">
+                        <i class="fas fa-eraser me-2"></i>Limpiar Formulario
+                    </button>
+                </div>
+            <?php endif; ?>
 
             <div class="text-center mt-4 mb-4">
                 <button type="submit" class="btn btn-primary btn-lg px-5">
@@ -1161,6 +1179,13 @@ if (isset($_SESSION['peritaje_id'])) {
             }
             // Si estamos agregando a la tabla de inspección de chasis
             else if (tablaId === 'tablaInspeccionChasis') {
+                // Crear select para descripciones de piezas de chasis
+                let opcionesDescripcion = '<option value="">-- Seleccione una pieza --</option>';
+
+                <?php foreach ($descripcionesPiezasChasis as $valor => $descripcion): ?>
+                    opcionesDescripcion += `<option value="<?php echo $valor; ?>"><?php echo htmlspecialchars($descripcion); ?></option>`;
+                <?php endforeach; ?>
+
                 // Crear select para conceptos de chasis
                 let opcionesConcepto = '<option value="">-- Seleccione un concepto --</option>';
 
@@ -1169,20 +1194,22 @@ if (isset($_SESSION['peritaje_id'])) {
                 <?php endforeach; ?>
 
                 nuevaFila.innerHTML = `
-            <td>
-                <input type="text" class="form-control" name="${nombreCampo1}" placeholder="Ej: Descripción">
-            </td>
-            <td>
-                <select class="form-select" name="${nombreCampo2}">
-                    ${opcionesConcepto}
-                </select>
-            </td>
-            <td class="text-center">
-                <button type="button" class="btn btn-danger btn-sm ${claseBoton}">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </td>
-        `;
+                    <td>
+                        <select class="form-select" name="${nombreCampo1}">
+                            ${opcionesDescripcion}
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select" name="${nombreCampo2}">
+                            ${opcionesConcepto}
+                        </select>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-danger btn-sm ${claseBoton}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
             } else {
                 // Para otras tablas, mantener el comportamiento original
                 nuevaFila.innerHTML = `
@@ -1237,54 +1264,52 @@ if (isset($_SESSION['peritaje_id'])) {
 
 
 
-<?php if ($_SERVER['HTTP_HOST'] === 'localhost' || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false): ?>
-// Funcionalidad de prueba - Solo en desarrollo
-document.addEventListener('DOMContentLoaded', function() {
-    const fillTestBtn = document.getElementById('fillTestData');
-    const clearFormBtn = document.getElementById('clearForm');
-    
-    if (fillTestBtn) {
-        fillTestBtn.addEventListener('click', function() {
-            Swal.fire({
-                title: '¿Llenar con datos de prueba?',
-                text: 'Esto llenará todo el formulario con datos aleatorios',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, llenar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fillTestData();
-                    Swal.fire('¡Completado!', 'Formulario llenado con datos de prueba', 'success');
+        <?php if ($_SERVER['HTTP_HOST'] === 'localhost' || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false): ?>
+            // Funcionalidad de prueba - Solo en desarrollo
+            document.addEventListener('DOMContentLoaded', function() {
+                const fillTestBtn = document.getElementById('fillTestData');
+                const clearFormBtn = document.getElementById('clearForm');
+
+                if (fillTestBtn) {
+                    fillTestBtn.addEventListener('click', function() {
+                        Swal.fire({
+                            title: '¿Llenar con datos de prueba?',
+                            text: 'Esto llenará todo el formulario con datos aleatorios',
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonText: 'Sí, llenar',
+                            cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fillTestData();
+                                Swal.fire('¡Completado!', 'Formulario llenado con datos de prueba', 'success');
+                            }
+                        });
+                    });
+                }
+
+                if (clearFormBtn) {
+                    clearFormBtn.addEventListener('click', function() {
+                        Swal.fire({
+                            title: '¿Limpiar formulario?',
+                            text: 'Esto eliminará todos los datos del formulario',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Sí, limpiar',
+                            cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById('peritajeForm').reset();
+                                // Resetear también los selects de tipo de vehículo
+                                document.getElementById('tipo_vehiculo_display').value = '';
+                                document.getElementById('tipo_vehiculo_input').value = '';
+                                Swal.fire('¡Limpiado!', 'Formulario reiniciado', 'success');
+                            }
+                        });
+                    });
                 }
             });
-        });
-    }
-    
-    if (clearFormBtn) {
-        clearFormBtn.addEventListener('click', function() {
-            Swal.fire({
-                title: '¿Limpiar formulario?',
-                text: 'Esto eliminará todos los datos del formulario',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, limpiar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('peritajeForm').reset();
-                    // Resetear también los selects de tipo de vehículo
-                    document.getElementById('tipo_vehiculo_display').value = '';
-                    document.getElementById('tipo_vehiculo_input').value = '';
-                    Swal.fire('¡Limpiado!', 'Formulario reiniciado', 'success');
-                }
-            });
-        });
-    }
-});
-<?php endif; ?>
-
-
+        <?php endif; ?>
     </script>
 </div>
 
