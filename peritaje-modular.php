@@ -175,12 +175,8 @@ $tiposVehiculos = [
         <?php include __DIR__ . '/pdf-modular/paginas/pagina-3.php'; ?>
 
         <?php include __DIR__ . '/pdf-modular/paginas/pagina-4.php'; ?> 
+        <?php include __DIR__ . '/pdf-modular/paginas/pagina-5.php'; ?>
         
-        <!-- Aquí se incluirán las siguientes páginas cuando se modularicen -->
-        <!--  -->
-        <!-- -->
-        <!-- <?php include __DIR__ . '/pdf-modular/paginas/pagina-5.php'; ?> -->
-        <!-- <?php include __DIR__ . '/pdf-modular/paginas/pagina-6.php'; ?> -->
     </main>
 
     <script>

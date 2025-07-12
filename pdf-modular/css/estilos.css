@@ -57,18 +57,21 @@ p {
     flex-grow: 1;
     min-height: fit-content;
     overflow: visible;
-    padding-bottom: 80px; /* Espacio para el pie de página */
+    padding-bottom: 10px; /* Espacio para el pie de página */
 }
 
 .pie-pagina {
     position: fixed;
-    bottom: var(--spacing-medium);
-    left: var(--spacing-medium);
-    right: var(--spacing-medium);
+    bottom: 0;
+    left: 0;
+    right: 0;
     background: white;
     z-index: 1000;
-    margin-top: auto;
-    padding: var(--spacing-small) 0;
+    height: 60px; /* Altura fija del pie */
+    border-top: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--spacing-medium);
 }
 
 .contenido-pie {
@@ -538,9 +541,12 @@ p {
 /* Responsividad y ajustes específicos */
 @media print {
     .page {
-        height: auto;
+        height: 100vh; /* Altura fija de página */
         page-break-after: always;
-        min-height: auto;
+        min-height: 100vh;
+        max-height: 100vh;
+        overflow: hidden;
+        padding-bottom: 80px;
     }
     
     .page:last-child {
@@ -548,16 +554,19 @@ p {
     }
     
     .pie-pagina {
-        position: absolute;
+        position: fixed;
         bottom: 20px;
+        left: 20px;
+        right: 20px;
+        height: 40px;
+        background: white;
+        z-index: 1000;
     }
     
     .contenido-pagina {
         padding-bottom: 60px;
-    }
-    
-    .inspeccion-visual {
-        page-break-inside: avoid;
+        height: calc(100vh - 140px); /* Altura fija menos márgenes */
+        overflow: hidden;
     }
 }
 
@@ -951,4 +960,207 @@ p {
 
 .seccion-liquidos .fila-tabla-datos .celda-concepto {
     width: 40%;
+}
+
+/* Estilos específicos para la sección de fijación fotográfica */
+.seccion-fijacion-fotografica {
+    padding: var(--spacing-medium);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--main-color);
+    margin-bottom: var(--spacing-small);
+    display: flex;
+    flex-direction: column;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.seccion-fijacion-fotografica .inspeccion-contenido {
+    display: flex;
+    gap: var(--spacing-small);
+    flex-grow: 1;
+    width: 100%;
+}
+
+.contenido-fotografico {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--spacing-small);
+}
+
+.descripcion-fotografica {
+    margin: 0;
+    font-size: var(--font-size-small);
+    color: #000 !important;
+    padding-bottom: var(--spacing-small);
+}
+
+/* Grid de fotografías 2x3 */
+.grid-fotografias {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: var(--spacing-small);
+    width: 100%;
+    min-height: 300px;
+}
+
+.contenedor-imagen {
+    border: 1px solid var(--main-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-small);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    min-height: 100px;
+}
+
+.imagen-fijacion {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: var(--border-radius);
+}
+
+.contenedor-vacio {
+    background-color: #f5f5f5;
+    border-style: dashed;
+}
+
+.placeholder-imagen {
+    color: #999 !important;
+    font-size: var(--font-size-small);
+    text-align: center;
+}
+
+/* Prueba de ruta */
+.prueba-ruta {
+    border: 1px solid var(--main-color);
+    padding: var(--spacing-small) var(--spacing-medium);
+    border-radius: var(--border-radius);
+    min-height: 50px;
+    font-size: var(--font-size-small);
+    margin-top: var(--spacing-small);
+    background-color: #fff;
+    color: #000 !important;
+}
+
+.prueba-ruta strong {
+    color: #000 !important;
+}
+
+/* Ajustes para impresión */
+@media print {
+    .seccion-fijacion-fotografica {
+        page-break-inside: avoid;
+    }
+    
+    .grid-fotografias {
+        min-height: 550px;
+    }
+    
+    .contenedor-imagen {
+        min-height: 80px;
+    }
+}
+
+
+/* Estilos específicos para la sección de firmas */
+.seccion-firmas {
+    padding: var(--spacing-medium);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--main-color);
+    margin-bottom: var(--spacing-small);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-large);
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.contenedor-firmas {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-xlarge);
+    width: 100%;
+}
+
+.firma-izquierda, .firma-derecha {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-small);
+    width: 45%;
+}
+
+.contenedor-firma-mecanico {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.firma-mecanico {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-small);
+    width: 45%;
+    text-align: center;
+}
+
+.titulo-firma {
+    margin: 0;
+    font-size: var(--font-size-base);
+    color: #000 !important;
+    font-weight: normal;
+}
+
+.linea-firma {
+    border-bottom: 2px solid #000;
+    width: 100%;
+    height: 2px;
+    margin: var(--spacing-small) 0;
+}
+
+.campo-cc {
+    margin: 0;
+    font-size: var(--font-size-base);
+    color: #000 !important;
+    font-weight: normal;
+}
+
+.aviso-legal {
+    margin-top: var(--spacing-large);
+    padding: var(--spacing-medium);
+    border-top: 1px solid var(--main-color);
+    background-color: #f9f9f9;
+    border-radius: var(--border-radius);
+}
+
+.aviso-legal p {
+    margin: 0;
+    font-size: 13px;
+    color: #000 !important;
+    line-height: 1.3;
+    text-align: justify;
+}
+
+.aviso-legal strong {
+    color: #000 !important;
+    font-weight: bold;
+}
+
+/* Ajustes para impresión */
+@media print {
+    .seccion-firmas {
+        page-break-inside: avoid;
+    }
+    
+    .linea-firma {
+        border-bottom: 1px solid #000;
+        margin-top: 100px;
+    }
+    
+    .aviso-legal {
+        font-size: 8px;
+    }
 }
