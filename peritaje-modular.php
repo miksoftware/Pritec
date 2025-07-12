@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PDF Modular de Peritaje Completo
  * Estructura modular donde cada sección es independiente y cada página incluye sus secciones correspondientes
@@ -152,41 +153,40 @@ $tiposVehiculos = [
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peritaje Completo - <?php echo htmlspecialchars($peritaje["placa"] ?? ''); ?></title>
-    
+
     <!-- Bootstrap CSS (solo para utilidades de flexbox y espaciado) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- CSS Modular -->
     <link rel="stylesheet" href="pdf-modular/css/estilos.css">
 </head>
+
 <body>
     <main class="w-100">
         <!-- Página 1: Header, Datos del Vehículo, Inspección Visual Externa e Interna -->
         <?php include __DIR__ . '/pdf-modular/paginas/pagina-1.php'; ?>
-        
+
         <!-- Página 2: Inspección Visual Interna - Chasis -->
         <?php include __DIR__ . '/pdf-modular/paginas/pagina-2.php'; ?>
-        
+
         <!-- Página 3: Actuación de la Batería -->
         <?php include __DIR__ . '/pdf-modular/paginas/pagina-3.php'; ?>
 
-        <?php include __DIR__ . '/pdf-modular/paginas/pagina-4.php'; ?> 
+        <?php include __DIR__ . '/pdf-modular/paginas/pagina-4.php'; ?>
         <?php include __DIR__ . '/pdf-modular/paginas/pagina-5.php'; ?>
-        
+
     </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Auto-imprimir si está en producción o si se solicita explícitamente
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('print') === 'true') {
-                window.print();
-            }
-        });
+            window.print()
+        })
     </script>
 </body>
+
 </html>

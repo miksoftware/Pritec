@@ -376,7 +376,7 @@ function eliminarPeritaje(id) {
 }
 
 function imprimirPeritaje(id) {
-    window.open(`P_peritajeC.php?id=${id}`, '_blank');
+    window.open(`peritaje-modular.php?id=${id}`, '_blank');
 }
 </script>
 

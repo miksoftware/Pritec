@@ -164,7 +164,7 @@ if (isset($_SESSION['peritaje_id'])) {
                         <i class="fas fa-list me-1"></i> Ver listado
                     </a>
                     <?php if ($peritajeId): ?>
-                        <a href="p_peritajeC.php?id=<?php echo $peritajeId; ?>" class="btn btn-sm btn-outline-primary me-2" target="_blank">
+                        <a href="peritaje-modular.php?id=<?php echo $peritajeId; ?>" class="btn btn-sm btn-outline-primary me-2" target="_blank">
                             <i class="fas fa-print me-1"></i> Imprimir
                         </a>
                         <a href="e_peritajeC.php?id=<?php echo $peritajeId; ?>" class="btn btn-sm btn-outline-info me-2">

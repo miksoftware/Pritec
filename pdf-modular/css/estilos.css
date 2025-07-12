@@ -68,7 +68,6 @@ p {
     background: white;
     z-index: 1000;
     height: 60px; /* Altura fija del pie */
-    border-top: 1px solid #ddd;
     display: flex;
     align-items: center;
     padding: 0 var(--spacing-medium);
@@ -1058,6 +1057,7 @@ p {
     
     .grid-fotografias {
         min-height: 550px;
+        max-height: 550px;
     }
     
     .contenedor-imagen {

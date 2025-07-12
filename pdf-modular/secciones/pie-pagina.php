@@ -15,8 +15,5 @@ if (!isset($numeroPagina)) {
         <p class="texto-pie">
             LA MEJOR FORMA DE COMPRAR UN CARRO USADO
         </p>
-        <p class="numero-pagina">
-            Página <?php echo $numeroPagina; ?>
-        </p>
     </div>
 </div>
