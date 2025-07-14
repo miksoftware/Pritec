@@ -12,7 +12,7 @@ if (!isset($peritaje)) {
 
 <section class="header-peritaje">
     <h4>SALA TÉCNICA EN AUTOMOTORES</h4>
-    <h6>CERIFICACIÓN TÉCNICA EN IDENTIFICACIÓN DE AUTOMOTORES</h6>
+    <h6>INFORME TÉCNICO</h6>
     
     <header class="informacion-empresa">
         <img src="img/pritec.png" class="logo-empresa" alt="Logo Pritec"/>

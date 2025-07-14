@@ -354,7 +354,7 @@ p {
 
 .imagen-vehiculo {
     width: 40%;
-    height: 190px;
+    height: 220px;
     object-fit: contain;
     border: 1px solid var(--main-color);
     border-radius: var(--border-radius);
@@ -364,7 +364,7 @@ p {
 
 .imagen-vehiculo-pag2 {
     width: 40%;
-    height: 150px;
+    height: 220px;
     object-fit: contain;
     border: 1px solid var(--main-color);
     border-radius: var(--border-radius);

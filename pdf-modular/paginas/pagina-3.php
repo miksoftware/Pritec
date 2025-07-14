@@ -30,6 +30,4 @@ $numeroPagina = 3;
         
     </div>
     
-    <!-- Pie de página -->
-    <?php include __DIR__ . '/../secciones/pie-pagina.php'; ?>
 </div>
