@@ -14,7 +14,7 @@ define("NO_DIRECT_JSON_OUTPUT", true);
 $id = isset($_GET["id"]) ? intval($_GET["id"]) : 0;
 if ($id === 0) {
     $_SESSION["error"] = "ID de peritaje no válido";
-    header("Location: L_peritajeC.php");
+    header("Location: l_peritajeC.php");
     exit();
 }
 

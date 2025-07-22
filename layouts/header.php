@@ -19,7 +19,7 @@ $menu_items = [
     [
         "icon" => "fa-file-lines",
         "text" => "Peritaje Completo",
-        "link" => "L_peritajeC.php",
+        "link" => "l_peritajeC.php",
     ],
     [
         "icon" => "fa-print",
