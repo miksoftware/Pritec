@@ -48,9 +48,6 @@ if ($result->num_rows === 0) {
 
 $peritaje = $result->fetch_assoc();
 
-// Agregar datos de prueba para batería (temporal)
-include __DIR__ . '/test-datos-bateria.php';
-
 // Cargar inspección visual externa - carrocería
 $stmt = $conn->prepare("SELECT * FROM inspeccion_visual_carroceria WHERE peritaje_id = ?");
 $stmt->bind_param("i", $id);
@@ -76,6 +73,24 @@ $conn->close();
 
 // Configurar tipos de vehículos
 $tipoChasis = $peritaje["tipo_chasis"];
+$tipoVehiculo = $peritaje["tipo_vehiculo"];
+
+// Función para obtener URL de chasis para motocicletas
+function obtenerUrlChasisMoto($tipoChasis) {
+    // Mapear nombres de chasis a archivos disponibles
+    $chasisDisponibles = [
+        "CUNA INTERRUMPIDA" => "CUNA INTERRUMPIDA.png",
+        "DOBLE CUNA" => "DOBLE CUNA.png", 
+        "DOBLE VIDA O PERIMETRAL" => "DOBLE VIDA O PERIMETRAL.png",
+        "MONO CUNA DESDOBLADO" => "MONO CUNA DESDOBLADO.png",
+        "MONO CUNA" => "MONO CUNA.png",
+        "MULTI-TUBULAR" => "MULTI-TUBULAR.png"
+    ];
+    
+    // Si existe el tipo específico, usarlo; sino, usar predeterminado
+    $archivoChasis = $chasisDisponibles[$tipoChasis] ?? "chasis predeterminado.png";
+    return "img/chasis/" . $archivoChasis;
+}
 
 $tiposVehiculos = [
     "COUPE - 3 PUERTAS" => new TipoVehiculoUrl(
@@ -146,27 +161,27 @@ $tiposVehiculos = [
     "MOTOCICLETA TURISMO" => new TipoVehiculoUrl(
         "img/carroceria/Motocicleta Turismo.png",
         "img/estructura/Motocicleta Turismo.png",
-        "img/chasis/$tipoChasis.png"
+        obtenerUrlChasisMoto($tipoChasis)
     ),
     "MOTOCICLETA DEPORTIVA" => new TipoVehiculoUrl(
         "img/carroceria/motocicleta deportiva.png",
         "img/estructura/motocicleta deportiva.png",
-        "img/chasis/$tipoChasis.png"
+        obtenerUrlChasisMoto($tipoChasis)
     ),
     "MOTOCICLETA SCOOTER" => new TipoVehiculoUrl(
         "img/carroceria/Motocicleta scooter.png",
         "img/estructura/Motocicleta scooter.png",
-        "img/chasis/$tipoChasis.png"
+        obtenerUrlChasisMoto($tipoChasis)
     ),
     "MOTOCICLETA: TIPO ENDURO" => new TipoVehiculoUrl(
         "img/carroceria/Motocicleta tipo enduro.png",
         "img/estructura/Motocicleta tipo enduro.png",
-        "img/chasis/$tipoChasis.png"
+        obtenerUrlChasisMoto($tipoChasis)
     ),
     "MOTOCICLETA CUSTOM" => new TipoVehiculoUrl(
         "img/carroceria/MOTOCICLETA CUSTOM.png",
         "img/estructura/MOTOCICLETA CUSTOM.png",
-        "img/chasis/$tipoChasis.png"
+        obtenerUrlChasisMoto($tipoChasis)
     ),
 ];
 ?>
